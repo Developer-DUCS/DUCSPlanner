@@ -4,28 +4,94 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <link rel="stylesheet" type="text/css" href="home.css" />
     <title>Document</title>
 </head>
 <body>
+
+    <!---Planit header-->
     <div class="head" id='header'>
         <br> 
-        <h1 id= 'Planit'>Planit</h1>  <br> 
+        <h1 id= 'Planit'> <span id= 'tick'>&#10003;</span> Planit</h1>  <br> 
         </div>
-        <br> <br>
-        <div class = 'log-form'>
+
+        <div class = 'log-form'> 
+
+
+            <!---Form -->
         <form id= 'login'>
             <br>
-            <img src = "C:\Users\Vuyisile Mjimba\Downloads\dury.jpg" width = '40%' height = '20%'> 
-            <h3>Log In </h3>
-          <input type="text" title="username" placeholder="username" /> <br> <br>
-          <input type="password" title="username" placeholder="password" /><br> <br>
-          <button type="submit" class="btn">Login</button> <br> <br>
-          <a class="forgot" href="#">Forgot Username?</a>
-        </form>
- <br> <br> <br.
-        <footer>
-            &copy Drury University 2021; 
+            <img src = "drury.jpg" width = '40%' height = '20%'> 
+            <br> <br>
+         
+          <input type="text" title="username" placeholder="username" style="width: 40%;"/> <br> <br>
+          <input type="password" title="username" placeholder="password" style="width: 40%;" /><br> <br>
+          <button type="submit" class="btn btn-info btn-lg" id='loginbutton'>Login</button> 
+          <button type="button" id='createacc'  class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" > Create Account </button><br> 
+          
+          <!-- Modal -->
+          <br>
+          <a class="forgot" href="recover.html">Forgot Password?</a>
+        </form> <br> <br><br> <br>
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+          
+              <!-- Modal content-->
+              <div class="modal-content">
+                <div class="modal-header " id= 'modal-header'>
+                  <button type="button" class="close" data-dismiss="modal">&times;</button>
+                  <h4 class="modal-title" id='modalRegisterHead'>Sign Up</h4>
+                </div>
+                <div class="modal-body">
+                  <form id= 'modalRegister'>
+                    <label for="email"><b>Email</b></label> <br>
+                    <input type="text" placeholder="Enter Email" name="email" required style="width: 100%;"><br><br>
+
+                    <label for="email"><b>First Name</b></label> <br>
+                    <input type="text" placeholder="First Name" name="fname"  id= 'fname' style="width: 100%;" required><br><br>
+
+                    <label for="email"><b>Last Name</b></label> <br>
+                    <input type="text" placeholder="Last Name" name="Last Name" style="width: 100%;"  id='lname' required><br><br>
+
+                     <label for="psw"><b>Password</b></label> <br>
+                     <input type="password" placeholder="Enter Password" name="psw" style="width: 100%;" id='password' required><br><br>
+
+                    <label for="psw-repeat"><b>Repeat Password</b></label> <br>
+                    <input type="password" placeholder="Repeat Password" name="psw-repeat" id='password2' style="width: 100%;" required><br><br>
+
+                    <label for="role"><b>Role</b></label> <br>
+                    <select id="Role" name="Role"  style="width: 100%;">
+                        <option value=""></option>
+                        <option value="Student">Student</option>
+                        <option value="Administrator">Administrator</option>
+                        <option value="Advisor">Advisor</option>
+                      </select> <br> <br>
+                      <button type="submit" class="btn btn-info btn-lg" id='SignUp'>Sign Up</button> 
+                  </form> 
+                </div>
+                <div class="modal-footer" id ='modal-footer'>
+                  <button type="button" class="btn btn-default" data-dismiss="modal" id ='closeModal'>Close</button> 
+                </div>
+              </div>
+          
+            </div>
+          </div>
+ 
+ 
+
+ <!---Footer -->
+
+        <footer id='drurycopy'>
+           <p id = 'copyright'>  &copy Drury University 2021  </p>
+            <img id='apple-logo' src = "applelogo_25.png" height = "95%" width="5%">
         </footer>
       </div>
 </body>
