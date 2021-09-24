@@ -15,10 +15,12 @@ const App = () => {
       <Header/>
       <AppContainer />
     </View>
+    /*This styling applies to all pages*/
   );
 };
 
 const AppNavigator = createStackNavigator({
+  /*Other screens will be added to this list if necessary*/
   Home: {
     screen: Home
   },
@@ -33,6 +35,7 @@ const AppNavigator = createStackNavigator({
   }
 },{
         initialRouteName: "Home"
+        /*This sets the Home page as the base page*/
 });
 
 const AppContainer = createAppContainer(AppNavigator);

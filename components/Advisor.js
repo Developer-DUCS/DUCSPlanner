@@ -9,6 +9,7 @@ export default class Advisor extends Component {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Advisor Screen</Text>
       </View>
+      /*This styling applies to the Advisor page*/
     )
   }
 }

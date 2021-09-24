@@ -9,6 +9,7 @@ export default class Admin extends Component {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Admin Screen</Text>
       </View>
+      /*This styling applies to the Admin page*/
     )
   }
 }

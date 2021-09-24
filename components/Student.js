@@ -9,6 +9,7 @@ export default class Student extends Component {
       <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Student Screen</Text>
       </View>
+      /*This styling applies to the Student page*/
     )
   }
 }
