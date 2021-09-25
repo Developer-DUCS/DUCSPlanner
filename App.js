@@ -12,14 +12,15 @@ import Footer from './components/Footer';
 
 const App = () => {
   return (
-    <><View style={styles.container}>
-      <Header />
-      <AppContainer />
-    </View>
-      <View style={styles.container2}>
+    <>
+      <View style={styles.container}>
+        <Header />
+        <AppContainer />
         <Footer />
-      </View></>
+      </View>
+    </>
     /*This styling applies to all pages*/
+    /*NOTE: IF you do not want all pages to have an element, do not add it here. Add it to the specific page.*/
   );
 };
 
