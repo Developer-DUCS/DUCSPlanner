@@ -3,18 +3,22 @@ import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 
-import Home from './components/home';
-import Student from './components/student';
-import Advisor from './components/advisor';
-import Admin from './components/admin';
+import Home from './components/Home';
+import Student from './components/Student';
+import Advisor from './components/Advisor';
+import Admin from './components/Admin';
 import Header from './components/Header';
+import Footer from './components/Footer';
 
 const App = () => {
   return (
-    <View style={styles.container}>
+    <><View style={styles.container}>
       <Header />
       <AppContainer />
     </View>
+      <View style={styles.container2}>
+        <Footer />
+      </View></>
     /*This styling applies to all pages*/
   );
 };
