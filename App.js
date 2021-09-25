@@ -49,6 +49,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  appcont: {
+    flex: 2,
+    margin: 0,
+    padding: 0,
+  }
 });
 
 export default App;

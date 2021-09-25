@@ -45,10 +45,10 @@ export default class Home extends Component {
         </View>
         <View style={styles.buttonsform}>
           <TouchableOpacity style={styles.btn}>
-            <Text style={styles.loginText}>Sign Up</Text>
+            <Text style={styles.btntext}>Sign Up</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btn}>
-            <Text style={styles.loginText}>Login</Text>
+            <Text style={styles.btntext}>Login</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity>
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'f5f5f5',
+    backgroundColor: '#F5F5F',
   },
   buttonsform: {
     flexDirection: 'row',
@@ -97,8 +97,9 @@ const styles = StyleSheet.create({
     margin: 20,
     padding: 10,
   },
-  loginText: {
-    color: "white"
+  btntext: {
+    color: "white",
+    fontWeight: 'bold',
   },
   img: {
     width: '30%',
