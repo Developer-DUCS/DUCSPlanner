@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {View, Text, StyleSheet, FlatList, Alert} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 
@@ -12,7 +12,7 @@ import Header from './components/Header';
 const App = () => {
   return (
     <View style={styles.container}>
-      <Header/>
+      <Header />
       <AppContainer />
     </View>
     /*This styling applies to all pages*/
@@ -33,9 +33,9 @@ const AppNavigator = createStackNavigator({
   Admin: {
     screen: Admin
   }
-},{
-        initialRouteName: "Home"
-        /*This sets the Home page as the base page*/
+}, {
+  initialRouteName: "Home"
+  /*This sets the Home page as the base page*/
 });
 
 const AppContainer = createAppContainer(AppNavigator);
@@ -43,7 +43,6 @@ const AppContainer = createAppContainer(AppNavigator);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 60,
   },
 });
 

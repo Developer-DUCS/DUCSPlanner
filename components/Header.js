@@ -1,28 +1,33 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 
 const Header = ({ title }) => {
   return (
     <View style={styles.header}>
-      <Text style={styles.text}>{title}</Text>
+      <Image source={require('../Logos/RD Logos/Product Logo/WhiteText/WhiteText.png')} style={styles.img} />
     </View>
   );
 };
 
 Header.defaultProps = {
-    title: "PlanIt",
+  title: "PlanIt",
 }
 
 const styles = StyleSheet.create({
   header: {
-    height: 60,
-    padding: 15,
-    backgroundColor: 'crimson'
+    height: 80,
+    backgroundColor: 'crimson',
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   text: {
-      color: '#fff',
-      fontSize: 23,
-      textAlign: 'center'
+    color: '#fff',
+    fontSize: 23,
+    textAlign: 'center'
+  },
+  img: {
+    width: 200,
+    height: 150,
   }
 });
 

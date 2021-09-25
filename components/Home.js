@@ -23,10 +23,10 @@ export default class Home extends Component {
       just comment out the buttons, feel free to uncomment the view to test 
       out navigation)
       */
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
         <Text>Home Screen</Text>
         <Text>Add Login Here</Text>
-    </View>
+      </View>
     )
   }
 }
