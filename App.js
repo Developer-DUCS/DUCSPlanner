@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, Alert } from 'react-native';
-import { createAppContainer } from "react-navigation";
+import { View, Text, StyleSheet, } from 'react-native';
+import { createAppContainer, Themed } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 
 import Home from './components/Home';
