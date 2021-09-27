@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, } from 'react-native';
+import { View, StyleSheet, } from 'react-native';
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 
@@ -10,6 +10,7 @@ import Admin from './components/Admin';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import SignUp from './components/SignUp';
+import ForgotPass from './components/ForgotPass';
 
 const App = () => {
   return (
@@ -41,6 +42,9 @@ const AppNavigator = createStackNavigator({
   },
   SignUp: {
     screen: SignUp
+  },
+  ForgotPass: {
+    screen: ForgotPass
   }
 }, {
   initialRouteName: "Home"

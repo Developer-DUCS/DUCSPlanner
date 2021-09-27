@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
 import axios from 'axios'
 
-
 const api = axios.create({
   baseURL: `http://localhost:3000`
 })
@@ -15,6 +14,9 @@ const Home = (props) => {
 
   const onSignUp = () => {
     props.navigation.navigate('SignUp');
+  }
+  const onForgotPass = () => {
+    props.navigation.navigate('ForgotPass')
   }
 
   const onSubmitHandler = () => {
@@ -88,7 +90,7 @@ const Home = (props) => {
           <Text style={styles.btntext}>Login</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => onForgotPass()}>
         <Text style={styles.forgot}>Forgot Password?</Text>
       </TouchableOpacity>
     </View>

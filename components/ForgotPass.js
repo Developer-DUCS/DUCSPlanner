@@ -5,7 +5,7 @@ export default class Student extends Component {
     render() {
         return (
             <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                <Text>SignUp Screen</Text>
+                <Text>So you forgot your password...</Text>
             </View>
             /*This styling applies to the Student page*/
         )
