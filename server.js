@@ -38,3 +38,10 @@ app.get('/login', function (req, res) {
         }
     });
 });
+
+/*
+HOW TO START SERVER:
+yarn startserv
+new terminal
+yarn start
+*/

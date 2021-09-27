@@ -1,7 +1,5 @@
-import React, { Component, useState } from 'react';
-import { Button, View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Platform } from 'react-native';
-import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from "react-navigation-stack";
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
 import axios from 'axios'
 
 
@@ -9,13 +7,15 @@ const api = axios.create({
   baseURL: `http://localhost:3000`
 })
 
-const Home = () => {
+const Home = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
 
+  const onSignUp = () => {
+    props.navigation.navigate('SignUp');
+  }
 
   const onSubmitHandler = () => {
     api.post('/api/auth', {
@@ -27,14 +27,15 @@ const Home = () => {
           setIsError(true)
         }
         else {
+          //add authentication
           if (response.data.Role == 'administrator') {
-            navigation.navigate('Admin')
+            props.navigation.navigate('Admin');
           }
           else if (response.data.Role == 'advisor') {
-            navigation.navigate('Advisor')
+            props.navigation.navigate('Advisor');
           }
           else {
-            navigation.navigate('Student')
+            props.navigation.navigate('Student');
           }
         }
       })
@@ -46,7 +47,7 @@ const Home = () => {
   return (
     /*<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
       <Text>Home Screen</Text>
-        /*<Button
+        <Button
         title="Go to Student"
         onPress={() => this.props.navigation.navigate('Student')}/>
         <Button
@@ -80,7 +81,7 @@ const Home = () => {
         <Text style={[styles.message, { color: isError ? 'red' : 'green' }]}>{message ? getMessage() : null}</Text>
       </View>
       <View style={styles.buttonsform}>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={() => onSignUp()}>
           <Text style={styles.btntext}>Sign Up</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btn} onPress={onSubmitHandler}>

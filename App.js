@@ -9,6 +9,7 @@ import Advisor from './components/Advisor';
 import Admin from './components/Admin';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import SignUp from './components/SignUp';
 
 const App = () => {
   return (
@@ -37,6 +38,9 @@ const AppNavigator = createStackNavigator({
   },
   Admin: {
     screen: Admin
+  },
+  SignUp: {
+    screen: SignUp
   }
 }, {
   initialRouteName: "Home"
