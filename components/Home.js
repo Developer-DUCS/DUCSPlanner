@@ -2,8 +2,12 @@ import React, { Component, useState } from 'react';
 import { Button, View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Platform } from 'react-native';
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
+import axios from 'axios'
 
-const API_URL = Platform.OS === 'web' ? 'http://localhost:19006' : 'http://10.106.16.51:19006';
+
+const api = axios.create({
+  baseURL: `http://localhost:3000`
+})
 
 const Home = () => {
   const [email, setEmail] = useState('');
@@ -11,72 +15,33 @@ const Home = () => {
 
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
-  const [isLogin, setIsLogin] = useState(true);
 
-  const onChangeHandler = () => {
-    setIsLogin(!isLogin);
-    setMessage('');
-  };
-
-  const onLoggedIn = token => {
-    fetch(`${API_URL}/private`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-    })
-      .then(async res => {
-        try {
-          const jsonRes = await res.json();
-          if (res.status === 200) {
-            setMessage(jsonRes.message);
-          }
-        } catch (err) {
-          console.log(err);
-        };
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
 
   const onSubmitHandler = () => {
-    const payload = {
-      email,
-      password,
-    };
-    fetch(`${API_URL}/${isLogin ? 'login' : 'signup'}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
+    api.post('/api/auth', {
+      'Username': email,
+      'Password': password
     })
-      .then(async res => {
-        try {
-          const jsonRes = await res.json();
-          if (res.status !== 200) {
-            setIsError(true);
-            setMessage(jsonRes.message);
-          } else {
-            onLoggedIn(jsonRes.token);
-            setIsError(false);
-            setMessage(jsonRes.message);
+      .then(function (response) {
+        if (response.status != 200) {
+          setIsError(true)
+        }
+        else {
+          if (response.data.Role == 'administrator') {
+            navigation.navigate('Admin')
           }
-        } catch (err) {
-          console.log(err);
-        };
+          else if (response.data.Role == 'advisor') {
+            navigation.navigate('Advisor')
+          }
+          else {
+            navigation.navigate('Student')
+          }
+        }
       })
-      .catch(err => {
-        console.log(err);
+      .catch(function (error) {
+        console.log(error);
       });
   };
-
-  const getMessage = () => {
-    const status = isError ? `Error: ` : `Success: `;
-    return status + message;
-  }
 
   return (
     /*<View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -97,7 +62,7 @@ const Home = () => {
     out navigation)
     */
     <View style={styles.container}>
-      <Image source={require('../Logos/RD Logos/drury.jpg')} style={styles.img} />
+      <Image source={require('../Logos/RD Logos/drury.png')} style={styles.img} />
       <View style={styles.inputView} >
         <TextInput
           style={styles.inputText}
@@ -108,6 +73,7 @@ const Home = () => {
       <View style={styles.inputView} >
         <TextInput
           style={styles.inputText}
+          secureTextEntry={true}
           placeholder="Password..."
           placeholderTextColor="#003f5c"
           onChangeText={setPassword} />
