@@ -4,9 +4,9 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 const Footer = ({ title }) => {
     return (
         <View style={styles.footer}>
-            <Image source={require('../Logos/RD Logos/Screen Shot 2021-08-30 at 9.16.36 AM.png')} style={styles.ducs} />
+            <Image source={require('../assets/RD Logos/DevDUCS.png')} style={styles.ducs} />
             <Text style={styles.text}>Copyright Drury University 2021</Text>
-            <Image source={require('../Logos/RD Logos/Team Logos/applelogo.png')} style={styles.apple} />
+            <Image source={require('../assets/RD Logos/Team Logos/applelogo.png')} style={styles.apple} />
         </View>
     );
 };
@@ -17,24 +17,27 @@ Footer.defaultProps = {
 
 const styles = StyleSheet.create({
     footer: {
-        height: 65,
-        padding: 10,
+        height: 40,
+        padding: 5,
         backgroundColor: 'crimson',
         flexDirection: 'row',
         justifyContent: 'space-between',
     },
     ducs: {
-        paddingLeft: 100,
-        width: 100,
-        height: 50,
+        flexBasis: 0,
+        height: 30,
+        width: 50,
+        paddingLeft: 80
     },
     apple: {
-        width: 50,
-        height: 50,
+        flexBasis: 0,
+        height: 30,
+        width: 30,
+        paddingRight: 30
     },
     text: {
         color: 'white',
-        paddingTop: 15,
+        alignSelf: 'center'
     }
 });
 

@@ -65,7 +65,7 @@ const Home = (props) => {
     out navigation)
     */
     <View style={styles.container}>
-      <Image source={require('../Logos/RD Logos/drury.png')} style={styles.img} />
+      <Image source={require('../assets/RD Logos/drury.png')} style={styles.img} />
       <View style={styles.inputView} >
         <TextInput
           style={styles.inputText}
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
   },
   forgot: {
     color: "blue",
-    fontSize: 20
+    fontSize: 15
   },
   btn: {
     width: "100%",
@@ -140,8 +140,8 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   img: {
-    width: '30%',
-    height: '25%',
+    width: '32.5%',
+    height: '26%',
     marginBottom: 50,
   }
 });

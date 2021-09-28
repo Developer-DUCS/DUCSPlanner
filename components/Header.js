@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, Image } from 'react-native';
 const Header = ({ title }) => {
   return (
     <View style={styles.header}>
-      <Image source={require('../Logos/RD Logos/Product Logo/WhiteText/WhiteText.png')} style={styles.img} />
+      <Image source={require('../assets/RD Logos/Product Logo/WhiteText/WhiteText.png')} style={styles.img} />
     </View>
   );
 };
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
   img: {
     width: 200,
-    height: 150,
+    height: 80,
   }
 });
 
