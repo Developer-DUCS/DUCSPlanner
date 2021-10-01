@@ -21,7 +21,7 @@ const Home = (props) => {
 
   const onSubmitHandler = () => {
     api.post('/api/auth', {
-      'Username': email,
+      'Email': email,
       'Password': password
     })
       .then(function (response) {
@@ -30,7 +30,7 @@ const Home = (props) => {
         }
         else {
           //add authentication
-          if (response.data.Role == 'administrator') {
+          if (response.data.Role == 'admin') {
             props.navigation.navigate('Admin');
           }
           else if (response.data.Role == 'advisor') {
