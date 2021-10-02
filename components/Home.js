@@ -21,16 +21,17 @@ const Home = (props) => {
 
   const onSubmitHandler = () => {
     api.post('/api/auth/login', {
-      'Username': email,
+      'Email': email,
       'Password': password
     })
       .then(function (response) {
         if (response.status != 200) {
-          setIsError(true)
+          setIsError(true);
+          //return (<View style={styles.container}><Text>Username/Password Incorrect</Text></View>);
         }
         else {
           //add authentication
-          if (response.data.Role == 'administrator') {
+          if (response.data.Role == 'admin') {
             props.navigation.navigate('Admin');
           }
           else if (response.data.Role == 'advisor') {
@@ -43,6 +44,8 @@ const Home = (props) => {
       })
       .catch(function (error) {
         console.log(error);
+        setIsError(true);
+        //return (<View style={styles.container}><Text>Username/Password Incorrect</Text></View>);
       });
   };
 
