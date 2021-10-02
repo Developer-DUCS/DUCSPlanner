@@ -9,20 +9,31 @@ let secret = conf.secret;
 
 router.use(bodyParser.json());
 
-router.post('/', (req, res) => {
+router.post('/login', (req, res) => {
     conn.query('select * from UserAccountsTest', function (error, rows, fields) {
         if (error) {
             console.log(error);
-        }
-        else {
+        } else {
             if (!rows) {
-                return res.status(404).json({ message: "user not found" });
+                return res.status(404).json({
+                    message: "user not found"
+                });
             } else {
                 // password hash
                 for (let l = 0; l < rows.length; l++) {
                     if (req.body.Username == rows[l].Username && req.body.Password == rows[l].Password) {
-                        const token = jwt.sign({ Username: req.body.Username, Role: rows[l].Role, id: rows[l].id }, secret, { expiresIn: '1h' });
-                        res.status(200).json({ message: "user logged in", "token": token, "Role": rows[l].Role });
+                        const token = jwt.sign({
+                            Username: req.body.Username,
+                            Role: rows[l].Role,
+                            id: rows[l].id
+                        }, secret, {
+                            expiresIn: '1h'
+                        });
+                        res.status(200).json({
+                            message: "user logged in",
+                            "token": token,
+                            "Role": rows[l].Role
+                        });
                     }
                     /*bcrypt.compare(req.body.Password, rows[l].Password, (err, compareRes) => {
                         if (err) { // error while comparing
@@ -36,6 +47,42 @@ router.post('/', (req, res) => {
                     });    FOR PASSWORD HASHING     */
                 }
             };
+        }
+    });
+});
+router.post('/signup', (req, res) => {
+    conn.query('select Email from UserAccountsTest where Email = ?', [req.body.Email], function (error, rows, fields) {
+        if (error) {
+            return res.status(500).json({
+                message: 'Error try again later'
+            })
+        }
+        if (rows.length != 0) {
+            return res.status(409).json({
+                message: 'User Allready registered'
+            })
+        } else {
+            let password;
+            // //  Create a hash for the submitted password
+            // //  bcrypt.hash(req.body.password, null, null, function (err, hash) {
+            // //     password = hash;
+            // // }
+            // );
+
+            var query = "INSERT INTO UserAccountsTest (Email, Password, Fname, Lname, Role, Department, Year_Started)";
+            //replace req.body.password with password when bcrypt works
+            var values = " VALUES('" + req.body.Email + "','" + req.body.Password + "','" + req.body.Fname + "','" + req.body.Lname + "','" + req.body.Role + "','" + 'TEMPDepartment' + "'," + "YEAR(NOW())" +")";
+
+            conn.query(query + values, (err) => {
+                if (err) {
+                    console.log("Error: ", err);
+                } else {
+                    res.status(201).json({
+                        success: "User created."
+                    });
+                }
+            });
+
         }
     });
 });

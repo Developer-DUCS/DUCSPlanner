@@ -20,7 +20,7 @@ const Home = (props) => {
   }
 
   const onSubmitHandler = () => {
-    api.post('/api/auth', {
+    api.post('/api/auth/login', {
       'Username': email,
       'Password': password
     })

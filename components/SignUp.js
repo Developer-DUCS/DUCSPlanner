@@ -1,40 +1,80 @@
 import { text } from 'body-parser';
 import { createPool } from 'mysql';
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import { View, Text, Button, TouchableOpacity, StyleSheet, Image, Picker, TextInput } from 'react-native';
+import axios from 'axios'
 
-export default class Student extends Component {
-    render() {
+const SignUp = (props) => {
+        const api = axios.create({
+        baseURL: `http://localhost:3000`
+      });
+      const [email, setEmail] = useState('');
+      const [password, setPassword] = useState('');
+      const [firstName, setFirstName] = useState('');
+      const [lastName, setLastName] = useState('');
+      const [role, setRole] = useState('');
+      const [isError, setIsError] = useState(false);
+      const [message, setMessage] = useState('');
+
+      const onSubmitHandler = () => {
+        api.post('/api/auth/signup', {
+          'Email': email,
+          'Password': password,
+          'Fname': firstName,
+          'Lname': lastName,
+          'Role':role
+        })
+          .then(function (response) {
+            if (response.status != 200) {
+              setIsError(true)
+            }
+            else {
+                props.navigation.navigate('Home');
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          })};
         return (
             <View style={styles.container}>
                 <Image style={styles.img} source={require('../assets/RD Logos/drury.png')} />
                 <View style={styles.inputView}>
-                    <TextInput style={styles.inputText} placeholder='First Name...'>
+                    <TextInput style={styles.inputText}
+                    placeholder='First Name...'
+                    onChangeText={setFirstName}>
                     </TextInput>
                 </View>
 
                 <View style={styles.inputView}>
-                    <TextInput style={styles.inputText} placeholder='Last Name...'>
+                    <TextInput style={styles.inputText}
+                    placeholder='Last Name...'
+                    onChangeText={setLastName}>
                     </TextInput>
                 </View>
 
                 <View style={styles.inputView}>
-                    <TextInput style={styles.inputText} placeholder='Password...'>
+                    <TextInput style={styles.inputText}
+                    placeholder='Password...'>
                     </TextInput>
                 </View>
 
                 <View style={styles.inputView}>
-                    <TextInput style={styles.inputText} placeholder='Confirm Password...'>
+                    <TextInput style={styles.inputText}
+                    placeholder='Confirm Password...'
+                    onChangeText={setPassword}>
                     </TextInput>
                 </View>
 
                 <View style={styles.inputView}>
-                    <TextInput style={styles.inputText} placeholder='Email...'
-                    />
+                    <TextInput style={styles.inputText}
+                    placeholder='Email...'
+                    onChangeText={setEmail}>
+                    </TextInput>
                 </View>
 
                 <View style={styles.inputView}>
-                    <Picker placeholder='Role...'>
+                    <Picker placeholder='Role...'
+                    onValueChange={setRole}>
                         <Picker.Item label="Role" value="" />
                         <Picker.Item label="Student" value="Student" />
                         <Picker.Item label="Admin" value="Admin" />
@@ -44,7 +84,8 @@ export default class Student extends Component {
                 </View>
 
                 <TouchableOpacity style={styles.btn} >
-                    <Text style={styles.btntext}>Sign Up</Text>
+                    <Text style={styles.btntext}
+                    onPress={onSubmitHandler}>Sign Up</Text>
                 </TouchableOpacity>
 
             </View>
@@ -52,7 +93,6 @@ export default class Student extends Component {
             /*This styling applies to the Student page*/
         )
     }
-}
 
 const styles = StyleSheet.create({
     container: {
@@ -101,4 +141,6 @@ const styles = StyleSheet.create({
         height: '8%',
         paddingBottom: 20,
     },
-})
+});
+
+export default SignUp;
