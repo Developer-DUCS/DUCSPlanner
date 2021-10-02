@@ -26,7 +26,8 @@ const Home = (props) => {
     })
       .then(function (response) {
         if (response.status != 200) {
-          setIsError(true)
+          setIsError(true);
+          //return (<View style={styles.container}><Text>Username/Password Incorrect</Text></View>);
         }
         else {
           //add authentication
@@ -43,6 +44,8 @@ const Home = (props) => {
       })
       .catch(function (error) {
         console.log(error);
+        setIsError(true);
+        //return (<View style={styles.container}><Text>Username/Password Incorrect</Text></View>);
       });
   };
 
