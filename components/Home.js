@@ -63,7 +63,7 @@ const Home = (props) => {
         <TextInput
           style={styles.inputText}
           secureTextEntry={true}
-          placeholder="Password..."
+          placeholder="Password..." secureTextEntry={true}
           placeholderTextColor="#003f5c"
           onChangeText={setPassword} />
         <Text style={[styles.message, { color: isError ? 'red' : 'green' }]}>{message ? getMessage() : null}</Text>

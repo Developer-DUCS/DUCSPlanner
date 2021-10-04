@@ -58,14 +58,14 @@ const SignUp = (props) => {
 
             <View style={styles.inputView}>
                 <TextInput style={styles.inputText}
-                    placeholder='Password...'
-                    onChangeText={setPassword}>
+                    placeholder='Password...' secureTextEntry={true}
+                    onChangeText={setPassword} >
                 </TextInput>
             </View>
 
             <View style={styles.inputView}>
                 <TextInput style={styles.inputText}
-                    placeholder='Confirm Password...'
+                    placeholder='Confirm Password...' secureTextEntry={true}
                     onChangeText={setConfPassword}>
                 </TextInput>
             </View>
