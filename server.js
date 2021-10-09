@@ -1,7 +1,7 @@
 const express = require("express");
 const conn = require("./mysqldb");
 const app = express()
-const port = 3000;
+const port = 3210;
 const bodyParser = require("body-parser");
 
 app.use(express.static('App.js'))
