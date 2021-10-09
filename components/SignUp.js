@@ -27,7 +27,7 @@ const SignUp = (props) => {
         })
             .then(function (response) {
                 console.log("sent");
-                if (response.status != 200) {
+                if (response.status != 201) {
                     setIsError(true)
                 }
                 else {
