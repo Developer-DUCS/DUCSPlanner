@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Dimensions } from 'react-native';
 import axios from 'axios'
 
 const api = axios.create({
@@ -83,6 +83,11 @@ const Home = (props) => {
   )
 }
 
+//Image styling components
+const width = Dimensions.get('window').width;
+const imgWidth = Dimensions.get('window').width * 0.5;
+const ratio = imgWidth / 3146
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
     fontSize: 15
   },
   btn: {
-    width: "100%",
+    width: "50%",
     backgroundColor: "crimson",
     borderRadius: 25,
     height: 50,
@@ -126,9 +131,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   img: {
-    width: '32.5%',
-    height: '26%',
-    marginBottom: 50,
+    width: imgWidth,
+    height: ratio * 1071,
+    marginBottom: 30,
   }
 });
 

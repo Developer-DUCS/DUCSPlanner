@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Picker, TextInput } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Picker, TextInput, Dimensions } from 'react-native';
 import axios from 'axios'
 
 const SignUp = (props) => {
@@ -99,6 +99,10 @@ const SignUp = (props) => {
     )
 }
 
+//Image styling components
+const width = Dimensions.get('window').width * .25;
+const ratio = width / 3146
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -107,7 +111,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#F5F5F',
     },
     inputView: {
-        width: "25%",
+        width: "50%",
         backgroundColor: "white",
         borderRadius: 25,
         height: 30,
@@ -120,12 +124,12 @@ const styles = StyleSheet.create({
         color: "black",
     },
     img: {
-        width: '22.5%',
-        height: '18%',
+        width: width,
+        height: ratio * 1071,
         marginBottom: 25,
     },
     btn: {
-        width: "25%",
+        width: "50%",
         backgroundColor: "crimson",
         borderRadius: 25,
         height: 50,
