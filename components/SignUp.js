@@ -4,7 +4,7 @@ import axios from 'axios'
 
 const SignUp = (props) => {
     const api = axios.create({
-        baseURL: `http://localhost:3000`
+        baseURL: `http://localhost:3210`
     });
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
