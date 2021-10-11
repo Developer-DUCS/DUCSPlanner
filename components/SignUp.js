@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, Image, Picker, TextInput, Dimensions } from 'react-native';
-import axios from 'axios'
+import axios from 'axios';
+import * as yup from 'yup';
+import { Formik } from 'formik';
+
 
 const SignUp = (props) => {
     const api = axios.create({
@@ -15,7 +18,26 @@ const SignUp = (props) => {
     const [isError, setIsError] = useState(false);
     const [message, setMessage] = useState('');
 
+   
+   // Create Validation Schema
+    const  signUpValidation = yup.object().shape({
+        firstName: yup.string().required('Enter your first name'),
+        lastName: yup.string().required('Enter your last name'),
+        email: yup.string().email('Please enter a valid email').required('Email address is required '),
+        password: yup.string().min(8,({min})=>`Password must be at least ${min} characters and have one uppercase,Lowercase,number and special case character`).required('Password is required bro').matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
+            "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
+          ),
+        confPassword: yup.string().required('Please confirm your password ').oneOf([yup.ref('password'), null], 'Passwords do not match')
+        .required('Please select your role'),
+        
+      });
+
+
+
     const onSubmitHandler = () => {
+
+        console.log("Submit button Clicked");
         console.log("sent");
         api.post('/api/auth/signup', {
             'Email': email,
@@ -40,41 +62,100 @@ const SignUp = (props) => {
     };
 
     return (
+
+        <Formik
+     initialValues={{ email: '', password: '', confPassword: '' , firstName: '', lastName: '', role: ''}}
+     validateOnMount ={true}
+     validationSchema= {signUpValidation}
+        >
+     {({ handleChange, handleBlur, handleSubmit, values, touched, errors, isValid }) => (
+
         <View style={styles.container}>
+
             <Image style={styles.img} source={require('../assets/RD Logos/drury.png')} />
+            
             <View style={styles.inputView}>
                 <TextInput style={styles.inputText}
+
+                //enforce validation schema
                     placeholder='First Name...'
-                    onChangeText={setFirstName}>
+                    onChangeText={setFirstName}
+                    onChangeText={handleChange('firstName')}
+                    onBlur={handleBlur('firstName')}
+                    value={values.firstName}
+                    
+                    >
+                        
                 </TextInput>
+               
+              
+                {(errors.firstName && touched.firstName)&&
+                
+                <Text style ={styles.errors}> {errors.firstName} </Text>
+            }
             </View>
 
             <View style={styles.inputView}>
                 <TextInput style={styles.inputText}
                     placeholder='Last Name...'
-                    onChangeText={setLastName}>
+                    onChangeText={setLastName}
+                    onChangeText={handleChange('lastName')}
+                    onBlur={handleBlur('lastName')}
+                    value={values.lastName}
+                    >
                 </TextInput>
+
+                {(errors.lastName && touched.lastName)&&
+                
+                <Text style ={styles.errors}> {errors.lastName} </Text>
+            }
             </View>
 
             <View style={styles.inputView}>
                 <TextInput style={styles.inputText}
                     placeholder='Password...' secureTextEntry={true}
-                    onChangeText={setPassword} >
+                    onChangeText={setPassword}
+                    onChangeText={handleChange('password')}
+                    onBlur={handleBlur('password')}
+                    value={values.password}
+                    >
                 </TextInput>
+
+                {(errors.password && touched.password)&&
+                
+                <Text style ={styles.errors2}> {errors.password} </Text>
+            }
             </View>
 
             <View style={styles.inputView}>
                 <TextInput style={styles.inputText}
                     placeholder='Confirm Password...' secureTextEntry={true}
-                    onChangeText={setConfPassword}>
+                    onChangeText={setConfPassword}
+                    onChangeText={handleChange('confPassword')}
+                    onBlur={handleBlur('confPassword')}
+                    value={values.confPassword}
+                    >
                 </TextInput>
+                {(errors.confPassword && touched.confPassword)&&
+                
+                <Text style ={styles.errors}> {errors.confPassword} </Text>
+            }
             </View>
 
             <View style={styles.inputView}>
                 <TextInput style={styles.inputText}
                     placeholder='Email...'
-                    onChangeText={setEmail}>
+                    onChangeText={setEmail}
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                    >
                 </TextInput>
+
+                {(errors.email && touched.email)&&
+                
+                <Text style ={styles.errors}> {errors.email} </Text>
+            }
             </View>
 
             <View style={styles.inputView}>
@@ -87,14 +168,31 @@ const SignUp = (props) => {
 
                 </Picker>
             </View>
+        <View style= {styles.btnDiv}>
 
-            <TouchableOpacity style={styles.btn} >
+            {/* Set Disabled Button to notValid */}
+
+            
+            <TouchableOpacity rounded disabled = {!isValid} style={[
+                
+                // Set Button to not submit if form data is invalid
+                styles.btn,
+                styles.shadowBtn,
+                {
+                    shadowColor: 'crimson',
+                    backgroundColor: isValid? 'crimson' : '#5c5c5c'
+                },
+            
+            ]}  
+                
+                >
                 <Text style={styles.btntext}
                     onPress={onSubmitHandler}>Sign Up</Text>
             </TouchableOpacity>
-
+            </View>
         </View>
-
+        )}
+        </Formik>
         /*This styling applies to the Student page*/
     )
 }
@@ -115,7 +213,7 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         borderRadius: 25,
         height: 30,
-        marginBottom: 10,
+        marginBottom: 5,
         justifyContent: "center",
         padding: 20
     },
@@ -125,18 +223,18 @@ const styles = StyleSheet.create({
     },
     img: {
         width: width,
-        height: ratio * 1071,
-        marginBottom: 25,
+        height: ratio * 1000,
+        marginTop: 20,
+        marginBottom: 5,
     },
     btn: {
         width: "50%",
-        backgroundColor: "crimson",
         borderRadius: 25,
         height: 50,
         alignItems: "center",
         justifyContent: "center",
-        margin: 20,
-        padding: 10,
+        margin: 10,
+        padding: 14,
     },
     btntext: {
         color: 'white',
@@ -150,6 +248,27 @@ const styles = StyleSheet.create({
         height: '8%',
         paddingBottom: 20,
     },
+
+    errors:{
+        fontSize: 14,
+        color: 'red',
+        fontWeight: 'bold',
+        marginTop: 3
+
+    },
+    errors2:{
+        fontSize: 12,
+        color: 'red',
+        fontWeight: 'bold',
+        marginTop: 2
+
+    },
+    btnDiv:{
+          width: '100%'  ,
+          alignItems: "center",
+          justifyContent: "center",
+          marginBottom: 10
+    }
 });
 
 export default SignUp;
