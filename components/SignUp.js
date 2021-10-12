@@ -28,8 +28,7 @@ const SignUp = (props) => {
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
             "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
           ),
-        confPassword: yup.string().required('Please confirm your password ').oneOf([yup.ref('password'), null], 'Passwords do not match')
-        .required('Please select your role'),
+        confPassword: yup.string().required('Please confirm your password ').oneOf([yup.ref('password'), null], 'Passwords do not match'),
         
       });
 
