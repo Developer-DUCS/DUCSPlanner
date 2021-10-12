@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Picker, TextInput, Dimensions } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image, Picker, TextInput, Dimensions, Button } from 'react-native';
 import axios from 'axios';
 import * as yup from 'yup';
 import { Formik } from 'formik';
@@ -9,14 +9,6 @@ const SignUp = (props) => {
     const api = axios.create({
         baseURL: `http://localhost:3210`
     });
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confPassword, setConfPassword] = useState('');
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [role, setRole] = useState('');
-    const [isError, setIsError] = useState(false);
-    const [message, setMessage] = useState('');
 
    
    // Create Validation Schema
@@ -29,22 +21,22 @@ const SignUp = (props) => {
             "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
           ),
         confPassword: yup.string().required('Please confirm your password ').oneOf([yup.ref('password'), null], 'Passwords do not match'),
-        
+        role: yup.string().required('Select a Role')
       });
 
+    return (
 
-
-    const onSubmitHandler = () => {
-
-        console.log("Submit button Clicked");
-        console.log("sent");
-        api.post('/api/auth/signup', {
-            'Email': email,
-            'Password': password,
-            'ConfPassword': confPassword,
-            'Fname': firstName,
-            'Lname': lastName,
-            'Role': role
+        <Formik
+     initialValues={{ email: '', password: '', confPassword: '' , firstName: '', lastName: '', role: ''}}
+     validateOnMount ={true}
+     validationSchema= {signUpValidation}
+     onSubmit={values=> api.post('/api/auth/signup', {
+            'Email': values.email,
+            'Password': values.password,
+            'ConfPassword': values.confPassword,
+            'Fname': values.firstName,
+            'Lname': values.lastName,
+            'Role': values.role
         })
             .then(function (response) {
                 console.log("sent");
@@ -57,15 +49,7 @@ const SignUp = (props) => {
             })
             .catch(function (error) {
                 console.log(error);
-            })
-    };
-
-    return (
-
-        <Formik
-     initialValues={{ email: '', password: '', confPassword: '' , firstName: '', lastName: '', role: ''}}
-     validateOnMount ={true}
-     validationSchema= {signUpValidation}
+            })} 
         >
      {({ handleChange, handleBlur, handleSubmit, values, touched, errors, isValid }) => (
 
@@ -78,7 +62,6 @@ const SignUp = (props) => {
 
                 //enforce validation schema
                     placeholder='First Name...'
-                    onChangeText={setFirstName}
                     onChangeText={handleChange('firstName')}
                     onBlur={handleBlur('firstName')}
                     value={values.firstName}
@@ -97,7 +80,6 @@ const SignUp = (props) => {
             <View style={styles.inputView}>
                 <TextInput style={styles.inputText}
                     placeholder='Last Name...'
-                    onChangeText={setLastName}
                     onChangeText={handleChange('lastName')}
                     onBlur={handleBlur('lastName')}
                     value={values.lastName}
@@ -113,7 +95,6 @@ const SignUp = (props) => {
             <View style={styles.inputView}>
                 <TextInput style={styles.inputText}
                     placeholder='Password...' secureTextEntry={true}
-                    onChangeText={setPassword}
                     onChangeText={handleChange('password')}
                     onBlur={handleBlur('password')}
                     value={values.password}
@@ -129,7 +110,6 @@ const SignUp = (props) => {
             <View style={styles.inputView}>
                 <TextInput style={styles.inputText}
                     placeholder='Confirm Password...' secureTextEntry={true}
-                    onChangeText={setConfPassword}
                     onChangeText={handleChange('confPassword')}
                     onBlur={handleBlur('confPassword')}
                     value={values.confPassword}
@@ -144,7 +124,6 @@ const SignUp = (props) => {
             <View style={styles.inputView}>
                 <TextInput style={styles.inputText}
                     placeholder='Email...'
-                    onChangeText={setEmail}
                     onChangeText={handleChange('email')}
                     onBlur={handleBlur('email')}
                     value={values.email}
@@ -159,7 +138,8 @@ const SignUp = (props) => {
 
             <View style={styles.inputView}>
                 <Picker placeholder='Role...'
-                    onValueChange={setRole}>
+                    onValueChange={handleChange('role')}
+                    selectedValue={values.role}>
                     <Picker.Item label="Role" value="" />
                     <Picker.Item label="Student" value="Student" />
                     <Picker.Item label="Admin" value="Admin" />
@@ -172,7 +152,7 @@ const SignUp = (props) => {
             {/* Set Disabled Button to notValid */}
 
             
-            <TouchableOpacity rounded disabled = {!isValid} style={[
+            <Button title='Sign Up' rounded disabled = {!isValid} onPress={handleSubmit} style={[
                 
                 // Set Button to not submit if form data is invalid
                 styles.btn,
@@ -182,12 +162,7 @@ const SignUp = (props) => {
                     backgroundColor: isValid? 'crimson' : '#5c5c5c'
                 },
             
-            ]}  
-                
-                >
-                <Text style={styles.btntext}
-                    onPress={onSubmitHandler}>Sign Up</Text>
-            </TouchableOpacity>
+            ]}/>
             </View>
         </View>
         )}
