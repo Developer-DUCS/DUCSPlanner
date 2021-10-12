@@ -24,7 +24,7 @@ const SignUp = (props) => {
         firstName: yup.string().required('Enter your first name'),
         lastName: yup.string().required('Enter your last name'),
         email: yup.string().email('Please enter a valid email').required('Email address is required '),
-        password: yup.string().min(8,({min})=>`Password must be at least ${min} characters and have one uppercase,Lowercase,number and special case character`).required('Password is required bro').matches(
+        password: yup.string().min(8,({min})=>`Password must be at least ${min} characters and have one uppercase,Lowercase,number and special case character`).required('Password is required ').matches(
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
             "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
           ),
