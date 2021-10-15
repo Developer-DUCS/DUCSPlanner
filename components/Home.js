@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Dimensions, ActivityIndicator } from 'react-native';
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: `http://localhost:3000`
+  baseURL: `http://localhost:3210`
 })
 
 const Home = (props) => {
@@ -11,6 +11,7 @@ const Home = (props) => {
   const [password, setPassword] = useState('');
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSignUp = () => {
     props.navigation.navigate('SignUp');
@@ -20,6 +21,7 @@ const Home = (props) => {
   }
 
   const onSubmitHandler = () => {
+    setIsLoading(true);
     api.post('/api/auth/login', {
       'Email': email,
       'Password': password
@@ -27,27 +29,39 @@ const Home = (props) => {
       .then(function (response) {
         if (response.status != 200) {
           setIsError(true);
-          //return (<View style={styles.container}><Text>Username/Password Incorrect</Text></View>);
+          setMessage('Username/Password incorrect');
         }
         else {
           //add authentication
           if (response.data.Role == 'admin') {
             props.navigation.navigate('Admin');
+            setTimeout(() => { setIsLoading(false); }, 3000);
           }
           else if (response.data.Role == 'advisor') {
             props.navigation.navigate('Advisor');
+            setTimeout(() => { setIsLoading(false); }, 3000);
           }
           else {
             props.navigation.navigate('Student');
+            setTimeout(() => { setIsLoading(false); }, 3000);
           }
         }
       })
       .catch(function (error) {
+        setTimeout(() => { setIsLoading(false); }, 1000);
         console.log(error);
         setIsError(true);
-        //return (<View style={styles.container}><Text>Username/Password Incorrect</Text></View>);
+        setMessage('Username/Password incorrect');
       });
   };
+
+  if (isLoading) {
+    return (
+      <View style={styles.load}>
+        <ActivityIndicator size='large' />
+      </View>
+    )
+  }
 
   return (
     <View style={styles.container}>
@@ -66,8 +80,8 @@ const Home = (props) => {
           placeholder="Password..." secureTextEntry={true}
           placeholderTextColor="#003f5c"
           onChangeText={setPassword} />
-        <Text style={[styles.message, { color: isError ? 'red' : 'green' }]}>{message ? getMessage() : null}</Text>
       </View>
+      <Text style={[styles.message, { color: isError ? 'red' : '#F5F5F5' }]}>{message}</Text>
       <View style={styles.buttonsform}>
         <TouchableOpacity style={styles.btn} onPress={() => onSignUp()}>
           <Text style={styles.btntext}>Sign Up</Text>
@@ -83,7 +97,20 @@ const Home = (props) => {
   )
 }
 
+//Image styling components
+const width = Dimensions.get('window').width;
+const imgWidth = Dimensions.get('window').width * 0.5;
+const ratio = imgWidth / 3146
+
 const styles = StyleSheet.create({
+  load: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  message: {
+    fontWeight: 'bold',
+  },
   container: {
     flex: 1,
     alignItems: 'center',
@@ -95,7 +122,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   inputView: {
-    width: "50%",
+    width: "65%",
     backgroundColor: "white",
     borderRadius: 25,
     height: 50,
@@ -112,7 +139,7 @@ const styles = StyleSheet.create({
     fontSize: 15
   },
   btn: {
-    width: "100%",
+    width: "50%",
     backgroundColor: "crimson",
     borderRadius: 25,
     height: 50,
@@ -126,9 +153,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   img: {
-    width: '32.5%',
-    height: '26%',
-    marginBottom: 50,
+    width: imgWidth,
+    height: ratio * 1071,
+    marginBottom: 30,
   }
 });
 
