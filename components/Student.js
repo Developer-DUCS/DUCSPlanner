@@ -1,10 +1,59 @@
 import React, { useState } from 'react';
-import { Button, View, Text, StyleSheet, Picker, TouchableOpacity } from 'react-native';
+import { Button, View, Text, StyleSheet, Picker, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { createAppContainer } from "react-navigation";
 import { CardStyleInterpolators, createStackNavigator } from "react-navigation-stack";
+import axios from 'axios'
+import CredField from './CredField'
+
+const api = axios.create({
+  baseURL: `http://localhost:3210`
+})
 
 const Student = (props) => {
-  const [name, setName] = useState('Colby Bogle');
+  const [name, setName] = useState('John Doe');
+  const [courseCode, setCourseCode] = useState(['CSGD', 'CRIM', 'INTD']);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState('');
+  const [fieldNum, setFieldNum] = useState(3);
+
+  const onSubmitHandler = () => {
+    setIsLoading(true);
+    api.post('/api/', {
+      'courseCode': courseCode,
+    })
+      .then(function (response) {
+        if (response.status != 200) {
+          setIsError(true);
+        }
+        else {
+          return (
+            <View>
+              <Text>Hey, it worked!</Text>
+            </View>
+          );
+        }
+      })
+      .catch(function (error) {
+        setTimeout(() => { setIsLoading(false); }, 1000);
+        console.log(error);
+        setIsError(true);
+        setMessage('API Error');
+      });
+  };
+
+  const onMajorAdd = () => {
+    console.log('madeithere')
+    return (<View style={styles.form}><CredField /></View>)
+  }
+
+  if (isLoading) {
+    return (
+      <View style={styles.load}>
+        <ActivityIndicator size='large' />
+      </View>
+    )
+  }
 
   return (
     <View style={styles.container}>
@@ -34,7 +83,7 @@ const Student = (props) => {
         </Picker>
       </View>
       <View style={styles.form}>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={onMajorAdd}>
           <Text style={styles.btntext}>Add Major</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.btn}>
@@ -45,7 +94,8 @@ const Student = (props) => {
         </TouchableOpacity>
       </View>
       <View style={styles.centered}>
-        <TouchableOpacity style={styles.btn}>
+        <Text style={[styles.message, { color: isError ? 'red' : '#F5F5F5' }]}>{message}</Text>
+        <TouchableOpacity style={styles.btn} onPress={onSubmitHandler}>
           <Text style={styles.btntext}>Submit</Text>
         </TouchableOpacity>
       </View>
@@ -102,6 +152,14 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 60,
     paddingVertical: 20
+  },
+  load: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  message: {
+    fontWeight: 'bold',
   },
 });
 

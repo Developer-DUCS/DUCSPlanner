@@ -32,7 +32,6 @@ const Home = (props) => {
           setMessage('Username/Password incorrect');
         }
         else {
-          //add authentication
           if (response.data.Role == 'admin') {
             props.navigation.navigate('Admin');
             setTimeout(() => { setIsLoading(false); }, 3000);
