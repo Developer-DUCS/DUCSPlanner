@@ -19,7 +19,7 @@ const Student = (props) => {
 
   const onSubmitHandler = () => {
     setIsLoading(true);
-    api.post('/api/', {
+    api.post('/api/courses', {
       'courseCode': courseCode,
     })
       .then(function (response) {

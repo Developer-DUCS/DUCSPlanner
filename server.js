@@ -16,6 +16,7 @@ app.use((req, res, next) => {
 const router = express.Router();
 
 router.use("/api/auth", require("./api/auth"));
+router.use("/api/courses", require("./api/courses"));
 
 
 app.use(router);
