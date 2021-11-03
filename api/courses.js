@@ -10,7 +10,7 @@ router.post('/courses',(req,res)=>{
     console.log("I made it this far");
     let courseList = [];
     for(let i=0;i<req.body.courseCode.length;i++){
-    conn.query(`select * from UserAccountsTest where CoursePrefix = "${req.body.courseCode[i]}";`), function (error,result) {
+    conn.query(`select * from Courses where CoursePrefix = "${req.body.courseCode[i]}";`), function (error,result) {
     if (error) {
         console.log(error);
     }

@@ -19,7 +19,7 @@ const Student = (props) => {
 
   const onSubmitHandler = () => {
     setIsLoading(true);
-    api.post('/api/courses', {
+    api.post('/api/courses/courses', {
       'courseCode': courseCode,
     })
       .then(function (response) {
@@ -27,6 +27,8 @@ const Student = (props) => {
           setIsError(true);
         }
         else {
+          setIsLoading(false);
+          console.log("It worked!")
           return (
             <View>
               <Text>Hey, it worked!</Text>
