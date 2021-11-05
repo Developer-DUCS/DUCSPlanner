@@ -28,7 +28,7 @@ const Student = (props) => {
         }
         else {
           setIsLoading(false);
-          console.log("It worked!")
+          console.log("It worked! Test")
           return (
             <View>
               <Text>Hey, it worked!</Text>
