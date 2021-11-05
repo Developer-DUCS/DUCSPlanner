@@ -47,7 +47,7 @@ const AppNavigator = createStackNavigator({
     screen: ForgotPass
   }
 }, {
-  initialRouteName: "Home"
+  initialRouteName: "Student"
   /*This sets the Home page as the base page*/
 });
 
