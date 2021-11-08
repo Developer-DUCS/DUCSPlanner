@@ -11,7 +11,7 @@ const api = axios.create({
 
 const Student = (props) => {
   const [name, setName] = useState('John Doe');
-  const [courseCode, setCourseCode] = useState(['CSGD', 'CRIM', 'INTD']);
+  const [courseCode, setCourseCode] = useState(['"CSGD"', '"CRIM"', '"INTD"']);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
@@ -19,14 +19,22 @@ const Student = (props) => {
 
   const onSubmitHandler = () => {
     setIsLoading(true);
-    api.post('/api/courses', {
+    api.post('/api/courses/courses', {
+      //originally is coursecode
+      
       'courseCode': courseCode,
+
+    
     })
       .then(function (response) {
         if (response.status != 200) {
           setIsError(true);
         }
         else {
+          if(response.status == 200){
+          console.log("i got a 200 status");
+          console.log(response);
+          }
           return (
             <View>
               <Text>Hey, it worked!</Text>
@@ -35,7 +43,7 @@ const Student = (props) => {
         }
       })
       .catch(function (error) {
-        setTimeout(() => { setIsLoading(false); }, 1000);
+        setTimeout(() => { setIsLoading(true); }, 1000);
         console.log(error);
         setIsError(true);
         setMessage('API Error');
