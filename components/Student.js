@@ -20,8 +20,6 @@ const Student = (props) => {
   const onSubmitHandler = () => {
     setIsLoading(true);
     api.post('/api/courses/courses', {
-      //originally is coursecode
-      
       'courseCode': courseCode,
 
     
