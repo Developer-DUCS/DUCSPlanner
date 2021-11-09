@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Button, View, Text, StyleSheet, Picker, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { createAppContainer } from "react-navigation";
-import { CardStyleInterpolators, createStackNavigator } from "react-navigation-stack";
+import { Button, View, Text, StyleSheet, Picker, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import axios from 'axios'
-import CredField from './CredField'
+import MajorField from './MajorField';
+import MinorField from './MinorField';
+import CertField from './CertField';
 
 const api = axios.create({
   baseURL: `http://localhost:3210`
@@ -11,11 +11,14 @@ const api = axios.create({
 
 const Student = (props) => {
   const [name, setName] = useState('John Doe');
-  const [courseCode, setCourseCode] = useState(['CSGD', 'CRIM', 'INTD']);
+  //const [courseCode, setCourseCode] = useState('CSGD', 'CRIM', 'INTD');
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
-  const [fieldNum, setFieldNum] = useState(3);
+  const [majorFields, setMajorFields] = useState([<MajorField></MajorField>]);
+  const [minorFields, setMinorFields] = useState([<MinorField></MinorField>]);
+  const [certFields, setCertFields] = useState([<CertField></CertField>]);
+
 
   const onSubmitHandler = () => {
     setIsLoading(true);
@@ -45,9 +48,29 @@ const Student = (props) => {
   };
 
   const onMajorAdd = () => {
-    console.log('madeithere')
-    return (<View style={styles.form}><CredField /></View>)
-  }
+    setMajorFields(majorFields.push(<View style={styles.form2}><MajorField></MajorField></View>));
+  };
+
+  const onMajorRemove = () => {
+    majorFields.pop();
+  };
+
+  const onMinorAdd = () => {
+    setMinorFields(minorFields.push(<View style={styles.form2}><MinorField></MinorField></View>));
+    console.log(minorFields);
+  };
+
+  const onMinorRemove = () => {
+    minorFields.pop();
+  };
+
+  const onCertAdd = () => {
+    setCertFields(certFields.push(<View style={styles.form2}><CertField></CertField></View>));
+  };
+
+  const onCertRemove = () => {
+    certFields.pop();
+  };
 
   if (isLoading) {
     return (
@@ -65,34 +88,30 @@ const Student = (props) => {
         <Text style={styles.txt3}>NOTE: choose at least three credentials:  one major and two certificates.  One certificate can be replaced with a second major or a minor.</Text>
       </View>
       <View style={styles.form2}>
-        <Picker placeholder='Major' >
-          <Picker.Item label="Select A Major" value="" />
-          <Picker.Item label="Computer Science: Game Development" value="CSGD" />
-          <Picker.Item label="Computer Science: Software Engineering" value="CSSE" />
-          <Picker.Item label="Mathematics" value="MATH" />
-        </Picker>
-        <Picker placeholder='Minor'>
-          <Picker.Item label="Select A Minor" value="" />
-          <Picker.Item label="Computer Science" value="CSCI" />
-          <Picker.Item label="Criminology" value="CRIM" />
-          <Picker.Item label="English" value="ENGL" />
-        </Picker>
-        <Picker placeholder='Certificate'>
-          <Picker.Item label="Select A Certificate" value="" />
-          <Picker.Item label="Interactive Design" value="INTD" />
-          <Picker.Item label="International Immersion" value="INTI" />
-          <Picker.Item label="Ancients Alive: The Classics in Context" value="ANCA" />
-        </Picker>
+        {majorFields}
+        {minorFields}
+        {certFields}
       </View>
       <View style={styles.form}>
         <TouchableOpacity style={styles.btn} onPress={onMajorAdd}>
           <Text style={styles.btntext}>Add Major</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={onMinorAdd}>
           <Text style={styles.btntext}>Add Minor</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={onCertAdd}>
           <Text style={styles.btntext}>Add Certificate</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.form}>
+        <TouchableOpacity style={styles.btn} onPress={onMajorRemove}>
+          <Text style={styles.btntext}>Remove Major</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btn} onPress={onMinorRemove}>
+          <Text style={styles.btntext}>Remove Minor</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btn} onPress={onCertRemove}>
+          <Text style={styles.btntext}>Remove Certificate</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.centered}>
@@ -134,6 +153,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 50,
+    paddingVertical: 0
   },
   btn: {
     width: "20%",
@@ -142,8 +162,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    margin: 20,
-    paddingVertical: 10,
+    margin: 5,
   },
   btntext: {
     color: "white",
@@ -153,7 +172,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 60,
-    paddingVertical: 20
+    paddingVertical: 5
   },
   load: {
     flex: 1,
