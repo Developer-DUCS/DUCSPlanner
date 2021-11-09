@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Dimensions, ActivityIndicator } from 'react-native';
-import axios from 'axios'
+import axios from 'axios';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 const api = axios.create({
   baseURL: `http://localhost:3210`
@@ -64,7 +65,13 @@ const Home = (props) => {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../assets/RD Logos/drury.png')} style={styles.img} />
+
+      <Image
+          style={{width: "100%", height: "20%", resizeMode:"contain"  , marginTop: '2%', }}
+          source={{uri:'https://drury.edu/wp-content/uploads/files/brand_lounge/PrimaryFullColor.png'}}
+      />
+      {/* <Image source={require('../assets/RD Logos/drury.png')} style={{width: "38%", height: "20%", flex: 1.9, marginTop: '0.3%'}} /> */}
+      <View style={styles.loginFields}>
       <View style={styles.inputView} >
         <TextInput
           style={styles.inputText}
@@ -80,6 +87,7 @@ const Home = (props) => {
           placeholderTextColor="#003f5c"
           onChangeText={setPassword} />
       </View>
+      </View>
       <Text style={[styles.message, { color: isError ? 'red' : '#F5F5F5' }]}>{message}</Text>
       <View style={styles.buttonsform}>
         <TouchableOpacity style={styles.btn} onPress={() => onSignUp()}>
@@ -89,17 +97,16 @@ const Home = (props) => {
           <Text style={styles.btntext}>Login</Text>
         </TouchableOpacity>
       </View>
+      <View style={styles.forgotPass}>
       <TouchableOpacity onPress={() => onForgotPass()}>
         <Text style={styles.forgot}>Forgot Password?</Text>
       </TouchableOpacity>
+      </View>
     </View>
   )
 }
 
 //Image styling components
-const width = Dimensions.get('window').width;
-const imgWidth = Dimensions.get('window').width * 0.5;
-const ratio = imgWidth / 3146
 
 const styles = StyleSheet.create({
   load: {
@@ -114,18 +121,20 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F5F5F',
+    backgroundColor: '#F5F5F5',
+    flexDirection: "column"
   },
   buttonsform: {
     flexDirection: 'row',
     justifyContent: 'center',
+    flex: 1,
   },
   inputView: {
     width: "65%",
     backgroundColor: "white",
     borderRadius: 25,
     height: 50,
-    marginBottom: 20,
+    marginBottom: 10,
     justifyContent: "center",
     padding: 20
   },
@@ -138,24 +147,30 @@ const styles = StyleSheet.create({
     fontSize: 15
   },
   btn: {
-    width: "50%",
+    width: '40%',
     backgroundColor: "crimson",
     borderRadius: 25,
     height: 50,
     alignItems: "center",
     justifyContent: "center",
     margin: 20,
+    
     padding: 10,
   },
   btntext: {
     color: "white",
     fontWeight: 'bold',
   },
-  img: {
-    width: imgWidth,
-    height: ratio * 1071,
-    marginBottom: 30,
-  }
+ 
+  loginFields: {
+    flex: 2,
+    width: '80%',
+    justifyContent: 'center',
+    marginLeft: '26%'
+  },
+  forgotPass:{
+    flex: 0.5,
+  },
 });
 
 export default Home;

@@ -17,7 +17,7 @@ Footer.defaultProps = {
 
 const styles = StyleSheet.create({
     footer: {
-        height: 40,
+        height: '5.5%',
         padding: 5,
         backgroundColor: 'crimson',
         flexDirection: 'row',
