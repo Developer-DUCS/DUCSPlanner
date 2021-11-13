@@ -11,11 +11,8 @@ const api = axios.create({
 
 const Student = (props) => {
   const [name, setName] = useState('John Doe');
-<<<<<<< HEAD
   //const [courseCode, setCourseCode] = useState('CSGD', 'CRIM', 'INTD');
-=======
   const [courseCode, setCourseCode] = useState(['"CSGD"', '"CRIM"', '"INTD"']);
->>>>>>> fafc720787109475d03315aab89e2ac2534e1aa1
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
@@ -29,16 +26,16 @@ const Student = (props) => {
     api.post('/api/courses/courses', {
       'courseCode': courseCode,
 
-    
+
     })
       .then(function (response) {
         if (response.status != 200) {
           setIsError(true);
         }
         else {
-          if(response.status == 200){
-          console.log("i got a 200 status");
-          console.log(response);
+          if (response.status == 200) {
+            console.log("i got a 200 status");
+            console.log(response);
           }
           return (
             <View>
