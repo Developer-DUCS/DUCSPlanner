@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, Image, Dimensions, ActivityIndicator } from 'react-native';
 import axios from 'axios';
-import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const api = axios.create({
   baseURL: `http://localhost:3210`
@@ -33,6 +33,9 @@ const Home = (props) => {
           setMessage('Username/Password incorrect');
         }
         else {
+          localStorage.setItem("token", response.data.token);
+          localStorage.setItem("fname", response.data.fname);
+          localStorage.setItem("lname", response.data.lname);
           if (response.data.Role == 'admin') {
             props.navigation.navigate('Admin');
             setTimeout(() => { setIsLoading(false); }, 3000);
@@ -67,26 +70,26 @@ const Home = (props) => {
     <View style={styles.container}>
 
       <Image
-          style={{width: "100%", height: "20%", resizeMode:"contain"  , marginTop: '2%', }}
-          source={{uri:'https://drury.edu/wp-content/uploads/files/brand_lounge/PrimaryFullColor.png'}}
+        style={{ width: "100%", height: "20%", resizeMode: "contain", marginTop: '2%', }}
+        source={{ uri: 'https://drury.edu/wp-content/uploads/files/brand_lounge/PrimaryFullColor.png' }}
       />
       {/* <Image source={require('../assets/RD Logos/drury.png')} style={{width: "38%", height: "20%", flex: 1.9, marginTop: '0.3%'}} /> */}
       <View style={styles.loginFields}>
-      <View style={styles.inputView} >
-        <TextInput
-          style={styles.inputText}
-          placeholder="Email..."
-          placeholderTextColor="#003f5c"
-          onChangeText={setEmail} />
-      </View>
-      <View style={styles.inputView} >
-        <TextInput
-          style={styles.inputText}
-          secureTextEntry={true}
-          placeholder="Password..." secureTextEntry={true}
-          placeholderTextColor="#003f5c"
-          onChangeText={setPassword} />
-      </View>
+        <View style={styles.inputView} >
+          <TextInput
+            style={styles.inputText}
+            placeholder="Email..."
+            placeholderTextColor="#003f5c"
+            onChangeText={setEmail} />
+        </View>
+        <View style={styles.inputView} >
+          <TextInput
+            style={styles.inputText}
+            secureTextEntry={true}
+            placeholder="Password..." secureTextEntry={true}
+            placeholderTextColor="#003f5c"
+            onChangeText={setPassword} />
+        </View>
       </View>
       <Text style={[styles.message, { color: isError ? 'red' : '#F5F5F5' }]}>{message}</Text>
       <View style={styles.buttonsform}>
@@ -98,9 +101,9 @@ const Home = (props) => {
         </TouchableOpacity>
       </View>
       <View style={styles.forgotPass}>
-      <TouchableOpacity onPress={() => onForgotPass()}>
-        <Text style={styles.forgot}>Forgot Password?</Text>
-      </TouchableOpacity>
+        <TouchableOpacity onPress={() => onForgotPass()}>
+          <Text style={styles.forgot}>Forgot Password?</Text>
+        </TouchableOpacity>
       </View>
     </View>
   )
@@ -154,21 +157,21 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     margin: 20,
-    
+
     padding: 10,
   },
   btntext: {
     color: "white",
     fontWeight: 'bold',
   },
- 
+
   loginFields: {
     flex: 2,
     width: '80%',
     justifyContent: 'center',
     marginLeft: '26%'
   },
-  forgotPass:{
+  forgotPass: {
     flex: 0.5,
   },
 });

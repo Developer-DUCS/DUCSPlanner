@@ -1,32 +1,49 @@
 import React, { useState } from 'react';
-import { Button, View, Text, StyleSheet, Picker, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
+import { Button, View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
 import axios from 'axios'
-import MajorField from './MajorField';
-import MinorField from './MinorField';
-import CertField from './CertField';
 
 const api = axios.create({
   baseURL: `http://localhost:3210`
 })
 
 const Student = (props) => {
-  const [name, setName] = useState('John Doe');
-  //const [courseCode, setCourseCode] = useState('CSGD', 'CRIM', 'INTD');
-  const [courseCode, setCourseCode] = useState(['"CSGD"', '"CRIM"', '"INTD"']);
+  let courseCode = [];
+  let newCourses = [];
+  let name = localStorage.getItem("fname") + " " + localStorage.getItem("lname");
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
-  const [majorFields, setMajorFields] = useState([<MajorField></MajorField>]);
-  const [minorFields, setMinorFields] = useState([<MinorField></MinorField>]);
-  const [certFields, setCertFields] = useState([<CertField></CertField>]);
+  const [formValuesMajor, setFormValuesMajor] = useState([{}])
+  const [formValuesMinor, setFormValuesMinor] = useState([{}])
+  const [formValuesCert, setFormValuesCert] = useState([{}])
 
 
   const onSubmitHandler = () => {
     setIsLoading(true);
+    //check validity of fields
+    if ((formValuesMajor.length == 0 || formValuesCert.length == 0) || (formValuesMajor[0].major == undefined || formValuesCert[0].cert == undefined)) {
+      setTimeout(() => { setIsLoading(false); }, 1000);
+      setIsError(true);
+      setMessage('Incorrect Fields');
+      return;
+    }
+    else {
+      //make coursecode list
+      for (let a = 0; a < formValuesMajor.length; a++) {
+        newCourses.push(formValuesMajor[a].major);
+      }
+      for (let b = 0; b < formValuesMinor.length; b++) {
+        newCourses.push(formValuesMinor[b].minor);
+      }
+      for (let c = 0; c < formValuesCert.length; c++) {
+        newCourses.push(formValuesCert[c].cert);
+      }
+      for (let d = 0; d < newCourses.length; d++) {
+        courseCode.push("'" + newCourses[d] + "'");
+      }
+    }
     api.post('/api/courses/courses', {
       'courseCode': courseCode,
-
-
     })
       .then(function (response) {
         if (response.status != 200) {
@@ -34,14 +51,14 @@ const Student = (props) => {
         }
         else {
           if (response.status == 200) {
-            console.log("i got a 200 status");
-            console.log(response);
+            setTimeout(() => { setIsLoading(false); }, 3000);
+            let nameList = []
+            for (let x = 0; x < response.data.Courses.length; x++) {
+              nameList.push(response.data.Courses[x].CourseName);
+            }
+            localStorage.setItem("classNameList", nameList);
+            props.navigation.navigate('PlanCreation');
           }
-          return (
-            <View>
-              <Text>Hey, it worked!</Text>
-            </View>
-          );
         }
       })
       .catch(function (error) {
@@ -52,31 +69,6 @@ const Student = (props) => {
       });
   };
 
-  const onMajorAdd = () => {
-    setMajorFields(majorFields.push(<View style={styles.form2}><MajorField></MajorField></View>));
-  };
-
-  const onMajorRemove = () => {
-    majorFields.pop();
-  };
-
-  const onMinorAdd = () => {
-    setMinorFields(minorFields.push(<View style={styles.form2}><MinorField></MinorField></View>));
-    console.log(minorFields);
-  };
-
-  const onMinorRemove = () => {
-    minorFields.pop();
-  };
-
-  const onCertAdd = () => {
-    setCertFields(certFields.push(<View style={styles.form2}><CertField></CertField></View>));
-  };
-
-  const onCertRemove = () => {
-    certFields.pop();
-  };
-
   if (isLoading) {
     return (
       <View style={styles.load}>
@@ -85,37 +77,110 @@ const Student = (props) => {
     )
   }
 
+  let addMajorFormFields = () => {
+    setFormValuesMajor([...formValuesMajor, {}])
+  }
+  let addMinorFormFields = () => {
+    setFormValuesMinor([...formValuesMinor, {}])
+  }
+  let addCertFormFields = () => {
+    setFormValuesCert([...formValuesCert, {}])
+  }
+  let removeFormFieldsMajor = (i) => {
+    let newFormValuesMajor = [...formValuesMajor];
+    newFormValuesMajor.splice(i, 1);
+    setFormValuesMajor(newFormValuesMajor)
+  }
+  let removeFormFieldsMinor = (i) => {
+    let newFormValuesMinor = [...formValuesMinor];
+    newFormValuesMinor.splice(i, 1);
+    setFormValuesMinor(newFormValuesMinor)
+  }
+  let removeFormFieldsCert = (i) => {
+    let newFormValuesCert = [...formValuesCert];
+    newFormValuesCert.splice(i, 1);
+    setFormValuesCert(newFormValuesCert)
+  }
+  let handleMajorChange = (i, e) => {
+    let newFormValuesMajor = [...formValuesMajor];
+    newFormValuesMajor[i][e.target.name] = e.target.value;
+    setFormValuesMajor(newFormValuesMajor);
+  }
+  let handleMinorChange = (i, e) => {
+    let newFormValuesMinor = [...formValuesMinor];
+    newFormValuesMinor[i][e.target.name] = e.target.value;
+    setFormValuesMinor(newFormValuesMinor);
+  }
+  let handleCertChange = (i, e) => {
+    let newFormValuesCert = [...formValuesCert];
+    newFormValuesCert[i][e.target.name] = e.target.value;
+    setFormValuesCert(newFormValuesCert);
+  }
+
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.txt1}>Welcome Back {name}!</Text>
+        <Text style={styles.txt1}>Welcome back {name}!</Text>
         <Text style={styles.txt2}>Please choose your desired major, minor, or certificate options from the list below:</Text>
         <Text style={styles.txt3}>NOTE: choose at least three credentials:  one major and two certificates.  One certificate can be replaced with a second major or a minor.</Text>
       </View>
       <View style={styles.form2}>
-        {majorFields}
-        {minorFields}
-        {certFields}
+        <form>
+          {formValuesMajor.map((element, index) => (
+            <div className="form-inline" key={index}>
+              <select name="major" id="major" onChange={e => handleMajorChange(index, e)}>
+                <option value="">Please select a major</option>
+                <option value="CSGD">Computer Science: Game Development</option>
+                <option value="CSSE">Computer Science: Software Engineering</option>
+                <option value="MATH">Mathematics</option>
+              </select>
+            </div>
+          ))}
+        </form>
+        <form>
+          {formValuesMinor.map((element, index) => (
+            <div className="form-inline" key={index}>
+              <select name="minor" id="minor" onChange={e => handleMinorChange(index, e)}>
+                <option value="">Please select a minor</option>
+                <option value="CSCI">Computer Science</option>
+                <option value="CRIM">Criminology</option>
+                <option value="ENGL">English</option>
+              </select>
+            </div>
+          ))}
+        </form>
+        <form>
+          {formValuesCert.map((element, index) => (
+            <div className="form-inline" key={index}>
+              <select name="cert" id="cert" onChange={e => handleCertChange(index, e)}>
+                <option value="">Please select a certificate</option>
+                <option value="INTD">Interactive Design</option>
+                <option value="INTI">International Immersion</option>
+                <option value="ANCA">Ancients Alive: The Classics in Context</option>
+              </select>
+            </div>
+          ))}
+        </form>
       </View>
       <View style={styles.form}>
-        <TouchableOpacity style={styles.btn} onPress={onMajorAdd}>
+        <TouchableOpacity style={styles.btn} onPress={() => addMajorFormFields()}>
           <Text style={styles.btntext}>Add Major</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={onMinorAdd}>
+        <TouchableOpacity style={styles.btn} onPress={() => addMinorFormFields()}>
           <Text style={styles.btntext}>Add Minor</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={onCertAdd}>
+        <TouchableOpacity style={styles.btn} onPress={() => addCertFormFields()}>
           <Text style={styles.btntext}>Add Certificate</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.form}>
-        <TouchableOpacity style={styles.btn} onPress={onMajorRemove}>
+        <TouchableOpacity style={styles.btn} onPress={(index) => removeFormFieldsMajor(index)}>
           <Text style={styles.btntext}>Remove Major</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={onMinorRemove}>
+        <TouchableOpacity style={styles.btn} onPress={(index) => removeFormFieldsMinor(index)}>
           <Text style={styles.btntext}>Remove Minor</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={onCertRemove}>
+        <TouchableOpacity style={styles.btn} onPress={(index) => removeFormFieldsCert(index)}>
           <Text style={styles.btntext}>Remove Certificate</Text>
         </TouchableOpacity>
       </View>
