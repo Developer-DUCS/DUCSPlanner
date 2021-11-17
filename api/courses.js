@@ -33,4 +33,34 @@ router.post('/courses', (req, res) => {
 
     })
 })
+//skeleton code for creating a plan
+router.post('/create', (req,res) => {
+    console.log(`Courses to be pushed : ${req.body}`);
+    var query = conn.query(`Insert into StudentCourseTable (UserId, CoursePrefix, CourseCode, PlanYear, PlanSemester ) values (?,?,?,?,?)`,[req.body.uID, req.body.CP,req.body.CC,req.body.PY, req.body.PS],(err,result)=>{
+        if(err){
+            // console.log("something is wrong");
+             console.log(query.sql);
+             return res.status(500).json({error: err});
+          }
+          else{
+          console.log(result);
+          res.status(201).json({msg: "Session saved"});
+          //res.sendStatus(201);
+          }
+
+    })
+})
+// skeleton code for grabbing a student plan
+router.get('/fetch', (req,res)=>{
+    console.log(`Grabbing courses for user: ${req.body.uID}`);
+    let fetchqry = `select * from StudentCourseTable where UserID = ${req.body.uID}`;
+    conn.query(fetchqry,(err,result)=>{
+        if(err){
+            return res.status(500).json({ error: err });
+        }
+        else{
+            
+        }
+    })
+})
 module.exports = router;
