@@ -7,7 +7,7 @@ import uuid from 'uuid/v4';
 const PlanCreation = (props) => {
     const itemsFromBackend = [];
 
-    let classes = localStorage.getItem("classNameList");
+    let classes = localStorage.getItem("fetchCourseList");
 
     let classList = classes.split(",");
 
