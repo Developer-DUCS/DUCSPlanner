@@ -7,12 +7,16 @@ import uuid from 'uuid/v4';
 const PlanCreation = (props) => {
   const itemsFromBackend = [];
 
-  let classes = localStorage.getItem("classNameList");
+  let listItems = [];
 
-  let classList = classes.split(",");
+  let classes = localStorage.getItem("fetchCourseList");
+
+  let classList = classes.split(";");
+  console.log(classList);
+  classList.pop();
 
   for (let j = 0; j < classList.length; j++) {
-    itemsFromBackend.push({ id: uuid(), content: classList[j] });
+    itemsFromBackend.push(JSON.parse(classList[j]));
   }
 
   const columnsFromBackend =
@@ -93,13 +97,29 @@ const PlanCreation = (props) => {
 
   const [columns, setColumns] = useState(columnsFromBackend);
 
+  const returnContent = () => {
+    console.log(listItems);
+    let listPrint = "[ ";
+    for (let i = 0; i < listItems.length; i++) {
+      listPrint = listPrint + "[ ";
+      for (let k = 0; k < listItems[i].length; k++) {
+        //console.log(listItems[i][k].content);
+        listPrint = listPrint + listItems[i][k].CoursePrefix + " " + listItems[i][k].CourseCode + " ";
+      }
+      listPrint = listPrint + "] ";
+    }
+    listPrint = listPrint + "]";
+    console.log(listPrint);
+  };
+
   return (
     <View style={styles.container}>
       <div style={{ display: 'flex', justifyContent: 'left', height: '95%' }}>
         <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
           {Object.entries(columns).map(([id, column]) => {
+            listItems.push(column.items);
             return (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} key={id}>
                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left', background: 'lightgrey', width: 258 }}>
                   <h2 style={{ background: 'lightgrey' }}>{column.name}</h2>
                 </div>
@@ -119,7 +139,7 @@ const PlanCreation = (props) => {
                         >
                           {column.items.map((item, index) => {
                             return (
-                              <Draggable key={item.id} draggableId={item.id} index={index}>
+                              <Draggable key={item.CoursePrefix + " " + item.CourseCode} draggableId={item.CoursePrefix + " " + item.CourseCode} index={index}>
                                 {(provided, snapshot) => {
                                   return (
                                     <div
@@ -136,7 +156,7 @@ const PlanCreation = (props) => {
                                         ...provided.draggableProps.style
                                       }}
                                     >
-                                      {item.content}
+                                      {item.CourseName}
                                     </div>
                                   )
                                 }}
@@ -154,6 +174,7 @@ const PlanCreation = (props) => {
           })}
         </DragDropContext>
       </div>
+      {returnContent()}
     </View>
   );
 }

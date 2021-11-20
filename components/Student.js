@@ -84,11 +84,12 @@ const Student = (props) => {
         else {
           if (response.status == 200) {
             setTimeout(() => { setIsLoading(false); }, 3000);
-            let nameList = []
+            let courseList = "";
             for (let x = 0; x < response.data.Courses.length; x++) {
-              nameList.push(response.data.Courses[x].CourseName);
+              courseList = courseList + JSON.stringify(response.data.Courses[x]) + ";";
             }
-            localStorage.setItem("classNameList", nameList);
+            //console.log(courseList);
+            localStorage.setItem("fetchCourseList", courseList);
             props.navigation.navigate('PlanCreation');
           }
         }
