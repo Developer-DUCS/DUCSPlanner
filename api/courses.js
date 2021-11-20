@@ -27,7 +27,6 @@ router.post('/courses', (req, res) => {
                 }
                 courseList.push(course);
             })
-            console.log(courseList);
             return (res.status(200).json({ Courses: courseList }));
         }
 

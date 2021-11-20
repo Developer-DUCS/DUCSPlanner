@@ -21,25 +21,57 @@ const Student = (props) => {
   const onSubmitHandler = () => {
     setIsLoading(true);
     //check validity of fields
-    if ((formValuesMajor.length == 0 || formValuesCert.length == 0) || (formValuesMajor[0].major == undefined || formValuesCert[0].cert == undefined)) {
+    if ((formValuesMajor.length == 0 || formValuesCert.length == 0) || (formValuesMajor[0].major == undefined ||
+      formValuesCert[0].cert == undefined)) {
       setTimeout(() => { setIsLoading(false); }, 1000);
       setIsError(true);
       setMessage('Incorrect Fields');
       return;
     }
     else {
+      let pros = 0;
+      let life = 0;
       //make coursecode list
       for (let a = 0; a < formValuesMajor.length; a++) {
-        newCourses.push(formValuesMajor[a].major);
+        let majorCode = formValuesMajor[a].major.split(",")
+        if (majorCode[1] == 'P') {
+          pros = pros + 1;
+        }
+        else {
+          life = life + 1
+        }
+        newCourses.push(majorCode[0]);
       }
-      for (let b = 0; b < formValuesMinor.length; b++) {
-        newCourses.push(formValuesMinor[b].minor);
+      if (formValuesMinor.length != 1) {
+        for (let b = 0; b < formValuesMinor.length; b++) {
+          let minorCode = formValuesMinor[b].minor.split(",")
+          if (minorCode[1] == 'P') {
+            pros = pros + 1;
+          }
+          else {
+            life = life + 1
+          }
+          newCourses.push(minorCode[0]);
+        }
       }
       for (let c = 0; c < formValuesCert.length; c++) {
-        newCourses.push(formValuesCert[c].cert);
+        let certCode = formValuesCert[c].cert.split(",")
+        if (certCode[1] == 'P') {
+          pros = pros + 1;
+        }
+        else {
+          life = life + 1
+        }
+        newCourses.push(certCode[0]);
       }
       for (let d = 0; d < newCourses.length; d++) {
         courseCode.push("'" + newCourses[d] + "'");
+      }
+      if (pros == 0 || life == 0) {
+        setTimeout(() => { setIsLoading(false); }, 1000);
+        setIsError(true);
+        setMessage('You must have one credential in the "Professional" category and one credential in the "Life" category.');
+        return;
       }
     }
     api.post('/api/courses/courses', {
@@ -122,7 +154,7 @@ const Student = (props) => {
       <View>
         <Text style={styles.txt1}>Welcome back {name}!</Text>
         <Text style={styles.txt2}>Please choose your desired major, minor, or certificate options from the list below:</Text>
-        <Text style={styles.txt3}>NOTE: choose at least three credentials:  one major and two certificates.  One certificate can be replaced with a second major or a minor.</Text>
+        <Text style={styles.txt3}>NOTE: choose at least three credentials:  one major and two certificates.  One certificate can be replaced with a second major or a minor. You must also have one credential in the "Professional" category and one credential in the "Life" category.</Text>
       </View>
       <View style={styles.form2}>
         <form>
@@ -130,9 +162,13 @@ const Student = (props) => {
             <div className="form-inline" key={index}>
               <select name="major" id="major" onChange={e => handleMajorChange(index, e)}>
                 <option value="">Please select a major</option>
-                <option value="CSGD">Computer Science: Game Development</option>
-                <option value="CSSE">Computer Science: Software Engineering</option>
-                <option value="MATH">Mathematics</option>
+                <optgroup label="Professional">
+                  <option value="CSGD,P">Computer Science: Game Development</option>
+                  <option value="CSSE,P">Computer Science: Software Engineering</option>
+                </optgroup>
+                <optgroup label="Life">
+                  <option value="MATH,L">Mathematics</option>
+                </optgroup>
               </select>
             </div>
           ))}
@@ -142,9 +178,14 @@ const Student = (props) => {
             <div className="form-inline" key={index}>
               <select name="minor" id="minor" onChange={e => handleMinorChange(index, e)}>
                 <option value="">Please select a minor</option>
-                <option value="CSCI">Computer Science</option>
-                <option value="CRIM">Criminology</option>
-                <option value="ENGL">English</option>
+                <optgroup label="Professional">
+                  <option value="ANIM,P">Animation</option>
+                </optgroup>
+                <optgroup label="Life">
+                  <option value="CSCI,L">Computer Science</option>
+                  <option value="CRIM,L">Criminology</option>
+                  <option value="ENGL,L">English</option>
+                </optgroup>
               </select>
             </div>
           ))}
@@ -154,9 +195,13 @@ const Student = (props) => {
             <div className="form-inline" key={index}>
               <select name="cert" id="cert" onChange={e => handleCertChange(index, e)}>
                 <option value="">Please select a certificate</option>
-                <option value="INTD">Interactive Design</option>
-                <option value="INTI">International Immersion</option>
-                <option value="ANCA">Ancients Alive: The Classics in Context</option>
+                <optgroup label="Professional">
+                  <option value="INTD,P">Interactive Design</option>
+                </optgroup>
+                <optgroup label="Life">
+                  <option value="INTI,L">International Immersion</option>
+                  <option value="ANCA,L">Ancients Alive: The Classics in Context</option>
+                </optgroup>
               </select>
             </div>
           ))}
