@@ -52,9 +52,9 @@ const Student = (props) => {
         else {
           if (response.status == 200) {
             setTimeout(() => { setIsLoading(false); }, 3000);
-            let courseList = []
+            let courseList = "";
             for (let x = 0; x < response.data.Courses.length; x++) {
-              courseList.push(response.data.Courses[x]);
+              courseList = courseList + JSON.stringify(response.data.Courses[x]) + ";";
             }
             //console.log(courseList);
             localStorage.setItem("fetchCourseList", courseList);
