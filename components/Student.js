@@ -63,30 +63,36 @@ const Student = (props) => {
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={styles.InfoText}> 
         <Text style={styles.txt1}>Welcome Back {name}!</Text>
         <Text style={styles.txt2}>Please choose your desired major, minor, or certificate options from the list below:</Text>
         <Text style={styles.txt3}>NOTE: choose at least three credentials:  one major and two certificates.  One certificate can be replaced with a second major or a minor.</Text>
       </View>
       <View style={styles.form2}>
-        <Picker placeholder='Major' >
-          <Picker.Item label="Select A Major" value="" />
+        <View style ={styles.pickerSet}> 
+        <Picker style={styles.picker} placeholder='Major' >
+          <Picker.Item label="Select Major" value="" />
           <Picker.Item label="Computer Science: Game Development" value="CSGD" />
           <Picker.Item label="Computer Science: Software Engineering" value="CSSE" />
           <Picker.Item label="Mathematics" value="MATH" />
         </Picker>
-        <Picker placeholder='Minor'>
-          <Picker.Item label="Select A Minor" value="" />
+     
+        
+        <Picker style={styles.picker} placeholder='Minor'>
+          <Picker.Item label="Select Minor" value="" />
           <Picker.Item label="Computer Science" value="CSCI" />
           <Picker.Item label="Criminology" value="CRIM" />
           <Picker.Item label="English" value="ENGL" />
         </Picker>
-        <Picker placeholder='Certificate'>
-          <Picker.Item label="Select A Certificate" value="" />
+       
+        
+        <Picker style={styles.picker} placeholder='Certificate'>
+          <Picker.Item label="Select Certificate" value="" />
           <Picker.Item label="Interactive Design" value="INTD" />
           <Picker.Item label="International Immersion" value="INTI" />
           <Picker.Item label="Ancients Alive: The Classics in Context" value="ANCA" />
         </Picker>
+       </View> 
       </View>
       <View style={styles.form}>
         <TouchableOpacity style={styles.btn} onPress={onMajorAdd}>
@@ -103,7 +109,7 @@ const Student = (props) => {
         <Text style={[styles.message, { color: isError ? 'red' : '#F5F5F5' }]}>{message}</Text>
         <TouchableOpacity style={styles.btn} onPress={onSubmitHandler}>
           <Text style={styles.btntext}>Submit</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>  
       </View>
     </View>
   )
@@ -112,32 +118,21 @@ const Student = (props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F5F5F',
+    backgroundColor: '#F5F5F5',
+    width: '100%',
+    aspectRatio : 1,
+    marginLeft: "0.5%"
   },
   centered: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 100
+    paddingTop: "2%"
   },
-  txt1: {
-    fontWeight: 'bold',
-    fontSize: 25,
-    padding: 15
-  },
-  txt2: {
-    fontSize: 20,
-    padding: 15,
-    paddingTop: 0
-  },
-  txt3: {
-    fontSize: 15,
-    padding: 15,
-    paddingTop: 0
-  },
+  
   form: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 50,
+    width: "100%"
   },
   btn: {
     width: "20%",
@@ -146,8 +141,8 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",
     justifyContent: "center",
-    margin: 20,
-    paddingVertical: 10,
+    marginTop: "1%",
+    flexShrink: 1
   },
   btntext: {
     color: "white",
@@ -156,8 +151,7 @@ const styles = StyleSheet.create({
   form2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 60,
-    paddingVertical: 20
+    
   },
   load: {
     flex: 1,
@@ -166,6 +160,38 @@ const styles = StyleSheet.create({
   },
   message: {
     fontWeight: 'bold',
+  },
+  picker: {
+    flex: 0.25,
+    resizeMode: "contain",
+    marginRight: '1%',
+    
+    
+  },
+  pickerSet:{
+    width : '100%',
+    flexDirection: "row",
+    
+
+  },
+  InfoText: {
+    width: "100%",
+    flexDirection: "column"
+    
+  },
+  txt1:{
+    fontWeight: "bold",
+    fontSize: 20,
+    paddingBottom: "1%",
+  },
+  txt2:{
+    width: '70%',
+    paddingBottom: "0.8%",
+  },
+  txt3: {
+    width: '70%',
+    paddingBottom: "0.8%",
+    
   },
 });
 

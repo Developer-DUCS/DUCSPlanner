@@ -67,7 +67,7 @@ const Home = (props) => {
     <View style={styles.container}>
 
       <Image
-          style={{width: "100%", height: "20%", resizeMode:"contain"  , marginTop: '2%', }}
+          style={{width: "90%", height: "20%", resizeMode:"contain"  , marginTop: '2%', }}
           source={{uri:'https://drury.edu/wp-content/uploads/files/brand_lounge/PrimaryFullColor.png'}}
       />
       {/* <Image source={require('../assets/RD Logos/drury.png')} style={{width: "38%", height: "20%", flex: 1.9, marginTop: '0.3%'}} /> */}
