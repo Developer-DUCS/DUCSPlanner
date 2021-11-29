@@ -156,7 +156,7 @@ const PlanCreation = (props) => {
                                         ...provided.draggableProps.style
                                       }}
                                     >
-                                      {item.CourseName}
+                                      {item.CoursePrefix+ " "+ item.CourseCode+" "+item.CourseName + " " + item.Semester + " " + item.CreditHours +" Credit Hours"}
                                     </div>
                                   )
                                 }}
