@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
   
   form:{
     display: 'flex',
-    marginLeft: '10%'
+    marginLeft: '1%'
   },
 
   btn: {
@@ -162,13 +162,12 @@ const styles = StyleSheet.create({
     flexShrink: 1
   },
   btn2:{
-      width: "50%",
+      width: "46%",
       backgroundColor: "crimson",
       borderRadius: 25,
       height: 40,
       alignItems: "center",
       justifyContent: "center",
-      marginLeft: '7%',
       marginTop: "1%",
       marginBottom: "0.9%",
       flexShrink: 1
