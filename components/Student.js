@@ -74,20 +74,22 @@ const Student = (props) => {
 
       <View style= {styles.form} >
       
-        <View>
+        <View style= {styles.container2}>
         <Picker style={styles.picker} placeholder='Major' >
           <Picker.Item label="Select Major" value="" />
           <Picker.Item label="Computer Science: Game Development" value="CSGD" />
           <Picker.Item label="Computer Science: Software Engineering" value="CSSE" />
           <Picker.Item label="Mathematics" value="MATH" />
         </Picker>
+        <View style={styles.btnCont}>
         <TouchableOpacity style={styles.btn}>
           <Text style={styles.btntext}>Add Major</Text>
         </TouchableOpacity>
         </View>
+        </View>
 
        
-      <View>
+      <View  style= {styles.container2}>
 
      <Picker style={styles.picker} placeholder='Minor'>
        <Picker.Item label="Select Minor" value="" />
@@ -102,7 +104,7 @@ const Student = (props) => {
           <Text style={styles.btntext}>Add Minor</Text>
         </TouchableOpacity>
 
-        <View>
+        <View  style= {styles.container2}>
         <Picker style={styles.picker} placeholder='Certificate'>
           <Picker.Item label="Select Certificate" value="" />
           <Picker.Item label="Interactive Design" value="INTD" />
@@ -117,9 +119,9 @@ const Student = (props) => {
         
       </View>
     
-      <View style={styles.centered}>
+      <View>
         <Text style={[styles.message, { color: isError ? 'red' : '#F5F5F5' }]}>{message}</Text>
-        <TouchableOpacity style={styles.btn} onPress={onSubmitHandler}>
+        <TouchableOpacity style={styles.btn2} onPress={onSubmitHandler}>
           <Text style={styles.btntext}>Submit</Text>
         </TouchableOpacity>  
       </View> 
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
     flex: 5,
     backgroundColor: '#F5F5F5',
     width: '100%',
-    aspectRatio : 1,
+    aspectRatio : 10/8,
   },
 
   centered: {
@@ -144,8 +146,8 @@ const styles = StyleSheet.create({
   },
   
   form:{
-    marginLeft: '10%',
-    
+    display: 'flex',
+    marginLeft: '1%'
   },
 
   btn: {
@@ -153,20 +155,22 @@ const styles = StyleSheet.create({
     backgroundColor: "crimson",
     borderRadius: 25,
     height: 50,
-    alignItems: "center",
+    alignItems: "center",  
     justifyContent: "center",
     marginTop: "1%",
     marginBottom: "0.9%",
-    marginLeft: '1%',
     flexShrink: 1
   },
   btn2:{
-      width: "40%",
+      width: "46%",
       backgroundColor: "crimson",
       borderRadius: 25,
-      height: '200%',
+      height: 40,
       alignItems: "center",
       justifyContent: "center",
+      marginTop: "1%",
+      marginBottom: "0.9%",
+      flexShrink: 1
     },
 
   btntext: {
@@ -188,8 +192,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   picker: {
-    width: '60%'
-    
+    width: '45%',
   },
   pickerSet:{
     width : '100%',
@@ -198,9 +201,9 @@ const styles = StyleSheet.create({
 
   },
   InfoText: {
-    width: "100%",
-    flexDirection: "column"
-    
+    width: '80%',
+    flexDirection: "column",
+    marginLeft: 5
   },
   txt1:{
     fontWeight: "bold",
@@ -216,6 +219,12 @@ const styles = StyleSheet.create({
     paddingBottom: "0.8%",
     
   },
+  container2:{
+    
+   
+    
+  }
+ 
 });
 
 export default Student;
