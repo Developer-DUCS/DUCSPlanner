@@ -2,7 +2,7 @@
 ---------------------------------------------
 PlanIt is an application that allows students to create a 4-year plan
 
-Database Schema: PlanIt
+Database Schema: PlanItTest
 
 Developers:
 Todd Angel,
