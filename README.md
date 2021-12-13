@@ -1,11 +1,11 @@
-## DUCSPlanner
+# DUCSPlanner
 ---------------------------------------------
 PlanIt is an application that allows students to create a 4-year plan
 
-#Database Schema: 
+Database Schema: 
 PlanItTest
 
-#Current Instructions for Building App:
+Current Instructions for Building App:
 Run, expo build:web, this makes the build directory that we’ll end up deploying on to the server.
  
 then in the terminal switch to the build directory
@@ -17,7 +17,7 @@ npx serve -l 3211
 Then we need to start our express server in a new terminal and that is done with,
 node server.js
 
-#Developers:
+Developers:
 Todd Angel,
 Colby Bogle,
 Drew Johnson,
