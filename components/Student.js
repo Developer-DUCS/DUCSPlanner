@@ -42,7 +42,7 @@ const Student = (props) => {
         }
         newCourses.push(majorCode[0]);
       }
-      if (formValuesMinor.length != 1) {
+      if (formValuesMinor[0].minor != undefined) {
         for (let b = 0; b < formValuesMinor.length; b++) {
           let minorCode = formValuesMinor[b].minor.split(",")
           if (minorCode[1] == 'P') {
