@@ -24,7 +24,7 @@ router.post('/login', (req, res) => {
                         UserId: rows[l].UserId, Email: req.body.Email, Role: rows[l].Role, Department: rows[l].Department,
                         YearStarted: rows[l].Year_Started, Fname: rows[l].Fname, Lname: rows[l].Lname
                     }, secret, { expiresIn: '1h' });
-                    return (res.status(200).json({ message: "User logged in", "token": token, "Role": rows[l].Role }));
+                    return (res.status(201).json({ message: "User logged in", "token": token, "Role": rows[l].Role }));
                 }
             }
             return res.status(401).json({ message: "invalid credentials" });
@@ -33,6 +33,7 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/signup', (req, res) => {
+    console.log(res.body);
     conn.query(`select Email from UserAccountsTest where Email = "${req.body.Email}"`, function (error, rows, fields) {
         if (error) {
             return res.status(500).json({ message: 'Error try again later' })
@@ -42,7 +43,7 @@ router.post('/signup', (req, res) => {
         }
         else {
             if (req.body.Password != req.body.ConfPassword) {
-                return res.status(502).json({ message: 'Passwords do not match' })
+                return res.status(509).json({ message: 'Passwords do not match' })
             }
             else {
                 // //  Create a hash for the submitted password

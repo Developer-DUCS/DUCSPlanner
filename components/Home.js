@@ -7,10 +7,10 @@ import {Button, Surface, icon} from 'react-native-paper';
 import axios from 'axios';
 import SignUp from './SignUp';
 
-const api = axios.create({
-  baseURL: `http://localhost:3210`
-})
 const Home= (props) => {
+  const api = axios.create({
+  baseURL: `http://localhost:3210`
+});
   
   /* const [email, setEmail] = useState('');
   const [password, setPassword] = useState(''); */
@@ -96,7 +96,7 @@ const Home= (props) => {
             setIsError(true)
           }
           else {
-            props.navigation.navigate('Home');
+            props.navigation.navigate('Student');
           }
           
         })

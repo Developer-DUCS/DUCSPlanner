@@ -1,174 +1,170 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Picker, TextInput, Dimensions, Button } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, ScrollView, Image, Dimensions } from 'react-native';
 import axios from 'axios';
-import * as yup from 'yup';
-import { Formik } from 'formik';
+import {FormBuilder} from 'react-native-paper-form-builder';
+import {useForm} from 'react-hook-form';
+import {Button} from 'react-native-paper';
 
 
 const SignUp = (props) => {
     const api = axios.create({
         baseURL: `http://localhost:3210`
     });
-
-   
-   // Create Validation Schema
-    const  signUpValidation = yup.object().shape({
-        firstName: yup.string().required('Enter your first name'),
-        lastName: yup.string().required('Enter your last name'),
-        email: yup.string().email('Please enter a valid email').required('Email address is required '),
-        password: yup.string().min(8,({min})=>`Password must be at least ${min} characters and have one uppercase,Lowercase,number and special case character`).required('Password is required ').matches(
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})/,
-            "Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and One Special Case Character"
-          ),
-        confPassword: yup.string().required('Please confirm your password ').oneOf([yup.ref('password'), null], 'Passwords do not match'),
-        role: yup.string().required('Select a Role')
+    const {control, setFocus, handleSubmit, watch} = useForm({
+        defaultValues: {
+          email: '',
+          password: '',
+          role: '',
+        },
+        mode: 'onChange',
       });
 
-    return (
+    return (    
+    <View style={styles.containerStyle}>
+    <ScrollView contentContainerStyle={styles.scrollViewStyle}>
+    <Image style={styles.img} source={require('../assets/RD Logos/drury.png')} />
+      <FormBuilder
+        control={control}
+        setFocus={setFocus}
+        formConfigArray={[
+          {
+            type: 'text',
+            name: 'firstName',
+            rules: {
+              required: {
+                value: true,
+                message: 'First Name is required',
+              },
+            },
+            textInputProps: {
+              label: 'First Name',
+            },
+          },
+          {
+            type: 'text',
+            name: 'lastName',
+            rules: {
+              required: {
+                value: true,
+                message: 'Last Name is required',
+              },
+            },
+            textInputProps: {
+              label: 'Last Name',
+            },
+          },
+          {
+            type: 'email',
+            name: 'email',
 
-        <Formik
-     initialValues={{ email: '', password: '', confPassword: '' , firstName: '', lastName: '', role: ''}}
-     validateOnMount ={true}
-     validationSchema= {signUpValidation}
-     onSubmit={values=> api.post('/api/auth/signup', {
-            'Email': values.email,
-            'Password': values.password,
-            'ConfPassword': values.confPassword,
-            'Fname': values.firstName,
-            'Lname': values.lastName,
-            'Role': values.role
+            rules: {
+              required: {
+                value: true,
+                message: 'Email is required',
+              },
+              pattern: {
+                value:
+                  /[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})/,
+                message: 'Email is invalid',
+              },
+            },
+            textInputProps: {
+              label: 'Email',
+            },
+          },
+          {
+            type: 'password',
+            name: 'password',
+            rules: {
+              required: {
+                value: true,
+                message: 'Password is required',
+              },
+              minLength: {
+                value: 8,
+                message: 'Password should be atleast 8 characters',
+              },
+              pattern: {
+                  value:
+                  /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?!.*\s)/,
+                  message:'Password must contain a uppercase letter, a lowercase letter, a number, a special character, and no whitespace'
+              }
+            },
+            textInputProps: {
+              label: 'Password',
+            },
+          },
+          {
+            type: 'password',
+            name: 'confPassword',
+            rules: {
+              required: {
+                value: true,
+                message: 'Confirm Password is required',
+              },
+            validate: (value) => value == watch('password') || 'Passwords do not match',
+            },
+            textInputProps: {
+              label: 'Confirm Password',
+            },
+        },
+          {
+            name: 'role',
+            type: 'select',
+            textInputProps: {
+              label: 'Role',
+            },
+            rules: {
+              required: {
+                value: true,
+                message: 'Role is required',
+              },
+            },
+            options: [
+              {
+                value: 'Student',
+                label: 'Student',
+              },
+              {
+                value: 'Admin',
+                label: 'Admin',
+              },
+              {
+                value: 'Advisor',
+                label: 'Advisor',
+              },
+            ],
+          }
+        ]}
+      />
+      <Button
+        mode={'contained'}
+        onPress={handleSubmit((values) => api.post('/api/auth/signup', {
+          'Email': values.email,
+          'Password': values.password,
+          'ConfPassword': values.confPassword,
+          'Fname': values.firstName,
+          'Lname': values.lastName,
+          'Role': values.role
         })
-            .then(function (response) {
-                console.log("sent");
-                if (response.status != 201) {
-                    setIsError(true)
-                }
-                else {
-                    props.navigation.navigate('Home');
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-            })} 
-        >
-     {({ handleChange, handleBlur, handleSubmit, values, touched, errors, isValid }) => (
-
-        <View style={styles.container}>
-
-            <Image style={styles.img} source={require('../assets/RD Logos/drury.png')} />
-            
-            <View style={styles.inputView}>
-                <TextInput style={styles.inputText}
-
-                //enforce validation schema
-                    placeholder='First Name...'
-                    onChangeText={handleChange('firstName')}
-                    onBlur={handleBlur('firstName')}
-                    value={values.firstName}
-                    
-                    >
-                        
-                </TextInput>
-               
-              
-                {(errors.firstName && touched.firstName)&&
-                
-                <Text style ={styles.errors}> {errors.firstName} </Text>
-            }
-            </View>
-
-            <View style={styles.inputView}>
-                <TextInput style={styles.inputText}
-                    placeholder='Last Name...'
-                    onChangeText={handleChange('lastName')}
-                    onBlur={handleBlur('lastName')}
-                    value={values.lastName}
-                    >
-                </TextInput>
-
-                {(errors.lastName && touched.lastName)&&
-                
-                <Text style ={styles.errors}> {errors.lastName} </Text>
-            }
-            </View>
-
-            <View style={styles.inputView}>
-                <TextInput style={styles.inputText}
-                    placeholder='Password...' secureTextEntry={true}
-                    onChangeText={handleChange('password')}
-                    onBlur={handleBlur('password')}
-                    value={values.password}
-                    >
-                </TextInput>
-
-                {(errors.password && touched.password)&&
-                
-                <Text style ={styles.errors2}> {errors.password} </Text>
-            }
-            </View>
-
-            <View style={styles.inputView}>
-                <TextInput style={styles.inputText}
-                    placeholder='Confirm Password...' secureTextEntry={true}
-                    onChangeText={handleChange('confPassword')}
-                    onBlur={handleBlur('confPassword')}
-                    value={values.confPassword}
-                    >
-                </TextInput>
-                {(errors.confPassword && touched.confPassword)&&
-                
-                <Text style ={styles.errors}> {errors.confPassword} </Text>
-            }
-            </View>
-
-            <View style={styles.inputView}>
-                <TextInput style={styles.inputText}
-                    placeholder='Email...'
-                    onChangeText={handleChange('email')}
-                    onBlur={handleBlur('email')}
-                    value={values.email}
-                    >
-                </TextInput>
-
-                {(errors.email && touched.email)&&
-                
-                <Text style ={styles.errors}> {errors.email} </Text>
-            }
-            </View>
-
-            <View style={styles.inputView}>
-                <Picker placeholder='Role...'
-                    onValueChange={handleChange('role')}
-                    selectedValue={values.role}>
-                    <Picker.Item label="Role" value="" />
-                    <Picker.Item label="Student" value="Student" />
-                    <Picker.Item label="Admin" value="Admin" />
-                    <Picker.Item label="Advisor" value="Advisor" />'
-
-                </Picker>
-            </View>
-        <View style= {styles.btnDiv}>
-
-            {/* Set Disabled Button to notValid */}
-
-            
-            <Button title='Sign Up' rounded disabled = {!isValid} onPress={handleSubmit} style={[
-                
-                // Set Button to not submit if form data is invalid
-                styles.btn,
-                styles.shadowBtn,
-                {
-                    shadowColor: 'crimson',
-                    backgroundColor: isValid? 'crimson' : '#5c5c5c'
-                },
-            
-            ]}/>
-            </View>
-        </View>
-        )}
-        </Formik>
-        /*This styling applies to the Student page*/
-    )
+        .then(function (response) {
+          console.log("sent");
+          if (response.status != 201) {
+            setIsError(true)
+          }
+          else {
+            props.navigation.navigate('Home');
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        )}>
+        Submit
+      </Button>
+    </ScrollView>
+  </View>
+);
 }
 
 //Image styling components
@@ -242,7 +238,20 @@ const styles = StyleSheet.create({
           alignItems: "center",
           justifyContent: "center",
           marginBottom: 10
-    }
+    },
+    containerStyle: {
+        flex: 1,
+      },
+      scrollViewStyle: {
+        flex: 1,
+        padding: 15,
+        justifyContent: 'center',
+      },
+      headingStyle: {
+        fontSize: 30,
+        textAlign: 'center',
+        marginBottom: 40,
+      }
 });
 
 export default SignUp;
