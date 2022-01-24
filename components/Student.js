@@ -239,10 +239,8 @@ const Student = (props) => {
         <TouchableOpacity style={styles.btn2} onPress={onSubmitHandler}>
           <Text style={styles.btntext}>Submit</Text>
         </TouchableOpacity>  
-      </View> 
-      </ScrollView>
-    </SafeAreaView>
-   
+      </View>
+      </View>
   )
 };
 
