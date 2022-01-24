@@ -55,6 +55,11 @@ const Home= (props) => {
                   value: true,
                   message: 'Email is required',
                 },
+                pattern: {
+                  value:
+                    /[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})/,
+                  message: 'Email is invalid',
+                },
               },
               textInputProps: {
                 label: 'Email',
@@ -68,10 +73,6 @@ const Home= (props) => {
                 required: {
                   value: true,
                   message: 'Password is required',
-                },
-                minLength: {
-                  value: 5,
-                  message: 'Enter valid password',
                 },
               },
               textInputProps: {

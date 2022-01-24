@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, StyleSheet, ScrollView, Image, Dimensions } from 'react-native';
+import { View, StyleSheet, ScrollView, Image, Text} from 'react-native';
 import axios from 'axios';
 import {FormBuilder} from 'react-native-paper-form-builder';
 import {useForm} from 'react-hook-form';
-import {Button} from 'react-native-paper';
+import {Button, Surface} from 'react-native-paper';
 
 
 const SignUp = (props) => {
@@ -20,9 +20,14 @@ const SignUp = (props) => {
       });
 
     return (    
-    <View style={styles.containerStyle}>
-    <ScrollView contentContainerStyle={styles.scrollViewStyle}>
-    <Image style={styles.img} source={require('../assets/RD Logos/drury.png')} />
+      <View style={styles.containerStyle}>
+      <ScrollView contentContainerStyle={styles.scrollViewStyle}>
+      <Surface style={styles.formContainer}>
+      <View style={styles.formBuild}>
+      <Image
+           style={{width: "50%", height: "10%", resizeMode:"contain"  , marginTop: '3%', marginBottom: '2%', alignSelf: 'center' }}
+          source={{uri:'https://drury.edu/wp-content/uploads/files/brand_lounge/PrimaryFullColor.png'}}
+       />
       <FormBuilder
         control={control}
         setFocus={setFocus}
@@ -138,6 +143,7 @@ const SignUp = (props) => {
         ]}
       />
       <Button
+        style={styles.btn}
         mode={'contained'}
         onPress={handleSubmit((values) => api.post('/api/auth/signup', {
           'Email': values.email,
@@ -160,98 +166,53 @@ const SignUp = (props) => {
           console.log(error);
         })
         )}>
-        Submit
+        <Text style={styles.btnText}>Submit</Text>
       </Button>
-    </ScrollView>
-  </View>
+      </View>
+      </Surface>
+      </ScrollView>
+      </View>
 );
 }
 
-//Image styling components
-const width = Dimensions.get('window').width * .25;
-const ratio = width / 3146
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#F5F5F5',
-    },
-    inputView: {
-        width: "50%",
-        backgroundColor: "white",
-        borderRadius: 25,
-        height: 30,
-        marginBottom: 5,
-        justifyContent: "center",
-        padding: 20
-    },
-    inputText: {
-        height: 50,
-        color: "black",
-    },
-    img: {
-        width: width,
-        height: ratio * 1000,
-        marginTop: 20,
-        marginBottom: 5,
-    },
-    btn: {
-        width: "50%",
-        borderRadius: 25,
-        height: 50,
-        alignItems: "center",
-        justifyContent: "center",
-        margin: 10,
-        padding: 14,
-    },
-    btntext: {
-        color: 'white',
-        textAlign: 'center',
-        fontWeight: 'bold',
-        fontSize: 15,
+  containerStyle: {
+    flex: 1,
+    alignSelf: 'center',
+    width: '100%',
+    aspectRatio: 10/8
+  },
 
-    },
-    fieldTxts: {
-        width: '45%',
-        height: '8%',
-        paddingBottom: 20,
-    },
+  scrollViewStyle: {
+    flex: 1,
+    padding: '2%',
+    justifyContent: 'center',
+  },
 
-    errors:{
-        fontSize: 14,
-        color: 'red',
-        fontWeight: 'bold',
-        marginTop: 3
+  btn: {
+    backgroundColor: 'crimson',
+    marginBottom: '4%',
+  },
 
-    },
-    errors2:{
-        fontSize: 12,
-        color: 'red',
-        fontWeight: 'bold',
-        marginTop: 2
+  btnText:{
+    color: 'white'
+  },
 
-    },
-    btnDiv:{
-          width: '100%'  ,
-          alignItems: "center",
-          justifyContent: "center",
-          marginBottom: 10
-    },
-    containerStyle: {
-        flex: 1,
-      },
-      scrollViewStyle: {
-        flex: 1,
-        padding: 15,
-        justifyContent: 'center',
-      },
-      headingStyle: {
-        fontSize: 30,
-        textAlign: 'center',
-        marginBottom: 40,
-      }
+  forgotpass:{
+    color: 'blue'
+  },
+
+  formContainer:{
+    width: '50%',
+    height: '100%',
+    alignSelf: 'center'
+  },
+
+  formBuild:{
+    height: '100%',
+    width: '75%',
+    alignSelf: 'center'
+  }
 });
 
 export default SignUp;
