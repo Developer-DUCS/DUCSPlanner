@@ -12,6 +12,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import SignUp from './components/SignUp';
 import ForgotPass from './components/ForgotPass';
+import PlanCreation from './components/PlanCreation';
 
 const App = () => {
   return (
@@ -48,6 +49,9 @@ const AppNavigator = createStackNavigator({
   },
   ForgotPass: {
     screen: ForgotPass
+  },
+  PlanCreation: {
+    screen: PlanCreation
   }
 }, {
   initialRouteName: "Home"

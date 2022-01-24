@@ -1,44 +1,100 @@
 import React, { useState } from 'react';
-import { Button, View, Text, StyleSheet, Picker, TouchableOpacity, ActivityIndicator,ScrollView, ScrollViewComponent } from 'react-native';
+import { Button, View, Text, StyleSheet, Picker, TouchableOpacity, ActivityIndicator,ScrollView, ScrollViewComponent, FlatList} from 'react-native';
 import { createAppContainer, SafeAreaView } from "react-navigation";
 import { CardStyleInterpolators, createStackNavigator } from "react-navigation-stack";
 
 import axios from 'axios'
-import CredField from './CredField'
 
 const api = axios.create({
   baseURL: `http://localhost:3210`
 })
 
 const Student = (props) => {
-  const [name, setName] = useState('John Doe');
-  const [courseCode, setCourseCode] = useState(['"CSGD"', '"CRIM"', '"INTD"']);
+  let courseCode = [];
+  let newCourses = [];
+  let name = localStorage.getItem("fname") + " " + localStorage.getItem("lname");
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
-  const [fieldNum, setFieldNum] = useState(3);
+  const [formValuesMajor, setFormValuesMajor] = useState([{}])
+  const [formValuesMinor, setFormValuesMinor] = useState([{}])
+  const [formValuesCert, setFormValuesCert] = useState([{}])
+
 
   const onSubmitHandler = () => {
     setIsLoading(true);
+    //check validity of fields
+    if ((formValuesMajor.length == 0 || formValuesCert.length == 0) || (formValuesMajor[0].major == undefined ||
+      formValuesCert[0].cert == undefined)) {
+      setTimeout(() => { setIsLoading(false); }, 1000);
+      setIsError(true);
+      setMessage('Incorrect Fields');
+      return;
+    }
+    else {
+      let pros = 0;
+      let life = 0;
+      //make coursecode list
+      for (let a = 0; a < formValuesMajor.length; a++) {
+        let majorCode = formValuesMajor[a].major.split(",")
+        if (majorCode[1] == 'P') {
+          pros = pros + 1;
+        }
+        else {
+          life = life + 1
+        }
+        newCourses.push(majorCode[0]);
+      }
+      if (formValuesMinor[0].minor != undefined) {
+        for (let b = 0; b < formValuesMinor.length; b++) {
+          let minorCode = formValuesMinor[b].minor.split(",")
+          if (minorCode[1] == 'P') {
+            pros = pros + 1;
+          }
+          else {
+            life = life + 1
+          }
+          newCourses.push(minorCode[0]);
+        }
+      }
+      for (let c = 0; c < formValuesCert.length; c++) {
+        let certCode = formValuesCert[c].cert.split(",")
+        if (certCode[1] == 'P') {
+          pros = pros + 1;
+        }
+        else {
+          life = life + 1
+        }
+        newCourses.push(certCode[0]);
+      }
+      for (let d = 0; d < newCourses.length; d++) {
+        courseCode.push("'" + newCourses[d] + "'");
+      }
+      if (pros == 0 || life == 0) {
+        setTimeout(() => { setIsLoading(false); }, 1000);
+        setIsError(true);
+        setMessage('You must have one credential in the "Professional" category and one credential in the "Life" category.');
+        return;
+      }
+    }
     api.post('/api/courses/courses', {
       'courseCode': courseCode,
-
-    
     })
       .then(function (response) {
         if (response.status != 200) {
           setIsError(true);
         }
         else {
-          if(response.status == 200){
-          console.log("i got a 200 status");
-          console.log(response);
+          if (response.status == 200) {
+            setTimeout(() => { setIsLoading(false); }, 3000);
+            let courseList = "";
+            for (let x = 0; x < response.data.Courses.length; x++) {
+              courseList = courseList + JSON.stringify(response.data.Courses[x]) + ";";
+            }
+            //console.log(courseList);
+            localStorage.setItem("fetchCourseList", courseList);
+            props.navigation.navigate('PlanCreation');
           }
-          return (
-            <View>
-              <Text>Hey, it worked!</Text>
-            </View>
-          );
         }
       })
       .catch(function (error) {
@@ -49,11 +105,6 @@ const Student = (props) => {
       });
   };
 
-  const onMajorAdd = () => {
-    console.log('madeithere')
-    return (<View style={styles.form}><CredField /></View>)
-  }
-
   if (isLoading) {
     return (
       <View style={styles.load}>
@@ -62,64 +113,128 @@ const Student = (props) => {
     )
   }
 
-  return (
-    
-    <SafeAreaView style={styles.container}>
-      <ScrollView>
-      <View style={styles.InfoText}> 
-        <Text style={styles.txt1}>Welcome Back {name}!</Text>
-        <Text style={styles.txt2}>Please choose your desired major, minor, or certificate options from the list below:</Text>
-        <Text style={styles.txt3}>NOTE: choose at least three credentials:  one major and two certificates.  One certificate can be replaced with a second major or a minor.</Text>
-      </View>
+  let addMajorFormFields = () => {
+    setFormValuesMajor([...formValuesMajor, {}])
+  }
+  let addMinorFormFields = () => {
+    setFormValuesMinor([...formValuesMinor, {}])
+  }
+  let addCertFormFields = () => {
+    setFormValuesCert([...formValuesCert, {}])
+  }
+  let removeFormFieldsMajor = (i) => {
+    let newFormValuesMajor = [...formValuesMajor];
+    newFormValuesMajor.splice(i, 1);
+    setFormValuesMajor(newFormValuesMajor)
+  }
+  let removeFormFieldsMinor = (i) => {
+    let newFormValuesMinor = [...formValuesMinor];
+    newFormValuesMinor.splice(i, 1);
+    setFormValuesMinor(newFormValuesMinor)
+  }
+  let removeFormFieldsCert = (i) => {
+    let newFormValuesCert = [...formValuesCert];
+    newFormValuesCert.splice(i, 1);
+    setFormValuesCert(newFormValuesCert)
+  }
+  let handleMajorChange = (i, e) => {
+    let newFormValuesMajor = [...formValuesMajor];
+    newFormValuesMajor[i][e.target.name] = e.target.value;
+    setFormValuesMajor(newFormValuesMajor);
+  }
+  let handleMinorChange = (i, e) => {
+    let newFormValuesMinor = [...formValuesMinor];
+    newFormValuesMinor[i][e.target.name] = e.target.value;
+    setFormValuesMinor(newFormValuesMinor);
+  }
+  let handleCertChange = (i, e) => {
+    let newFormValuesCert = [...formValuesCert];
+    newFormValuesCert[i][e.target.name] = e.target.value;
+    setFormValuesCert(newFormValuesCert);
+  }
 
-      <View style= {styles.form} >
-      
-        <View style= {styles.container2}>
-        <Picker style={styles.picker} placeholder='Major' >
-          <Picker.Item label="Select Major" value="" />
-          <Picker.Item label="Computer Science: Game Development" value="CSGD" />
-          <Picker.Item label="Computer Science: Software Engineering" value="CSSE" />
-          <Picker.Item label="Mathematics" value="MATH" />
-        </Picker>
-        <View style={styles.btnCont}>
-        <TouchableOpacity style={styles.btn}>
+  return (
+    <View style={styles.container}>
+      <View>
+        <Text style={styles.txt1}>Welcome back {name}!</Text>
+        <Text style={styles.txt2}>Please choose your desired major, minor, or certificate options from the list below:</Text>
+        <Text style={styles.txt3}>NOTE: choose at least three credentials:  one major and two certificates.  One certificate can be replaced with a second major or a minor. You must also have one credential in the "Professional" category and one credential in the "Life" category.</Text>
+      </View>
+      <View style={styles.form2}>
+        <form>
+          {formValuesMajor.map((element, index) => (
+            <div className="form-inline" key={index}>
+              <select name="major" id="major" onChange={e => handleMajorChange(index, e)}>
+                <option value="">Please select a major</option>
+                <optgroup label="Professional">
+                  <option value="CSGD,P">Computer Science: Game Development</option>
+                  <option value="CSSE,P">Computer Science: Software Engineering</option>
+                </optgroup>
+                <optgroup label="Life">
+                  <option value="MATH,L">Mathematics</option>
+                </optgroup>
+              </select>
+            </div>
+          ))}
+        </form>
+        <form>
+          {formValuesMinor.map((element, index) => (
+            <div className="form-inline" key={index}>
+              <select name="minor" id="minor" onChange={e => handleMinorChange(index, e)}>
+                <option value="">Please select a minor</option>
+                <optgroup label="Professional">
+                  <option value="ANIM,P">Animation</option>
+                </optgroup>
+                <optgroup label="Life">
+                  <option value="CSCI,L">Computer Science</option>
+                  <option value="CRIM,L">Criminology</option>
+                  <option value="ENGL,L">English</option>
+                </optgroup>
+              </select>
+            </div>
+          ))}
+        </form>
+        <form>
+          {formValuesCert.map((element, index) => (
+            <div className="form-inline" key={index}>
+              <select name="cert" id="cert" onChange={e => handleCertChange(index, e)}>
+                <option value="">Please select a certificate</option>
+                <optgroup label="Professional">
+                  <option value="INTD,P">Interactive Design</option>
+                </optgroup>
+                <optgroup label="Life">
+                  <option value="INTI,L">International Immersion</option>
+                  <option value="ANCA,L">Ancients Alive: The Classics in Context</option>
+                </optgroup>
+              </select>
+            </div>
+          ))}
+        </form>
+      </View>
+      <View style={styles.form}>
+        <TouchableOpacity style={styles.btn} onPress={() => addMajorFormFields()}>
           <Text style={styles.btntext}>Add Major</Text>
         </TouchableOpacity>
-        </View>
-        </View>
-
-       
-      <View  style= {styles.container2}>
-
-     <Picker style={styles.picker} placeholder='Minor'>
-       <Picker.Item label="Select Minor" value="" />
-      <Picker.Item label="Computer Science" value="CSCI" />
-      <Picker.Item label="Criminology" value="CRIM" />
-      <Picker.Item label="English" value="ENGL" />
-      </Picker>
-
-      </View>
-      
-      <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={() => addMinorFormFields()}>
           <Text style={styles.btntext}>Add Minor</Text>
         </TouchableOpacity>
-
-        <View  style= {styles.container2}>
-        <Picker style={styles.picker} placeholder='Certificate'>
-          <Picker.Item label="Select Certificate" value="" />
-          <Picker.Item label="Interactive Design" value="INTD" />
-          <Picker.Item label="International Immersion" value="INTI" />
-          <Picker.Item label="Ancients Alive: The Classics in Context" value="ANCA" />
-        </Picker>
-        </View>
-
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={() => addCertFormFields()}>
           <Text style={styles.btntext}>Add Certificate</Text>
         </TouchableOpacity>
         
       </View>
-    
-      <View>
+      <View style={styles.form}>
+        <TouchableOpacity style={styles.btn} onPress={(index) => removeFormFieldsMajor(index)}>
+          <Text style={styles.btntext}>Remove Major</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btn} onPress={(index) => removeFormFieldsMinor(index)}>
+          <Text style={styles.btntext}>Remove Minor</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btn} onPress={(index) => removeFormFieldsCert(index)}>
+          <Text style={styles.btntext}>Remove Certificate</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.centered}>
         <Text style={[styles.message, { color: isError ? 'red' : '#F5F5F5' }]}>{message}</Text>
         <TouchableOpacity style={styles.btn2} onPress={onSubmitHandler}>
           <Text style={styles.btntext}>Submit</Text>
@@ -144,10 +259,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingTop: "2%"
   },
-  
-  form:{
-    display: 'flex',
-    marginLeft: '1%'
+  txt2: {
+    fontSize: 20,
+    padding: 15,
+    paddingTop: 0
+  },
+  txt3: {
+    fontSize: 15,
+    padding: 15,
+    paddingTop: 0
+  },
+  form: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 50,
+    paddingVertical: 0
   },
 
   btn: {
@@ -157,9 +283,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignItems: "center",  
     justifyContent: "center",
-    marginTop: "1%",
-    marginBottom: "0.9%",
-    flexShrink: 1
+    margin: 5,
   },
   btn2:{
       width: "46%",
@@ -180,8 +304,8 @@ const styles = StyleSheet.create({
   form2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%'
+    paddingHorizontal: 60,
+    paddingVertical: 5
   },
   load: {
     flex: 1,

@@ -6,6 +6,7 @@ import {useForm} from 'react-hook-form';
 import {Button, Surface, icon} from 'react-native-paper';
 import axios from 'axios';
 import SignUp from './SignUp';
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const Home= (props) => {
   const api = axios.create({
@@ -29,6 +30,7 @@ const Home= (props) => {
   const onSignUp = () => {
     props.navigation.navigate('SignUp');
   }
+
 
   return (
     <View style={styles.containerStyle}>
@@ -150,7 +152,7 @@ const styles = StyleSheet.create({
   btnText:{
     color: 'white'
   },
-
+  
   forgotpass:{
     color: 'blue'
   },

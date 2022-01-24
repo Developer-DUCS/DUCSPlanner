@@ -24,7 +24,10 @@ router.post('/login', (req, res) => {
                         UserId: rows[l].UserId, Email: req.body.Email, Role: rows[l].Role, Department: rows[l].Department,
                         YearStarted: rows[l].Year_Started, Fname: rows[l].Fname, Lname: rows[l].Lname
                     }, secret, { expiresIn: '1h' });
-                    return (res.status(201).json({ message: "User logged in", "token": token, "Role": rows[l].Role }));
+                    return (res.status(200).json({
+                        message: "User logged in", "token": token, "Role": rows[l].Role, "fname": rows[l].Fname,
+                        "lname": rows[l].Lname
+                    }));
                 }
             }
             return res.status(401).json({ message: "invalid credentials" });
