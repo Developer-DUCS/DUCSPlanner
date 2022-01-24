@@ -95,8 +95,8 @@ const Home= (props) => {
         })
         .then(function (response) {
           console.log("sent");
-          if (response.status != 201) {
-            setIsError(true)
+          if (response.status != 200) {
+            //setIsError(true)
           }
           else {
             props.navigation.navigate('Student');
