@@ -36,6 +36,7 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/signup', (req, res) => {
+    console.log(res.body);
     conn.query(`select Email from UserAccountsTest where Email = "${req.body.Email}"`, function (error, rows, fields) {
         if (error) {
             return res.status(500).json({ message: 'Error try again later' })
@@ -45,7 +46,7 @@ router.post('/signup', (req, res) => {
         }
         else {
             if (req.body.Password != req.body.ConfPassword) {
-                return res.status(502).json({ message: 'Passwords do not match' })
+                return res.status(509).json({ message: 'Passwords do not match' })
             }
             else {
                 // //  Create a hash for the submitted password

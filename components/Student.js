@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Button, View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
+import { Button, View, Text, StyleSheet, Picker, TouchableOpacity, ActivityIndicator,ScrollView, ScrollViewComponent, FlatList} from 'react-native';
+import { createAppContainer, SafeAreaView } from "react-navigation";
+import { CardStyleInterpolators, createStackNavigator } from "react-navigation-stack";
+
 import axios from 'axios'
 
 const api = axios.create({
@@ -218,6 +221,7 @@ const Student = (props) => {
         <TouchableOpacity style={styles.btn} onPress={() => addCertFormFields()}>
           <Text style={styles.btntext}>Add Certificate</Text>
         </TouchableOpacity>
+        
       </View>
       <View style={styles.form}>
         <TouchableOpacity style={styles.btn} onPress={(index) => removeFormFieldsMajor(index)}>
@@ -232,28 +236,28 @@ const Student = (props) => {
       </View>
       <View style={styles.centered}>
         <Text style={[styles.message, { color: isError ? 'red' : '#F5F5F5' }]}>{message}</Text>
-        <TouchableOpacity style={styles.btn} onPress={onSubmitHandler}>
+        <TouchableOpacity style={styles.btn2} onPress={onSubmitHandler}>
           <Text style={styles.btntext}>Submit</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+        </TouchableOpacity>  
+      </View> 
+      </ScrollView>
+    </SafeAreaView>
+   
   )
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#F5F5F',
+    flex: 5,
+    backgroundColor: '#F5F5F5',
+    width: '100%',
+    aspectRatio : 10/8,
   },
+
   centered: {
     justifyContent: 'center',
     alignItems: 'center',
-    paddingTop: 100
-  },
-  txt1: {
-    fontWeight: 'bold',
-    fontSize: 25,
-    padding: 15
+    paddingTop: "2%"
   },
   txt2: {
     fontSize: 20,
@@ -271,15 +275,28 @@ const styles = StyleSheet.create({
     paddingHorizontal: 50,
     paddingVertical: 0
   },
+
   btn: {
-    width: "20%",
+    width: "45%",
     backgroundColor: "crimson",
     borderRadius: 25,
     height: 50,
-    alignItems: "center",
+    alignItems: "center",  
     justifyContent: "center",
     margin: 5,
   },
+  btn2:{
+      width: "46%",
+      backgroundColor: "crimson",
+      borderRadius: 25,
+      height: 40,
+      alignItems: "center",
+      justifyContent: "center",
+      marginTop: "1%",
+      marginBottom: "0.9%",
+      flexShrink: 1
+    },
+
   btntext: {
     color: "white",
     fontWeight: 'bold',
@@ -298,6 +315,40 @@ const styles = StyleSheet.create({
   message: {
     fontWeight: 'bold',
   },
+  picker: {
+    width: '45%',
+  },
+  pickerSet:{
+    width : '100%',
+    flexDirection: "row",
+    
+
+  },
+  InfoText: {
+    width: '80%',
+    flexDirection: "column",
+    marginLeft: 5
+  },
+  txt1:{
+    fontWeight: "bold",
+    fontSize: 20,
+    paddingBottom: "1%",
+  },
+  txt2:{
+    width: '70%',
+    paddingBottom: "0.8%",
+  },
+  txt3: {
+    width: '70%',
+    paddingBottom: "0.8%",
+    
+  },
+  container2:{
+    
+   
+    
+  }
+ 
 });
 
 export default Student;
