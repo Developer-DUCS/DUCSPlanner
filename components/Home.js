@@ -1,12 +1,9 @@
 import React from 'react';
-import { useState } from 'react';
 import {View, StyleSheet, ScrollView, Text, Image} from 'react-native';
 import {FormBuilder} from 'react-native-paper-form-builder';
 import {useForm} from 'react-hook-form';
-import {Button, Surface, icon} from 'react-native-paper';
+import {Button, Surface} from 'react-native-paper';
 import axios from 'axios';
-import SignUp from './SignUp';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 const Home= (props) => {
   const api = axios.create({

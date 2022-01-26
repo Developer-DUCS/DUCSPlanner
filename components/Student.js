@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
-import { Button, View, Text, StyleSheet, Picker, TouchableOpacity, ActivityIndicator,ScrollView, ScrollViewComponent, FlatList} from 'react-native';
-import { createAppContainer, SafeAreaView } from "react-navigation";
-import { CardStyleInterpolators, createStackNavigator } from "react-navigation-stack";
+import {View, Text, StyleSheet, TouchableOpacity, ActivityIndicator} from 'react-native';
 
 import axios from 'axios'
 
