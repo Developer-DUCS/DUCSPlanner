@@ -18,12 +18,30 @@ router.post('/courses', (req, res) => {
         else {
             let courseList = [];
             rows.forEach((rows) => {
+                let prereqList = [];
+                if(rows.IsPrereq == 'Yes') {
+                    let qry2 = `SELECT CourseCode FROM Courses, Prerequisites 
+                    WHERE UniqueCourseID IN (SELECT Prereq_ID FROM Courses, Prerequisites
+                                            WHERE Course_ID = ${rows.UniqueCourseID});`;
+                    conn.query(qry2, (err, rows2) => {
+                        if (err) {
+                            return res.status(500).json({ error: err });
+                        }
+
+                        else {
+                            rows2.forEach((row2) => {
+                                prereqList.push(row2.CourseCode)
+                            });
+                        }
+                    });
+                }
                 let course = {
                     CoursePrefix: rows.CoursePrefix,
                     CourseName: rows.CourseName,
                     CourseCode: rows.CourseCode,
                     Semester: rows.Semester,
-                    CreditHours: rows.CreditHours
+                    CreditHours: rows.CreditHours,
+                    Prereqs: prereqList
                 }
                 courseList.push(course);
             })
