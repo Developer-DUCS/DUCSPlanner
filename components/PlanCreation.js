@@ -3,6 +3,7 @@ import { Button, View, Text, StyleSheet, Picker, TouchableOpacity, ActivityIndic
 import axios from 'axios'
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import uuid from 'uuid/v4';
+import { set } from 'react-hook-form';
 
 const PlanCreation = (props) => {
   const itemsFromBackend = [];
@@ -16,9 +17,10 @@ const PlanCreation = (props) => {
   classList.pop();
 
   for (let j = 0; j < classList.length; j++) {
+    
     itemsFromBackend.push(JSON.parse(classList[j]));
+    
   }
-
   const columnsFromBackend =
   {
     [uuid()]: {

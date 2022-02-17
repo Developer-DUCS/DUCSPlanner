@@ -8,8 +8,9 @@ router.use(bodyParser.json());
 
 //Test router
 router.post('/courses', (req, res) => {
-    console.log(`Courses called for ${req.body.courseCode}`);
-    let qry = `SELECT * FROM Courses WHERE CoursePrefix IN (${req.body.courseCode});`;
+    console.log(`Courses called for (${req.body.courseCode})`);
+    let qry = `select distinct CoursePrefix,CourseName,CourseCode,Semester,CreditHours from courses join Credentials_has_Courses on Credentials_has_Courses.Courses_UniqueCourseID=Courses.UniqueCourseID WHERE Credentials_CredentialID IN (${req.body.courseCode});`;
+    console.log(qry.response);
     conn.query(qry, (err, rows) => {
         if (err) {
             return res.status(500).json({ error: err });
@@ -25,12 +26,42 @@ router.post('/courses', (req, res) => {
                     Semester: rows.Semester,
                     CreditHours: rows.CreditHours
                 }
+                
                 courseList.push(course);
+                
             })
+            console.log(courseList);
             return (res.status(200).json({ Courses: courseList }));
         }
 
     })
+})
+//possibly new route playing with different options
+router.post('/providingCredentials', (req,res) => {
+    console.log('Credentials to be provided to drop down');
+    let query = `Select * from Credentials;`;
+    conn.query(query,(err, rows) =>{
+        if (err){
+            return res.status(500).json({ error: err});
+        }
+        else {
+            console.log("I got to here yay!");
+            let CredList = [];
+            rows.forEach((rows) => {
+                let Cred = {
+                    CredentialID : rows.CredentialID,
+                    CredentialName : rows.CredentialName,
+                    Type : rows.Type,
+                    CredType : rows.CredType
+                }
+                CredList.push(Cred);
+
+            })
+            console.log(CredList);
+            return (res.status(200).json({ Credentials : CredList }));
+        }
+    })
+
 })
 //skeleton code for creating a plan
 router.post('/create', (req,res) => {
