@@ -3,7 +3,7 @@
 PlanIt is an application that allows students to create a 4-year plan
 
 Database Schema: 
-PlanItTest
+PlanIt
 
 Current Instructions for Building App:
 Run, expo build:web, this makes the build directory that we’ll end up deploying on to the server.

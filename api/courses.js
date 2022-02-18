@@ -8,31 +8,86 @@ router.use(bodyParser.json());
 
 //Test router
 router.post('/courses', (req, res) => {
-    console.log(`Courses called for (${req.body.courseCode})`);
-    let qry = `select distinct CoursePrefix,CourseName,CourseCode,Semester,CreditHours from courses join Credentials_has_Courses on Credentials_has_Courses.Courses_UniqueCourseID=Courses.UniqueCourseID WHERE Credentials_CredentialID IN (${req.body.courseCode});`;
-    console.log(qry.response);
-    conn.query(qry, (err, rows) => {
-        if (err) {
-            return res.status(500).json({ error: err });
-        }
 
-        else {
-            let courseList = [];
-            rows.forEach((rows) => {
-                let course = {
-                    CoursePrefix: rows.CoursePrefix,
-                    CourseName: rows.CourseName,
-                    CourseCode: rows.CourseCode,
-                    Semester: rows.Semester,
-                    CreditHours: rows.CreditHours
-                }
-                
-                courseList.push(course);
-                
-            })
-            console.log(courseList);
-            return (res.status(200).json({ Courses: courseList }));
+    function getPrereq(course) {
+        let prereqList = [];
+        if(course.HasPrereq == 'Yes') {
+            let qry2 = `SELECT CoursePrefix, CourseCode FROM Courses, Prerequisites 
+                        WHERE UniqueCourseID IN (SELECT Prereq_ID FROM Courses, Prerequisites
+                                                WHERE Course_ID IN (SELECT UniqueCourseID FROM Courses
+                                                                    WHERE CoursePrefix = "${course.CoursePrefix}" AND CourseCode = ${course.CourseCode}));`;
+            return new Promise((resolve, reject) => {
+                conn.query(qry2, (err, rows2) => {
+                    if (err) {
+                        reject(err);
+                    }
+    
+                    else {
+                        rows2.forEach((row2) => {
+                            prereqList.push([row2.CoursePrefix, row2.CourseCode])
+                        });
+                        resolve(prereqList);
+                    }
+                });
+            });
         }
+        else {
+            return Promise.resolve(prereqList); 
+        }
+    }
+    
+    function getCourses(courseCode){
+        let prereqList = [];
+        let qry = `select distinct CoursePrefix,CourseName,CourseCode,Semester,CreditHours,HasPrereq from courses join Credentials_has_Courses on Credentials_has_Courses.Courses_UniqueCourseID=Courses.UniqueCourseID WHERE Credentials_CredentialID IN (${req.body.courseCode});`;
+        return new Promise((resolve, reject) => {
+            conn.query(qry, (err, rows) => {
+                if (err) {
+                    reject(err);
+                }
+    
+                else {
+                    let courseList = [];
+                    rows.forEach((rows) => {
+                        let course = {
+                            CoursePrefix: rows.CoursePrefix,
+                            CourseName: rows.CourseName,
+                            CourseCode: rows.CourseCode,
+                            Semester: rows.Semester,
+                            CreditHours: rows.CreditHours,
+                            HasPrereq: rows.HasPrereq,
+                            Prereqs: prereqList
+                        }
+                        courseList.push(course);
+                    })
+                    resolve(courseList);
+                }
+
+             
+            });
+        });
+    }
+
+    async function asyncForEach(array, callback) {
+        for (let index = 0; index < array.length; index++) {
+          await callback(array[index], index, array);
+        }
+    }
+
+    async function init() {
+        let courseCode = req.body.courseCode;
+        console.log(courseCode);
+        let courses = await getCourses(courseCode);
+        await asyncForEach(courses, async (course) => {
+            let prereqList = await getPrereq(course);
+            course.Prereqs = prereqList;
+        })
+        console.log(courses);
+        return (res.status(200).json({ Courses: courses }));
+    }
+
+    init();
+});
+
 
     })
 })
@@ -63,6 +118,8 @@ router.post('/providingCredentials', (req,res) => {
     })
 
 })
+
+
 //skeleton code for creating a plan
 router.post('/create', (req,res) => {
     console.log(`Courses to be pushed : ${req.body}`);
