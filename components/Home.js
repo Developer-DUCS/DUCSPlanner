@@ -99,6 +99,9 @@ const Home= (props) => {
             //setIsError(true)
           }
           else {
+            console.log(response);
+            localStorage.setItem('fname', response.data.fname);
+            localStorage.setItem('lname', response.data.lname);
             props.navigation.navigate('Student');
           }
           
