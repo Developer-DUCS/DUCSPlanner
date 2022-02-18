@@ -8,7 +8,6 @@ router.use(bodyParser.json());
 
 //Test router
 router.post('/courses', (req, res) => {
-    console.log(`Courses called for ${req.body.courseCode}`);
 
     function getPrereq(course) {
         let prereqList = [];
@@ -62,6 +61,8 @@ router.post('/courses', (req, res) => {
                     })
                     resolve(courseList);
                 }
+
+             
             });
         });
     }
@@ -86,6 +87,38 @@ router.post('/courses', (req, res) => {
 
     init();
 });
+
+
+    })
+})
+//possibly new route playing with different options
+router.post('/providingCredentials', (req,res) => {
+    console.log('Credentials to be provided to drop down');
+    let query = `Select * from Credentials;`;
+    conn.query(query,(err, rows) =>{
+        if (err){
+            return res.status(500).json({ error: err});
+        }
+        else {
+            console.log("I got to here yay!");
+            let CredList = [];
+            rows.forEach((rows) => {
+                let Cred = {
+                    CredentialID : rows.CredentialID,
+                    CredentialName : rows.CredentialName,
+                    Type : rows.Type,
+                    CredType : rows.CredType
+                }
+                CredList.push(Cred);
+
+            })
+            console.log(CredList);
+            return (res.status(200).json({ Credentials : CredList }));
+        }
+    })
+
+})
+
 
 //skeleton code for creating a plan
 router.post('/create', (req,res) => {

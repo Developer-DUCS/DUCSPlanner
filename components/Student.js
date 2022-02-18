@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
-import { Button, View, Text, StyleSheet, Picker, TouchableOpacity, ActivityIndicator,ScrollView, ScrollViewComponent, FlatList} from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { Button, View, Text, StyleSheet, Picker, TouchableOpacity, ActivityIndicator,ScrollView, ScrollViewComponent, FlatList, SliderComponent} from 'react-native';
 import { createAppContainer, SafeAreaView } from "react-navigation";
 import { CardStyleInterpolators, createStackNavigator } from "react-navigation-stack";
 
 import axios from 'axios'
+import { render } from 'react-dom';
 
 const api = axios.create({
   baseURL: `http://localhost:3210`
 })
 
 const Student = (props) => {
+  
+  let CredentialList = [];
   let courseCode = [];
   let newCourses = [];
   let name = localStorage.getItem("fname") + " " + localStorage.getItem("lname");
@@ -19,6 +22,52 @@ const Student = (props) => {
   const [formValuesMajor, setFormValuesMajor] = useState([{}])
   const [formValuesMinor, setFormValuesMinor] = useState([{}])
   const [formValuesCert, setFormValuesCert] = useState([{}])
+  //function to run once student page is opened to grab all drury credentials and put them in the drop down
+  useEffect(() => {
+    console.log('im in the effect')
+    let credentialListener = () => {   
+      console.log("I've hit the load event");
+      setIsLoading(true);
+      api.post('api/courses/providingCredentials', {
+        'CredentialList' : CredentialList,})
+      .then(function (response)
+      {
+        if (response.status != 200) {
+          setIsError(true);
+        }
+        else {
+          if (response.status == 200) {
+            setTimeout(() => { setIsLoading(false); }, 3000);
+            //console.log(response);
+            //console.log(response.data);
+            //console.log(response.data.Credentials[0]);
+            //console.log(JSON.stringify(response.data));
+            for (let x = 0; x < response.data.Credentials.length; x++) {
+              console.log(x)
+              console.log(response.data.Credentials[x]);
+              //CredentialList.push(response.data.Credentials[x]);
+              CredentialList = CredentialList + JSON.stringify(response.data.Credentials[x]) + ";";
+              //courseList = courseList + JSON.stringify(response.data.Courses[x]) + ";";
+            }
+            console.log(CredentialList);
+            localStorage.setItem("Credentials", CredentialList);//placed it in local storage will need a session solution instead eventually
+            //return(CredentialList);
+          }
+          //return(CredentialList);
+        }
+      })
+  //.catch(error)
+  };
+  //credentialListener() //test statment to see if the api functions correctly
+  //console.log(CredentialList)
+  },[]); //the empty array is so that the useEffect runs only once, probably bad code :( but couldn't get event listeners to work.
+
+
+  //testing way to create new dropdown
+
+
+
+
 
 
   const onSubmitHandler = () => {
@@ -152,8 +201,34 @@ const Student = (props) => {
     newFormValuesCert[i][e.target.name] = e.target.value;
     setFormValuesCert(newFormValuesCert);
   }
+  //experimenting with creating dynamic dropdown componenet
+  /*const CredentialArray = () => {
+    let CredsToUse = localStorage.getItem("Credentials");
+    let newCreds = CredsToUse.split(";");
+    let stuff =[]
+    newCreds.pop();
+    console.log(newCreds);
+   for (let j = 0; j < newCreds.length; j++){
+    stuff.push (JSON.parse(newCreds[j]));
+    }
+   console.log(stuff);
+  
+    console.log(newCreds);
+    const data = {stuff};
+    console.log(data.stuff[1])
+  
+    return (
+      <div className = "Creds">
+        {data.stuff.map((disciplines) => (
+        <div key = {disciplines} className="user">{disciplines} </div>))}
+      </div>
+    )
+  
+  }*/
+  
 
   return (
+
     <View style={styles.container}>
       <View>
         <Text style={styles.txt1}>Welcome back {name}!</Text>
@@ -167,11 +242,13 @@ const Student = (props) => {
               <select name="major" id="major" onChange={e => handleMajorChange(index, e)}>
                 <option value="">Please select a major</option>
                 <optgroup label="Professional">
-                  <option value="CSGD,P">Computer Science: Game Development</option>
-                  <option value="CSSE,P">Computer Science: Software Engineering</option>
+                  <option value="3,P">Computer Science: Game Development</option>
+                  <option value="1,P">Computer Science: Software Engineering</option>
                 </optgroup>
                 <optgroup label="Life">
-                  <option value="MATH,L">Mathematics</option>
+                  <option value="4,L">Mathematics</option>
+                  <option value="5,L">Criminology</option>
+                  <option value="6,L">English</option>
                 </optgroup>
               </select>
             </div>
@@ -183,12 +260,12 @@ const Student = (props) => {
               <select name="minor" id="minor" onChange={e => handleMinorChange(index, e)}>
                 <option value="">Please select a minor</option>
                 <optgroup label="Professional">
-                  <option value="ANIM,P">Animation</option>
+                  <option value="">Not Valid Animation</option>
                 </optgroup>
                 <optgroup label="Life">
-                  <option value="CSCI,L">Computer Science</option>
-                  <option value="CRIM,L">Criminology</option>
-                  <option value="ENGL,L">English</option>
+                  <option value="10,L">Computer Science</option>
+                  <option value="">Not Valid Criminology</option>
+                  <option value="">Not Valid English</option>
                 </optgroup>
               </select>
             </div>
@@ -200,11 +277,11 @@ const Student = (props) => {
               <select name="cert" id="cert" onChange={e => handleCertChange(index, e)}>
                 <option value="">Please select a certificate</option>
                 <optgroup label="Professional">
-                  <option value="INTD,P">Interactive Design</option>
+                  <option value="7,P">Interactive Design</option>
                 </optgroup>
                 <optgroup label="Life">
-                  <option value="INTI,L">International Immersion</option>
-                  <option value="ANCA,L">Ancients Alive: The Classics in Context</option>
+                  <option value="8,L">International Immersion</option>
+                  <option value="9,L">Ancients Alive: The Classics in Context</option>
                 </optgroup>
               </select>
             </div>
