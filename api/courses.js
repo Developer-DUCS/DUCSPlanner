@@ -38,7 +38,7 @@ router.post('/courses', (req, res) => {
     
     function getCourses(courseCode){
         let prereqList = [];
-        let qry = `select distinct CoursePrefix,CourseName,CourseCode,Semester,CreditHours,HasPrereq from courses join Credentials_has_Courses on Credentials_has_Courses.Courses_UniqueCourseID=Courses.UniqueCourseID WHERE Credentials_CredentialID IN (${req.body.courseCode});`;
+        let qry = `select distinct CoursePrefix,CourseName,CourseCode,Semester,CreditHours,HasPrereq from courses join Credentials_has_Courses on Credentials_has_Courses.Courses_UniqueCourseID=Courses.UniqueCourseID WHERE Credentials_CredentialID IN (${courseCode});`;
         return new Promise((resolve, reject) => {
             conn.query(qry, (err, rows) => {
                 if (err) {
@@ -89,8 +89,7 @@ router.post('/courses', (req, res) => {
 });
 
 
-    })
-})
+
 //possibly new route playing with different options
 router.post('/providingCredentials', (req,res) => {
     console.log('Credentials to be provided to drop down');
