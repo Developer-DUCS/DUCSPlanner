@@ -1,7 +1,7 @@
 const express = require("express");
 const conn = require("./mysqldb");
 const app = express()
-const port = 3210;
+const port = 3210; //originally 3210
 const bodyParser = require("body-parser");
 
 app.use(express.static('App.js'))
@@ -29,7 +29,7 @@ app.listen(port, (err) => {
 });
 
 app.get('/login', function (req, res) {
-    conn.query('select * from UserAccountsTest', function (error, rows, fields) {
+    conn.query('select * from PlanItUsers', function (error, rows, fields) {
         if (error) {
             console.log(error);
         }
