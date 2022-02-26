@@ -29,7 +29,7 @@ app.listen(port, (err) => {
 });
 
 app.get('/login', function (req, res) {
-    conn.query('select * from UserAccountsTest', function (error, rows, fields) {
+    conn.query('select * from PlanItUsers', function (error, rows, fields) {
         if (error) {
             console.log(error);
         }

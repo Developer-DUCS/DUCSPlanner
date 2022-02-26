@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Button, View, Text, StyleSheet, Picker, TouchableOpacity, ActivityIndicator,ScrollView, ScrollViewComponent, FlatList} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView, ScrollViewComponent, FlatList } from 'react-native';
 import { createAppContainer, SafeAreaView } from "react-navigation";
 import { CardStyleInterpolators, createStackNavigator } from "react-navigation-stack";
+import { Button, Surface, icon } from 'react-native-paper';
 
 import axios from 'axios'
 
@@ -212,35 +213,35 @@ const Student = (props) => {
         </form>
       </View>
       <View style={styles.form}>
-        <TouchableOpacity style={styles.btn} onPress={() => addMajorFormFields()}>
+        <Button style={styles.btn} onPress={() => addMajorFormFields()} uppercase={false}>
           <Text style={styles.btntext}>Add Major</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={() => addMinorFormFields()}>
+        </Button>
+        <Button style={styles.btn} onPress={() => addMinorFormFields()} uppercase={false}>
           <Text style={styles.btntext}>Add Minor</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={() => addCertFormFields()}>
+        </Button>
+        <Button style={styles.btn} onPress={() => addCertFormFields()} uppercase={false}>
           <Text style={styles.btntext}>Add Certificate</Text>
-        </TouchableOpacity>
-        
+        </Button>
+
       </View>
       <View style={styles.form}>
-        <TouchableOpacity style={styles.btn} onPress={(index) => removeFormFieldsMajor(index)}>
+        <Button style={styles.btn} onPress={(index) => removeFormFieldsMajor(index)} uppercase={false}>
           <Text style={styles.btntext}>Remove Major</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={(index) => removeFormFieldsMinor(index)}>
+        </Button>
+        <Button style={styles.btn} onPress={(index) => removeFormFieldsMinor(index)} uppercase={false}>
           <Text style={styles.btntext}>Remove Minor</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.btn} onPress={(index) => removeFormFieldsCert(index)}>
+        </Button>
+        <Button style={styles.btn} onPress={(index) => removeFormFieldsCert(index)} uppercase={false}>
           <Text style={styles.btntext}>Remove Certificate</Text>
-        </TouchableOpacity>
+        </Button>
       </View>
       <View style={styles.centered}>
         <Text style={[styles.message, { color: isError ? 'red' : '#F5F5F5' }]}>{message}</Text>
-        <TouchableOpacity style={styles.btn2} onPress={onSubmitHandler}>
+        <Button onPress={() => onSubmitHandler()} style={styles.btn} uppercase={false}>
           <Text style={styles.btntext}>Submit</Text>
-        </TouchableOpacity>  
+        </Button>
       </View>
-      </View>
+    </View>
   )
 };
 
@@ -249,7 +250,7 @@ const styles = StyleSheet.create({
     flex: 5,
     backgroundColor: '#F5F5F5',
     width: '100%',
-    aspectRatio : 10/8,
+    aspectRatio: 10 / 8,
   },
 
   centered: {
@@ -271,30 +272,18 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 50,
-    paddingVertical: 0
+    paddingVertical: 0,
+    width: '100%'
   },
-
   btn: {
-    width: "45%",
+    width: "20%",
     backgroundColor: "crimson",
     borderRadius: 25,
     height: 50,
-    alignItems: "center",  
+    alignItems: "center",
     justifyContent: "center",
     margin: 5,
   },
-  btn2:{
-      width: "46%",
-      backgroundColor: "crimson",
-      borderRadius: 25,
-      height: 40,
-      alignItems: "center",
-      justifyContent: "center",
-      marginTop: "1%",
-      marginBottom: "0.9%",
-      flexShrink: 1
-    },
-
   btntext: {
     color: "white",
     fontWeight: 'bold',
@@ -302,7 +291,7 @@ const styles = StyleSheet.create({
   form2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 60,
+    paddingHorizontal: 150,
     paddingVertical: 5
   },
   load: {
@@ -313,40 +302,19 @@ const styles = StyleSheet.create({
   message: {
     fontWeight: 'bold',
   },
-  picker: {
-    width: '45%',
-  },
-  pickerSet:{
-    width : '100%',
-    flexDirection: "row",
-    
-
-  },
-  InfoText: {
-    width: '80%',
-    flexDirection: "column",
-    marginLeft: 5
-  },
-  txt1:{
+  txt1: {
     fontWeight: "bold",
     fontSize: 20,
     paddingBottom: "1%",
   },
-  txt2:{
+  txt2: {
     width: '70%',
     paddingBottom: "0.8%",
   },
   txt3: {
     width: '70%',
     paddingBottom: "0.8%",
-    
-  },
-  container2:{
-    
-   
-    
   }
- 
 });
 
 export default Student;
