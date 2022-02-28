@@ -171,6 +171,12 @@ const Student = (props) => {
       <Surface style={styles.Majors}>
       <View style= {{width: '100%', alignItems: 'center'}}> 
         <Text style= {styles.MajMinorCert}> Major</Text>
+        <Picker style={styles.pickerOpt}>
+          <Picker.Item value= ""></Picker.Item>
+        <Picker.Item label="Computer Science: Game Development" value="CSGD,P" />
+        <Picker.Item label="Computer Science: Software Engineering" value="CSSE,P" />
+        <Picker.Item label="Mathematics" value="MATH,L" />
+        </Picker>
         <TouchableOpacity style={styles.btn} onPress={() => addMajorFormFields()}>
           <Text style={styles.btntext}>Add Major</Text>
         </TouchableOpacity>
@@ -186,6 +192,13 @@ const Student = (props) => {
         <Surface style={styles.MinorSec}>
         <View style= {{width: '100%', alignItems: 'center'}}> 
         <Text style= {styles.MajMinorCert}> Minor</Text>
+        <Picker style={styles.pickerOpt}>
+          <Picker.Item value= ""></Picker.Item>
+        <Picker.Item label="Animation" value="ANIM,P" />
+        <Picker.Item label="Computer Science" value="CSCI,L" />
+        <Picker.Item label="Criminology" value="CRIM,L" />
+        <Picker.Item label="English" value="ENGL,L" />
+        </Picker>
         <TouchableOpacity style={styles.btn} onPress={() => addMinorFormFields()}>
           <Text style={styles.btntext}>Add Minor</Text>
         </TouchableOpacity>
@@ -200,6 +213,12 @@ const Student = (props) => {
         <Surface style={styles.cert}>
         
         <Text style= {styles.MajMinorCert}> Certificate</Text>
+        <Picker style={styles.pickerOpt}>
+          <Picker.Item value= ""></Picker.Item>
+        <Picker.Item label="Interactive Design" value="INTD,P" />
+        <Picker.Item label="International Immersion" value="INTL,L" />
+        <Picker.Item label="Ancients Alive: The classics in COntext" value="ANCA,L" />
+        </Picker>
         <TouchableOpacity style={styles.btn} onPress={() => addCertFormFields()}>
           <Text style={styles.btntext}>Add Certificate</Text>
 
@@ -212,28 +231,6 @@ const Student = (props) => {
         
         </Surface>
        
-       {/* <View>
-        <TouchableOpacity style={styles.btn} onPress={() => addMinorFormFields()}>
-          <Text style={styles.btntext}>Add Minor</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btn} onPress={(index) => removeFormFieldsMinor(index)}>
-          <Text style={styles.btntext}>Remove Minor</Text>
-        </TouchableOpacity>
-
-        </View>
-
-
-        <TouchableOpacity style={styles.btn} onPress={() => addCertFormFields()}>
-          <Text style={styles.btntext}>Add Certificate</Text>
-
-          
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.btn} onPress={(index) => removeFormFieldsCert(index)}>
-          <Text style={styles.btntext}>Remove Certificate</Text>
-        </TouchableOpacity>
-         */}
       
       </Surface>
       </View>
@@ -258,6 +255,12 @@ const styles = StyleSheet.create({
     aspectRatio : 10/8,
   },
 
+  pickerOpt:{
+
+    width: '80%'
+
+  },
+
   centered: {
     justifyContent: 'center',
     alignItems: 'center',
@@ -277,7 +280,8 @@ const styles = StyleSheet.create({
   MainContainer:{
     paddingTop: '2%',
     paddingLeft: '0.72%',
-    paddingRight: '0.72%'
+    paddingRight: '0.72%',
+    flexShrink: 1
   },
 
 
@@ -291,7 +295,7 @@ const styles = StyleSheet.create({
    
 
   mainSurface:{
-    backgroundColor: 'blue',
+   
     flexDirection: 'row',
     width: '100%'
 
@@ -322,6 +326,7 @@ const styles = StyleSheet.create({
     alignItems: "center",  
     justifyContent: "center",
     margin: 5,
+    
   },
   btn2:{
       width: "46%",
@@ -338,6 +343,7 @@ const styles = StyleSheet.create({
   btntext: {
     color: "white",
     fontWeight: 'bold',
+    alignSelf: 'center'
   },
   form2: {
     flexDirection: 'row',
@@ -371,13 +377,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     paddingBottom: "1%",
+    width: '100%',
   },
   txt2:{
-    width: '70%',
+    width: '100%',
     paddingBottom: "0.8%",
   },
   txt3: {
-    width: '70%',
+    width: '100%',
     paddingBottom: "0.8%",
     
   },
@@ -385,10 +392,10 @@ const styles = StyleSheet.create({
   MajMinorCert:{
 
     fontSize: 25,
-    fontStyle: 'centered',
     fontWeight: 'bold',
     alignSelf: 'center',
-    flex: 1
+    flex: 1,
+    paddingBottom: '1.3%'
 
 
   },
