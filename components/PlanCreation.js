@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     elevation: 4,
     backgroundColor: 'white',
-    borderRadius: '5px'
+    borderRadius: 5
   },
   surfacetext: {
     color: 'black'
