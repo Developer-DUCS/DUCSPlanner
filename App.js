@@ -6,6 +6,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 
 import Home from './components/Home';
 import Student from './components/Student';
+import StudentCPY from './components/StudentsCPY';
 import Advisor from './components/Advisor';
 import Admin from './components/Admin';
 import Header from './components/Header';
@@ -37,6 +38,9 @@ const AppNavigator = createStackNavigator({
   },
   Student: {
     screen: Student
+  },
+  StudentCPY: {
+    screen: StudentCPY
   },
   Advisor: {
     screen: Advisor

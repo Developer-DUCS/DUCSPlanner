@@ -1,189 +1,479 @@
 import React, { useState } from 'react';
-import { Button, View, Text, StyleSheet, Picker, TouchableOpacity, ActivityIndicator, FlatList } from 'react-native';
+import { View, StyleSheet, Picker, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import axios from 'axios'
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import uuid from 'uuid/v4';
-import { set } from 'react-hook-form';
+import { Avatar, Button, Card, Title, Paragraph, Surface, Text } from 'react-native-paper';
+import { FormBuilder } from 'react-native-paper-form-builder';
+import { useForm } from 'react-hook-form';
+
 
 const PlanCreation = (props) => {
-  const itemsFromBackend = [];
 
-  let listItems = [];
+  const [sem1Class, setSem1Class] = useState([]);
+  const [sem2Class, setSem2Class] = useState([]);
+  const [sem3Class, setSem3Class] = useState([]);
+  const [sem4Class, setSem4Class] = useState([]);
+  const [sem5Class, setSem5Class] = useState([]);
+  const [sem6Class, setSem6Class] = useState([]);
+  const [sem7Class, setSem7Class] = useState([]);
+  const [sem8Class, setSem8Class] = useState([]);
 
-  let classes = localStorage.getItem("fetchCourseList");
+  const { control, setFocus, watch } = useForm({
+    defaultValues: {
+      sem1: '',
+      sem2: '',
+      sem3: '',
+      sem4: '',
+      sem5: '',
+      sem6: '',
+      sem7: '',
+      sem8: ''
+    },
+    mode: 'onChange',
+  });
+  const thing = watch();
+  console.log(thing);
 
-  let classList = classes.split(";");
-  console.log(classList);
-  classList.pop();
-
-  for (let j = 0; j < classList.length; j++) {
-    
-    itemsFromBackend.push(JSON.parse(classList[j]));
-    
+  let addClassesSem1 = () => {
+    setSem1Class([...sem1Class,
+    <Surface style={styles.surface}>
+      <Text style={styles.surfacetext}>{thing.sem1}</Text>
+    </Surface>
+    ]);
   }
-  const columnsFromBackend =
-  {
-    [uuid()]: {
-      name: 'Class List',
-      items: itemsFromBackend
-    },
-    [uuid()]: {
-      name: 'Semester 1',
-      items: []
-    },
-    [uuid()]: {
-      name: 'Semester 2',
-      items: []
-    }/* ,
-        [uuid()]: {
-            name: 'Semester 3',
-            items: []
-        },
-        [uuid()]: {
-            name: 'Semester 4',
-            items: []
-        },
-        [uuid()]: {
-            name: 'Semester 5',
-            items: []
-        },
-        [uuid()]: {
-            name: 'Semester 6',
-            items: []
-        },
-        [uuid()]: {
-            name: 'Semester 7',
-            items: []
-        },
-        [uuid()]: {
-            name: 'Semester 8',
-            items: []
-        } */
-  };
-
-  const onDragEnd = (result, columns, setColumns) => {
-    if (!result.destination) return;
-    const { source, destination } = result;
-    if (source.droppableId !== destination.droppableId) {
-      const sourceColumn = columns[source.droppableId];
-      const destColumn = columns[destination.droppableId];
-      const sourceItems = [...sourceColumn.items];
-      const destItems = [...destColumn.items];
-      const [removed] = sourceItems.splice(source.index, 1);
-      destItems.splice(destination.index, 0, removed);
-      setColumns({
-        ...columns,
-        [source.droppableId]: {
-          ...sourceColumn,
-          items: sourceItems
-        },
-        [destination.droppableId]: {
-          ...destColumn,
-          items: destItems
-        }
-      });
-    } else {
-      const column = columns[source.droppableId];
-      const copiedItems = [...column.items];
-      const [removed] = copiedItems.splice(source.index, 1);
-      copiedItems.splice(destination.index, 0, removed);
-      setColumns({
-        ...columns,
-        [source.droppableId]: {
-          ...column,
-          items: copiedItems
-        }
-      });
-    }
-  };
-
-  const [columns, setColumns] = useState(columnsFromBackend);
-
-  const returnContent = () => {
-    console.log(listItems);
-    let listPrint = "[ ";
-    for (let i = 0; i < listItems.length; i++) {
-      listPrint = listPrint + "[ ";
-      for (let k = 0; k < listItems[i].length; k++) {
-        //console.log(listItems[i][k].content);
-        listPrint = listPrint + listItems[i][k].CoursePrefix + " " + listItems[i][k].CourseCode + " ";
-      }
-      listPrint = listPrint + "] ";
-    }
-    listPrint = listPrint + "]";
-    console.log(listPrint);
-  };
-
+  let addClassesSem2 = () => {
+    setSem2Class([...sem2Class,
+    <Surface style={styles.surface}>
+      <Text style={styles.surfacetext}>{thing.sem2}</Text>
+    </Surface>
+    ]);
+  }
+  let addClassesSem3 = () => {
+    setSem3Class([...sem3Class,
+    <Surface style={styles.surface}>
+      <Text style={styles.surfacetext}>{thing.sem3}</Text>
+    </Surface>
+    ]);
+  }
+  let addClassesSem4 = () => {
+    setSem4Class([...sem4Class,
+    <Surface style={styles.surface}>
+      <Text style={styles.surfacetext}>{thing.sem4}</Text>
+    </Surface>
+    ]);
+  }
+  let addClassesSem5 = () => {
+    setSem5Class([...sem5Class,
+    <Surface style={styles.surface}>
+      <Text style={styles.surfacetext}>{thing.sem5}</Text>
+    </Surface>
+    ]);
+  }
+  let addClassesSem6 = () => {
+    setSem6Class([...sem6Class,
+    <Surface style={styles.surface}>
+      <Text style={styles.surfacetext}>{thing.sem6}</Text>
+    </Surface>
+    ]);
+  }
+  let addClassesSem7 = () => {
+    setSem7Class([...sem7Class,
+    <Surface style={styles.surface}>
+      <Text style={styles.surfacetext}>{thing.sem7}</Text>
+    </Surface>
+    ]);
+  }
+  let addClassesSem8 = () => {
+    setSem8Class([...sem8Class,
+    <Surface style={styles.surface}>
+      <Text style={styles.surfacetext}>{thing.sem8}</Text>
+    </Surface>
+    ]);
+  }
   return (
-    <View style={styles.container}>
-      <div style={{ display: 'flex', justifyContent: 'left', height: '95%' }}>
-        <DragDropContext onDragEnd={result => onDragEnd(result, columns, setColumns)}>
-          {Object.entries(columns).map(([id, column]) => {
-            listItems.push(column.items);
-            return (
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }} key={id}>
-                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'left', background: 'lightgrey', width: 258 }}>
-                  <h2 style={{ background: 'lightgrey' }}>{column.name}</h2>
-                </div>
-                <div style={{ marginBottom: 8, marginRight: 8, marginLeft: 8, border: 40, borderColor: 'black' }}>
-                  <Droppable droppableId={id} key={id}>
-                    {(provided, snapshot) => {
-                      return (
-                        <div
-                          {...provided.droppableProps}
-                          ref={provided.innerRef}
-                          style={{
-                            background: snapshot.isDraggingOver ? 'lightblue' : 'lightgrey',
-                            padding: 4,
-                            width: 250,
-                            minHeight: 500
-                          }}
-                        >
-                          {column.items.map((item, index) => {
-                            return (
-                              <Draggable key={item.CoursePrefix + " " + item.CourseCode} draggableId={item.CoursePrefix + " " + item.CourseCode} index={index}>
-                                {(provided, snapshot) => {
-                                  return (
-                                    <div
-                                      ref={provided.innerRef}
-                                      {...provided.draggableProps}
-                                      {...provided.dragHandleProps}
-                                      style={{
-                                        userSelect: 'none',
-                                        padding: 16,
-                                        margin: '0 0 8px 0',
-                                        minHeight: '50px',
-                                        backgroundColor: snapshot.isDragging ? '#263B4A' : '#456C86',
-                                        color: 'white',
-                                        ...provided.draggableProps.style
-                                      }}
-                                    >
-                                      {item.CoursePrefix+ " "+ item.CourseCode+" "+item.CourseName + " " + item.Semester + " " + item.CreditHours +" Credit Hours"}
-                                    </div>
-                                  )
-                                }}
-                              </Draggable>
-                            )
-                          })}
-                          {provided.placeholder}
-                        </div>
-                      )
-                    }}
-                  </Droppable>
-                </div>
-              </div>
-            )
-          })}
-        </DragDropContext>
-      </div>
-      {returnContent()}
-    </View>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.row}>
+          <Card style={styles.card}>
+            <Card.Title title="Freshman Fall Semester" />
+            <Card.Content>
+              <FormBuilder
+                control={control}
+                setFocus={setFocus}
+                formConfigArray={[
+                  {
+                    name: 'sem1',
+                    type: 'select',
+                    textInputProps: {
+                      label: 'Class',
+                    },
+                    options: [
+                      {
+                        label: "Discrete Mathematics",
+                        value: "CSCI241",
+                      },
+                      {
+                        label: "Introduction to Computer Science",
+                        value: "CSCI251",
+                      },
+                      {
+                        label: "Data Structures",
+                        value: "CSCI261",
+                      },
+                    ],
+                  }
+                ]}
+              />
+              <Button style={styles.btn} onPress={() => addClassesSem1()} uppercase={false}>
+                <Text style={styles.btntxt}>Add Selected Class</Text>
+              </Button>
+              <View>
+                {sem1Class}
+              </View>
+            </Card.Content>
+          </Card>
+          <Card style={styles.card}>
+            <Card.Title style={styles.cardtxt} title="Freshman Spring Semester" />
+            <Card.Content>
+              <FormBuilder
+                style={styles.form}
+                control={control}
+                setFocus={setFocus}
+                formConfigArray={[
+                  {
+                    name: 'sem2',
+                    type: 'select',
+                    textInputProps: {
+                      label: 'Class',
+                    },
+                    options: [
+                      {
+                        label: "Discrete Mathematics",
+                        value: "CSCI241",
+                      },
+                      {
+                        label: "Introduction to Computer Science",
+                        value: "CSCI251",
+                      },
+                      {
+                        label: "Data Structures",
+                        value: "CSCI261",
+                      },
+                    ],
+                  }
+                ]}
+              />
+              <Button style={styles.btn} onPress={() => addClassesSem2()} uppercase={false}>
+                <Text style={styles.btntxt}>Add Selected Class</Text>
+              </Button>
+              <View>
+                {sem2Class}
+              </View>
+            </Card.Content>
+          </Card>
+          <Card style={styles.card}>
+            <Card.Title title="Sophomore Fall Semester" />
+            <Card.Content>
+              <FormBuilder
+                control={control}
+                setFocus={setFocus}
+                formConfigArray={[
+                  {
+                    name: 'sem3',
+                    type: 'select',
+                    textInputProps: {
+                      label: 'Class',
+                    },
+                    options: [
+                      {
+                        label: "Discrete Mathematics",
+                        value: "CSCI241",
+                      },
+                      {
+                        label: "Introduction to Computer Science",
+                        value: "CSCI251",
+                      },
+                      {
+                        label: "Data Structures",
+                        value: "CSCI261",
+                      },
+                    ],
+                  }
+                ]}
+              />
+              <Button style={styles.btn} onPress={() => addClassesSem3()} uppercase={false}>
+                <Text style={styles.btntxt}>Add Selected Class</Text>
+              </Button>
+              <View>
+                {sem3Class}
+              </View>
+            </Card.Content>
+          </Card>
+          <Card style={styles.card}>
+            <Card.Title title="Sophomore Spring Semester" />
+            <Card.Content>
+              <FormBuilder
+                control={control}
+                setFocus={setFocus}
+                formConfigArray={[
+                  {
+                    name: 'sem4',
+                    type: 'select',
+                    textInputProps: {
+                      label: 'Class',
+                    },
+                    options: [
+                      {
+                        label: "Discrete Mathematics",
+                        value: "CSCI241",
+                      },
+                      {
+                        label: "Introduction to Computer Science",
+                        value: "CSCI251",
+                      },
+                      {
+                        label: "Data Structures",
+                        value: "CSCI261",
+                      },
+                    ],
+                  }
+                ]}
+              />
+              <Button style={styles.btn} onPress={() => addClassesSem4()} uppercase={false}>
+                <Text style={styles.btntxt}>Add Selected Class</Text>
+              </Button>
+              <View>
+                {sem4Class}
+              </View>
+            </Card.Content>
+          </Card>
+        </View>
+        <View style={styles.row}>
+          <Card style={styles.card}>
+            <Card.Title title="Freshman Fall Semester" />
+            <Card.Content>
+              <FormBuilder
+                control={control}
+                setFocus={setFocus}
+                formConfigArray={[
+                  {
+                    name: 'sem5',
+                    type: 'select',
+                    textInputProps: {
+                      label: 'Class',
+                    },
+                    options: [
+                      {
+                        label: "Discrete Mathematics",
+                        value: "CSCI241",
+                      },
+                      {
+                        label: "Introduction to Computer Science",
+                        value: "CSCI251",
+                      },
+                      {
+                        label: "Data Structures",
+                        value: "CSCI261",
+                      },
+                    ],
+                  }
+                ]}
+              />
+              <Button style={styles.btn} onPress={() => addClassesSem5()} uppercase={false}>
+                <Text style={styles.btntxt}>Add Selected Class</Text>
+              </Button>
+              <View>
+                {sem5Class}
+              </View>
+            </Card.Content>
+          </Card>
+          <Card style={styles.card}>
+            <Card.Title style={styles.cardtxt} title="Freshman Spring Semester" />
+            <Card.Content>
+              <FormBuilder
+                control={control}
+                setFocus={setFocus}
+                formConfigArray={[
+                  {
+                    name: 'sem6',
+                    type: 'select',
+                    textInputProps: {
+                      label: 'Class',
+                    },
+                    options: [
+                      {
+                        label: "Discrete Mathematics",
+                        value: "CSCI241",
+                      },
+                      {
+                        label: "Introduction to Computer Science",
+                        value: "CSCI251",
+                      },
+                      {
+                        label: "Data Structures",
+                        value: "CSCI261",
+                      },
+                    ],
+                  }
+                ]}
+              />
+              <Button style={styles.btn} onPress={() => addClassesSem6()} uppercase={false}>
+                <Text style={styles.btntxt}>Add Selected Class</Text>
+              </Button>
+              <View>
+                {sem6Class}
+              </View>
+            </Card.Content>
+          </Card>
+          <Card style={styles.card}>
+            <Card.Title title="Sophomore Fall Semester" />
+            <Card.Content>
+              <FormBuilder
+                control={control}
+                setFocus={setFocus}
+                formConfigArray={[
+                  {
+                    name: 'sem7',
+                    type: 'select',
+                    textInputProps: {
+                      label: 'Class',
+                    },
+                    options: [
+                      {
+                        label: "Discrete Mathematics",
+                        value: "CSCI241",
+                      },
+                      {
+                        label: "Introduction to Computer Science",
+                        value: "CSCI251",
+                      },
+                      {
+                        label: "Data Structures",
+                        value: "CSCI261",
+                      },
+                    ],
+                  }
+                ]}
+              />
+              <Button style={styles.btn} onPress={() => addClassesSem7()} uppercase={false}>
+                <Text style={styles.btntxt}>Add Selected Class</Text>
+              </Button>
+              <View>
+                {sem7Class}
+              </View>
+            </Card.Content>
+          </Card>
+          <Card style={styles.card}>
+            <Card.Title title="Sophomore Spring Semester" />
+            <Card.Content>
+              <FormBuilder
+                control={control}
+                setFocus={setFocus}
+                formConfigArray={[
+                  {
+                    name: 'sem8',
+                    type: 'select',
+                    textInputProps: {
+                      label: 'Class',
+                    },
+                    options: [
+                      {
+                        label: "Discrete Mathematics",
+                        value: "CSCI241",
+                      },
+                      {
+                        label: "Introduction to Computer Science",
+                        value: "CSCI251",
+                      },
+                      {
+                        label: "Data Structures",
+                        value: "CSCI261",
+                      },
+                    ],
+                  }
+                ]}
+              />
+              <Button style={styles.btn} onPress={() => addClassesSem8()} uppercase={false}>
+                <Text style={styles.btntxt}>Add Selected Class</Text>
+              </Button>
+              <View>
+                {sem8Class}
+              </View>
+            </Card.Content>
+          </Card>
+        </View>
+        <View>
+          <Button style={styles.btnSubmit} uppercase={false}>
+            <Text style={styles.btntxtSub}>Submit</Text>
+          </Button>
+        </View>
+      </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  card: {
+    backgroundColor: 'crimson',
+    width: '23%',
+    margin: '10px',
+    height: '100%',
+    marginTop: '20px'
+  },
+  cardtxt: {
+    color: 'rgba(255, 255, 255, 1.0)'
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: '60%',
+    marginBottom: '20px'
+  },
+  surface: {
+    marginTop: '10px',
+    height: "40px",
+    width: "100%",
+    alignItems: 'center',
+    justifyContent: 'center',
+    elevation: 4,
+    backgroundColor: 'white',
+    borderRadius: 5
+  },
+  surfacetext: {
+    color: 'black'
+  },
+  btn: {
+    backgroundColor: "white",
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  btntxt: {
+    color: "black",
+    fontWeight: 'bold',
+  },
+  field: {
+    color: 'white'
+  },
+  btnSubmit: {
+    backgroundColor: "crimson",
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    width: '30%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: '20px',
+    marginBottom: '20px',
+  },
+  btntxtSub: {
+    color: "white",
+    fontWeight: 'bold',
   },
 });
 
