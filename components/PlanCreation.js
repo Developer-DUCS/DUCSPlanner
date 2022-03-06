@@ -8,6 +8,30 @@ import { useForm } from 'react-hook-form';
 
 const PlanCreation = (props) => {
 
+  const itemsFromBackend = [];
+  let listItems = [];
+
+  let classes = localStorage.getItem("fetchCourseList");
+
+  let classList = classes.split(";");
+  console.log(classList);
+  classList.pop();
+
+  for (let j = 0; j < classList.length; j++) {
+    itemsFromBackend.push(JSON.parse(classList[j]));
+  }
+
+  itemsFromBackend.sort(function(a,b) {return a.CourseCode - b.CourseCode});
+
+  for (let j = 0; j < itemsFromBackend.length; j++) {
+    listItems.push({
+        label: itemsFromBackend[j].CourseName,
+        value: itemsFromBackend[j].CoursePrefix + itemsFromBackend[j].CourseCode
+    });
+  }
+
+  //listSize = Math.ceil(itemsFromBackend.length/8);
+
   const [sem1Class, setSem1Class] = useState([]);
   const [sem2Class, setSem2Class] = useState([]);
   const [sem3Class, setSem3Class] = useState([]);
@@ -106,20 +130,7 @@ const PlanCreation = (props) => {
                     textInputProps: {
                       label: 'Class',
                     },
-                    options: [
-                      {
-                        label: "Discrete Mathematics",
-                        value: "CSCI241",
-                      },
-                      {
-                        label: "Introduction to Computer Science",
-                        value: "CSCI251",
-                      },
-                      {
-                        label: "Data Structures",
-                        value: "CSCI261",
-                      },
-                    ],
+                    options: listItems,
                   }
                 ]}
               />
@@ -145,20 +156,7 @@ const PlanCreation = (props) => {
                     textInputProps: {
                       label: 'Class',
                     },
-                    options: [
-                      {
-                        label: "Discrete Mathematics",
-                        value: "CSCI241",
-                      },
-                      {
-                        label: "Introduction to Computer Science",
-                        value: "CSCI251",
-                      },
-                      {
-                        label: "Data Structures",
-                        value: "CSCI261",
-                      },
-                    ],
+                    options: listItems,
                   }
                 ]}
               />
@@ -183,20 +181,7 @@ const PlanCreation = (props) => {
                     textInputProps: {
                       label: 'Class',
                     },
-                    options: [
-                      {
-                        label: "Discrete Mathematics",
-                        value: "CSCI241",
-                      },
-                      {
-                        label: "Introduction to Computer Science",
-                        value: "CSCI251",
-                      },
-                      {
-                        label: "Data Structures",
-                        value: "CSCI261",
-                      },
-                    ],
+                    options: listItems,
                   }
                 ]}
               />
@@ -221,20 +206,7 @@ const PlanCreation = (props) => {
                     textInputProps: {
                       label: 'Class',
                     },
-                    options: [
-                      {
-                        label: "Discrete Mathematics",
-                        value: "CSCI241",
-                      },
-                      {
-                        label: "Introduction to Computer Science",
-                        value: "CSCI251",
-                      },
-                      {
-                        label: "Data Structures",
-                        value: "CSCI261",
-                      },
-                    ],
+                    options: listItems,
                   }
                 ]}
               />
@@ -261,20 +233,7 @@ const PlanCreation = (props) => {
                     textInputProps: {
                       label: 'Class',
                     },
-                    options: [
-                      {
-                        label: "Discrete Mathematics",
-                        value: "CSCI241",
-                      },
-                      {
-                        label: "Introduction to Computer Science",
-                        value: "CSCI251",
-                      },
-                      {
-                        label: "Data Structures",
-                        value: "CSCI261",
-                      },
-                    ],
+                    options: listItems,
                   }
                 ]}
               />
@@ -299,20 +258,7 @@ const PlanCreation = (props) => {
                     textInputProps: {
                       label: 'Class',
                     },
-                    options: [
-                      {
-                        label: "Discrete Mathematics",
-                        value: "CSCI241",
-                      },
-                      {
-                        label: "Introduction to Computer Science",
-                        value: "CSCI251",
-                      },
-                      {
-                        label: "Data Structures",
-                        value: "CSCI261",
-                      },
-                    ],
+                    options: listItems,
                   }
                 ]}
               />
@@ -337,20 +283,7 @@ const PlanCreation = (props) => {
                     textInputProps: {
                       label: 'Class',
                     },
-                    options: [
-                      {
-                        label: "Discrete Mathematics",
-                        value: "CSCI241",
-                      },
-                      {
-                        label: "Introduction to Computer Science",
-                        value: "CSCI251",
-                      },
-                      {
-                        label: "Data Structures",
-                        value: "CSCI261",
-                      },
-                    ],
+                    options: listItems,
                   }
                 ]}
               />
@@ -375,20 +308,7 @@ const PlanCreation = (props) => {
                     textInputProps: {
                       label: 'Class',
                     },
-                    options: [
-                      {
-                        label: "Discrete Mathematics",
-                        value: "CSCI241",
-                      },
-                      {
-                        label: "Introduction to Computer Science",
-                        value: "CSCI251",
-                      },
-                      {
-                        label: "Data Structures",
-                        value: "CSCI261",
-                      },
-                    ],
+                    options: listItems,
                   }
                 ]}
               />
