@@ -3,8 +3,12 @@ const conn = require("./mysqldb");
 const app = express()
 const port = 3210; //originally 3210
 const bodyParser = require("body-parser");
-
+const session = require("./session"); //used for persistent storage
 app.use(express.static('App.js'))
+
+app.use(session);
+
+let sess;
 
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -17,7 +21,9 @@ const router = express.Router();
 
 router.use("/api/auth", require("./api/auth"));
 router.use("/api/courses", require("./api/courses"));
-
+//router.use("/api/sessionRoutes/get-session",require("./api/sessionRoutes/get-session"));
+//router.use("/api/sessionRoutes/store-data", require("./api/sessionRoutes/store-data"));
+//router.use("/api/sessionRoutes/get-data", require("./api/sessionRoutes/get-data"));
 
 app.use(router);
 
@@ -35,6 +41,8 @@ app.get('/login', function (req, res) {
         }
         else {
             console.log(rows);
+            req.session.rows;
+            //console.log(req.session.rows)
             res.send(rows);
         }
     });
