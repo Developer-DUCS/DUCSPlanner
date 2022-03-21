@@ -5,32 +5,33 @@ import { Avatar, Button, Card, Title, Paragraph, Surface, Text } from 'react-nat
 import { FormBuilder } from 'react-native-paper-form-builder';
 import { useForm } from 'react-hook-form';
 
+const itemsFromBackend = [];
+let listItems = [];
+
+let classes = localStorage.getItem("fetchCourseList");
+
+let classList = classes.split(";");
+console.log(classList);
+classList.pop();
+
+for (let j = 0; j < classList.length; j++) {
+  itemsFromBackend.push(JSON.parse(classList[j]));
+}
+
+itemsFromBackend.sort(function(a,b) {return a.CourseCode - b.CourseCode});
+
+for (let j = 0; j < itemsFromBackend.length; j++) {
+  listItems.push({
+      label: itemsFromBackend[j].CourseName,
+      value: itemsFromBackend[j].CoursePrefix + itemsFromBackend[j].CourseCode
+  });
+}
+
+let tempList = listItems
+
+//let listSize = Math.ceil(itemsFromBackend.length/8);
 
 const PlanCreation = (props) => {
-
-  const itemsFromBackend = [];
-  let listItems = [];
-
-  let classes = localStorage.getItem("fetchCourseList");
-
-  let classList = classes.split(";");
-  console.log(classList);
-  classList.pop();
-
-  for (let j = 0; j < classList.length; j++) {
-    itemsFromBackend.push(JSON.parse(classList[j]));
-  }
-
-  itemsFromBackend.sort(function(a,b) {return a.CourseCode - b.CourseCode});
-
-  for (let j = 0; j < itemsFromBackend.length; j++) {
-    listItems.push({
-        label: itemsFromBackend[j].CourseName,
-        value: itemsFromBackend[j].CoursePrefix + itemsFromBackend[j].CourseCode
-    });
-  }
-
-  //listSize = Math.ceil(itemsFromBackend.length/8);
 
   const [sem1Class, setSem1Class] = useState([]);
   const [sem2Class, setSem2Class] = useState([]);
@@ -40,6 +41,16 @@ const PlanCreation = (props) => {
   const [sem6Class, setSem6Class] = useState([]);
   const [sem7Class, setSem7Class] = useState([]);
   const [sem8Class, setSem8Class] = useState([]);
+
+  if(tempList.length > 0) {
+    setSem1Class([...sem1Class,
+      <Surface style={styles.surface}>
+        <Text style={styles.surfacetext}>{tempList[0]}</Text>
+      </Surface>
+    ]);
+
+    tempList.pop();
+  } 
 
   const { control, setFocus, watch } = useForm({
     defaultValues: {
@@ -113,6 +124,10 @@ const PlanCreation = (props) => {
     </Surface>
     ]);
   }
+
+  //control.sem1 = tempList[0];
+  //addClassesSem1();
+
   return (
     <ScrollView>
       <View style={styles.container}>
