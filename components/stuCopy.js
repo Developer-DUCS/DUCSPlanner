@@ -27,6 +27,7 @@ const stuCopy = () => (
                     <Picker.Item label="Mathematics" value="MATH,L" />
                     </Picker>
                     <Button variant="outlined" color= 'white' title="Add Major" style={styles.majorButton}/>
+                    <Button variant="outlined" color= 'white' title="Remove Major" style={styles.remButton}/>
             </Surface>
 
             <Surface elevation={8}
@@ -45,6 +46,7 @@ const stuCopy = () => (
                     </Picker>
 
                     <Button variant="outlined" color= 'white' title="Add Minor" style={styles.minorButton}/>
+                    <Button variant="outlined" color= 'white' title="Remove Minor" style={styles.remButton}/>
             </Surface>
             
             <Surface elevation={8}
@@ -62,6 +64,7 @@ const stuCopy = () => (
                     </Picker>
 
                     <Button variant="outlined" title="Add Certificate" color= 'white' style={styles.certificateButton} />
+                    <Button variant="outlined" color= 'white' title="Remove Certificate" style={styles.remButton}/>
             </Surface>
 
             <Button variant="outlined" color= 'white' title="Submit" style={styles.SubmitButton} />
@@ -100,7 +103,7 @@ const styles = StyleSheet.create({
         color: 'white',
         alignSelf: 'center',
         marginTop: '1%',
-        marginBottom: '1%'
+        
     },
     certificateButton:{
         backgroundColor: 'crimson',
@@ -108,7 +111,14 @@ const styles = StyleSheet.create({
         color: 'white',
         alignSelf: 'center',
         marginTop: '1%',
-        marginBottom: '1%'
+        
+    },
+
+    remButton:{
+        backgroundColor: 'crimson',
+        width: '80%',
+        alignSelf: 'center',
+        marginBottom: '0.5%'
     },
 
     minorButton:{
@@ -117,7 +127,7 @@ const styles = StyleSheet.create({
         color: 'white',
         alignSelf: 'center',
         marginTop: '1%',
-        marginBottom: '1%'
+        
     },
     
 
