@@ -6,7 +6,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 
 import Home from './components/Home';
 import Student from './components/Student';
-import StudentCPY from './components/StudentsCPY';
+import stuCopy from './components/stuCopy';
 import Advisor from './components/Advisor';
 import Admin from './components/Admin';
 import Header from './components/Header';
@@ -39,8 +39,8 @@ const AppNavigator = createStackNavigator({
   Student: {
     screen: Student
   },
-  StudentCPY: {
-    screen: StudentCPY
+  stuCopy: {
+    screen: stuCopy
   },
   Advisor: {
     screen: Advisor
@@ -58,7 +58,7 @@ const AppNavigator = createStackNavigator({
     screen: PlanCreation
   }
 }, {
-  initialRouteName: "Home"
+  initialRouteName: "stuCopy"
   /*This sets the Home page as the base page*/
 });
 
