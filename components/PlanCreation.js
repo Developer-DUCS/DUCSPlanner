@@ -45,12 +45,14 @@ const PlanCreation = (props) => {
   if(tempList.length > 0) {
     setSem1Class([...sem1Class,
       <Surface style={styles.surface}>
-        <Text style={styles.surfacetext}>{tempList[0]}</Text>
+        <Text style={styles.surfacetext}>{tempList[tempList.length-1].value}</Text>
       </Surface>
     ]);
 
     tempList.pop();
-  } 
+  }
+
+  //sem1Class = []
 
   const { control, setFocus, watch } = useForm({
     defaultValues: {
@@ -67,6 +69,7 @@ const PlanCreation = (props) => {
   });
   const thing = watch();
   console.log(thing);
+  console.log(sem1Class);
 
   let addClassesSem1 = () => {
     setSem1Class([...sem1Class,
@@ -236,7 +239,7 @@ const PlanCreation = (props) => {
         </View>
         <View style={styles.row}>
           <Card style={styles.card}>
-            <Card.Title title="Freshman Fall Semester" />
+            <Card.Title title="Junior Fall Semester" />
             <Card.Content>
               <FormBuilder
                 control={control}
@@ -261,7 +264,7 @@ const PlanCreation = (props) => {
             </Card.Content>
           </Card>
           <Card style={styles.card}>
-            <Card.Title style={styles.cardtxt} title="Freshman Spring Semester" />
+            <Card.Title style={styles.cardtxt} title="Junior Spring Semester" />
             <Card.Content>
               <FormBuilder
                 control={control}
@@ -286,7 +289,7 @@ const PlanCreation = (props) => {
             </Card.Content>
           </Card>
           <Card style={styles.card}>
-            <Card.Title title="Sophomore Fall Semester" />
+            <Card.Title title="Senior Fall Semester" />
             <Card.Content>
               <FormBuilder
                 control={control}
@@ -311,7 +314,7 @@ const PlanCreation = (props) => {
             </Card.Content>
           </Card>
           <Card style={styles.card}>
-            <Card.Title title="Sophomore Spring Semester" />
+            <Card.Title title="Senior Spring Semester" />
             <Card.Content>
               <FormBuilder
                 control={control}
