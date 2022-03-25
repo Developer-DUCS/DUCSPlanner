@@ -7,6 +7,8 @@ import { useForm } from 'react-hook-form';
 
 const itemsFromBackend = [];
 let listItems = [];
+let tempList = [];
+let itemPlace = [[],[],[],[],[],[],[],[]];
 
 let classes = localStorage.getItem("fetchCourseList");
 
@@ -23,13 +25,29 @@ itemsFromBackend.sort(function(a,b) {return a.CourseCode - b.CourseCode});
 for (let j = 0; j < itemsFromBackend.length; j++) {
   listItems.push({
       label: itemsFromBackend[j].CourseName,
-      value: itemsFromBackend[j].CoursePrefix + itemsFromBackend[j].CourseCode
+      value: itemsFromBackend[j].CoursePrefix + " " + itemsFromBackend[j].CourseCode
   });
 }
 
-let tempList = listItems
+console.log(listItems);
 
-//let listSize = Math.ceil(itemsFromBackend.length/8);
+let listSize = Math.ceil(listItems.length/8);
+
+console.log(listSize);
+
+for (let i = 0; i < 8; i++) {
+  tempList = [];
+  if (listItems.length > 0) {
+    for (let k = 0; k < listSize; k++) {
+      tempList.push(listItems[0]);
+      listItems.splice(0, 1);
+      console.log(tempList);
+    }
+    itemPlace[i] = tempList;
+  }
+}
+
+console.log(itemPlace);
 
 const PlanCreation = (props) => {
 
@@ -42,17 +60,77 @@ const PlanCreation = (props) => {
   const [sem7Class, setSem7Class] = useState([]);
   const [sem8Class, setSem8Class] = useState([]);
 
-  if(tempList.length > 0) {
+  if(itemPlace[0].length > 0) {
     setSem1Class([...sem1Class,
       <Surface style={styles.surface}>
-        <Text style={styles.surfacetext}>{tempList[tempList.length-1].value}</Text>
+        <Text style={styles.surfacetext}>{itemPlace[0][0].value}</Text>
       </Surface>
     ]);
-
-    tempList.pop();
+    itemPlace[0].splice(0, 1);
   }
 
-  //sem1Class = []
+  if(itemPlace[1].length > 0) {
+    setSem2Class([...sem2Class,
+      <Surface style={styles.surface}>
+        <Text style={styles.surfacetext}>{itemPlace[1][0].value}</Text>
+      </Surface>
+    ]);
+    itemPlace[1].splice(0, 1);
+  }
+
+  if(itemPlace[2].length > 0) {
+    setSem3Class([...sem3Class,
+      <Surface style={styles.surface}>
+        <Text style={styles.surfacetext}>{itemPlace[2][0].value}</Text>
+      </Surface>
+    ]);
+    itemPlace[2].splice(0, 1);
+  }
+
+  if(itemPlace[3].length > 0) {
+    setSem4Class([...sem4Class,
+      <Surface style={styles.surface}>
+        <Text style={styles.surfacetext}>{itemPlace[3][0].value}</Text>
+      </Surface>
+    ]);
+    itemPlace[3].splice(0, 1);
+  }
+
+  if(itemPlace[4].length > 0) {
+    setSem5Class([...sem5Class,
+      <Surface style={styles.surface}>
+        <Text style={styles.surfacetext}>{itemPlace[4][0].value}</Text>
+      </Surface>
+    ]);
+    itemPlace[4].splice(0, 1);
+  }
+
+  if(itemPlace[5].length > 0) {
+    setSem6Class([...sem6Class,
+      <Surface style={styles.surface}>
+        <Text style={styles.surfacetext}>{itemPlace[5][0].value}</Text>
+      </Surface>
+    ]);
+    itemPlace[5].splice(0, 1);
+  }
+
+  if(itemPlace[6].length > 0) {
+    setSem7Class([...sem7Class,
+      <Surface style={styles.surface}>
+        <Text style={styles.surfacetext}>{itemPlace[6][0].value}</Text>
+      </Surface>
+    ]);
+    itemPlace[6].splice(0, 1);
+  }
+
+  if(itemPlace[7].length > 0) {
+    setSem8Class([...sem8Class,
+      <Surface style={styles.surface}>
+        <Text style={styles.surfacetext}>{itemPlace[7][0].value}</Text>
+      </Surface>
+    ]);
+    itemPlace[7].splice(0, 1);
+  }
 
   const { control, setFocus, watch } = useForm({
     defaultValues: {
