@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { View, StyleSheet, } from 'react-native';
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import { Provider as PaperProvider } from 'react-native-paper';
 
 import Home from './components/Home';
 import Student from './components/Student';
@@ -19,11 +18,9 @@ const App = () => {
   return (
     <>
       <View style={styles.container}>
-        <PaperProvider>
           <Header />
           <AppContainer />
           <Footer />
-        </PaperProvider>
       </View>
     </>
     /*This styling applies to all pages*/
@@ -58,7 +55,7 @@ const AppNavigator = createStackNavigator({
     screen: PlanCreation
   }
 }, {
-  initialRouteName: "Home"
+  initialRouteName: "SignUp"
   /*This sets the Home page as the base page*/
 });
 

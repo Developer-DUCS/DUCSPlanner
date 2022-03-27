@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Button, View, Text,Image, StyleSheet, Picker, TouchableOpacity, ActivityIndicator,ScrollView, ScrollViewComponent, FlatList} from 'react-native';
 import { createAppContainer, SafeAreaView } from "react-navigation";
 import { CardStyleInterpolators, createStackNavigator } from "react-navigation-stack";
-import {Surface} from 'react-native-paper';
 
 import axios from 'axios'
 
@@ -13,7 +12,7 @@ const api = axios.create({
 const Student = (props) => {
   let courseCode = [];
   let newCourses = [];
-  let name = localStorage.getItem("fname") + " " + localStorage.getItem("lname");
+  //let name = localStorage.getItem("fname") + " " + localStorage.getItem("lname");
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
@@ -158,7 +157,7 @@ const Student = (props) => {
     <View style={styles.container}>
       <ScrollView>
       <View>
-        <Text style={styles.txt1}>Welcome back {name}!</Text>
+        <Text style={styles.txt1}>Welcome back !</Text>
         <Text style={styles.txt2}>Please choose your desired major, minor, or certificate options from the list below:</Text>
         <Text style={styles.txt3}>NOTE: choose at least three credentials:  one major and two certificates.  One certificate can be replaced with a second major or a minor. You must also have one credential in the "Professional" category and one credential in the "Life" category.</Text>
       </View>
