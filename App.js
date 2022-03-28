@@ -58,7 +58,7 @@ const AppNavigator = createStackNavigator({
     screen: PlanCreation
   }
 }, {
-  initialRouteName: "Student"
+  initialRouteName: "Home"
   /*This sets the Home page as the base page*/
 });
 
