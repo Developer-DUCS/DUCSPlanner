@@ -7,49 +7,269 @@ import { useForm } from 'react-hook-form';
 
 const itemsFromBackend = [];
 let listItems = [];
-let tempList = [];
 let itemPlace = [[],[],[],[],[],[],[],[]];
+let tempList = itemPlace[0];
+
+let tempNum = 0;
+let pos = 0;
+
+let done = false;
 
 let classes = localStorage.getItem("fetchCourseList");
 
 let classList = classes.split(";");
-console.log(classList);
+//console.log(classList);
 classList.pop();
 
 for (let j = 0; j < classList.length; j++) {
   itemsFromBackend.push(JSON.parse(classList[j]));
 }
 
+console.log(itemsFromBackend);
+
 itemsFromBackend.sort(function(a,b) {return a.CourseCode - b.CourseCode});
+
+let listSize = Math.ceil(itemsFromBackend.length/8);
+
+console.log(listSize);
+
+function checkPrereqs(backList,itemList) {
+  let courseList = [];
+  for (let j = 0; j < itemList.length; j++) {
+    for (let i = 0; i < itemList[j].length; i++) {
+      courseList.push([itemList[j][i].object.CoursePrefix,itemList[j][i].object.CourseCode]);
+    }
+  }
+  let item = 0;
+  for (let k = 0; k < courseList.length; k++) {
+    for (let l = 0; l < backList.length; l++) {
+      console.log(backList[l]);
+      console.log(courseList[1]);
+      console.log(backList[l][0] == courseList[1][0]);
+      console.log(backList[l][1] == courseList[1][1]);
+      if (backList[l][0] == courseList[k][0] && backList[l][1] == courseList[k][1]) {
+        item = item + 1;
+        console.log("Has Prereq");
+      }
+    }
+  }
+  if (item == backList.length) {
+    return true;
+  }
+  else {
+    return false;
+  }
+}
+
+while (itemsFromBackend.length > 0 && !done) {
+  let temp = pos;
+  console.log(itemsFromBackend.length);
+  if (tempNum > 7) {
+    done = true;
+  }
+  else if (itemPlace[tempNum].length == listSize || pos == itemsFromBackend.length) {
+    tempNum = tempNum + 1;
+    pos = 0;
+  }
+  else if (tempNum % 2 == 0) {
+    if (itemsFromBackend[pos].Semester == "Fall" || itemsFromBackend[pos].Semester == "Both") {
+      console.log(itemsFromBackend[pos].Semester);
+      if (tempNum == 0 && itemsFromBackend[pos].HasPrereq == "No") {
+        itemPlace[tempNum].push({
+          label: itemsFromBackend[pos].CourseName,
+          value: itemsFromBackend[pos].CoursePrefix + " " + itemsFromBackend[pos].CourseCode,
+          object: {CoursePrefix: itemsFromBackend[pos].CoursePrefix,
+                  CourseName: itemsFromBackend[pos].CourseName,
+                  CourseCode: itemsFromBackend[pos].CourseCode,
+                  Semester: itemsFromBackend[pos].Semester,
+                  CreditHours: itemsFromBackend[pos].CreditHours}
+        });
+        itemsFromBackend.splice(pos, 1);
+        pos = 0;
+      }
+      else {
+        if(checkPrereqs(itemsFromBackend[pos].Prereqs,itemPlace)) {
+          itemPlace[tempNum].push({
+            label: itemsFromBackend[pos].CourseName,
+            value: itemsFromBackend[pos].CoursePrefix + " " + itemsFromBackend[pos].CourseCode,
+            object: {CoursePrefix: itemsFromBackend[pos].CoursePrefix,
+                    CourseName: itemsFromBackend[pos].CourseName,
+                    CourseCode: itemsFromBackend[pos].CourseCode,
+                    Semester: itemsFromBackend[pos].Semester,
+                    CreditHours: itemsFromBackend[pos].CreditHours}
+          });
+          itemsFromBackend.splice(pos, 1);
+          pos = 0;
+        }
+        else {
+          pos = pos + 1;
+        }
+      }
+    }
+    else {
+      pos = pos + 1;
+    }
+  }
+  else {
+    if (itemsFromBackend[pos].Semester == "Spring" || itemsFromBackend[pos].Semester == "Both") {
+      console.log(itemsFromBackend[pos].Semester);
+      if(checkPrereqs(itemsFromBackend[pos].Prereqs,itemPlace)) {
+        itemPlace[tempNum].push({
+          label: itemsFromBackend[pos].CourseName,
+          value: itemsFromBackend[pos].CoursePrefix + " " + itemsFromBackend[pos].CourseCode,
+          object: {CoursePrefix: itemsFromBackend[pos].CoursePrefix,
+                  CourseName: itemsFromBackend[pos].CourseName,
+                  CourseCode: itemsFromBackend[pos].CourseCode,
+                  Semester: itemsFromBackend[pos].Semester,
+                  CreditHours: itemsFromBackend[pos].CreditHours}
+        });
+        itemsFromBackend.splice(pos, 1);
+        pos = 0;
+      }
+      else {
+        pos = pos + 1;
+      }
+    }
+    else {
+      pos = pos + 1;
+    }
+  }
+}
 
 for (let j = 0; j < itemsFromBackend.length; j++) {
   listItems.push({
       label: itemsFromBackend[j].CourseName,
-      value: itemsFromBackend[j].CoursePrefix + " " + itemsFromBackend[j].CourseCode
+      value: itemsFromBackend[j].CoursePrefix + " " + itemsFromBackend[j].CourseCode,
+      object: {CoursePrefix: itemsFromBackend[j].CoursePrefix,
+                  CourseName: itemsFromBackend[j].CourseName,
+                  CourseCode: itemsFromBackend[j].CourseCode,
+                  Semester: itemsFromBackend[j].Semester,
+                  CreditHours: itemsFromBackend[j].CreditHours}
   });
 }
 
+console.log(itemPlace);
 console.log(listItems);
 
-let listSize = Math.ceil(listItems.length/8);
-
-console.log(listSize);
-
-for (let i = 0; i < 8; i++) {
-  tempList = [];
-  if (listItems.length > 0) {
-    for (let k = 0; k < listSize; k++) {
-      tempList.push(listItems[0]);
-      listItems.splice(0, 1);
-      console.log(tempList);
-    }
-    itemPlace[i] = tempList;
-  }
+for (let k = 0; k < itemPlace.length; k++) {
+  listItems.concat(itemPlace[k]);
 }
 
-console.log(itemPlace);
-
 const PlanCreation = (props) => {
+
+  // function checkPrereqs(backList,itemList) {
+  //   let courseList = [];
+  //   for (let j = 0; j < itemList.length; j++) {
+  //     for (let i = 0; i < itemList[j].length; i++) {
+  //       courseList.push([itemList[j][i].object.CoursePrefix,itemList[j][i].object.CourseCode])
+  //     }
+  //   }
+  //   let item = backList.length-1;
+  //   while (item > 0) {
+  //     if (courseList.includes(backList[item])) {
+  //       item = item - 1;
+  //     }
+  //     else {
+  //       return false;
+  //     }
+  //   }
+  //   return true;
+  // }
+  
+  // while (itemsFromBackend.length > 0 && !done) {
+  //   let temp = pos;
+  //   console.log(itemsFromBackend.length);
+  //   if (itemPlace[tempNum].length == listSize || pos == itemsFromBackend.length) {
+  //     tempNum = tempNum + 1;
+  //     pos = 0;
+  //   }
+  //   if (tempNum > 8) {
+  //     done = true;
+  //   }
+  //   else if (tempNum % 2 == 0) {
+  //     if (itemsFromBackend[pos].Semester == "Fall" || itemsFromBackend[pos].Semester == "Both") {
+  //       if (tempNum == 0 && itemsFromBackend[pos].HasPrereq == "No") {
+  //         itemPlace[tempNum].push({
+  //           label: itemsFromBackend[pos].CourseName,
+  //           value: itemsFromBackend[pos].CoursePrefix + " " + itemsFromBackend[pos].CourseCode,
+  //           object: {CoursePrefix: itemsFromBackend[pos].CoursePrefix,
+  //                   CourseName: itemsFromBackend[pos].CourseName,
+  //                   CourseCode: itemsFromBackend[pos].CourseCode,
+  //                   Semester: itemsFromBackend[pos].Semester,
+  //                   CreditHours: itemsFromBackend[pos].CreditHours}
+  //         });
+  //         itemsFromBackend.splice(pos, 1);
+  //         pos = 0;
+  //       }
+  //       else {
+  //         if(checkPrereqs(itemsFromBackend[pos].Prereqs,itemPlace)) {
+  //           itemPlace[tempNum].push({
+  //             label: itemsFromBackend[pos].CourseName,
+  //             value: itemsFromBackend[pos].CoursePrefix + " " + itemsFromBackend[pos].CourseCode,
+  //             object: {CoursePrefix: itemsFromBackend[pos].CoursePrefix,
+  //                     CourseName: itemsFromBackend[pos].CourseName,
+  //                     CourseCode: itemsFromBackend[pos].CourseCode,
+  //                     Semester: itemsFromBackend[pos].Semester,
+  //                     CreditHours: itemsFromBackend[pos].CreditHours}
+  //           });
+  //           itemsFromBackend.splice(pos, 1);
+  //           pos = 0;
+  //         }
+  //         else {
+  //           pos = pos + 1;
+  //         }
+  //       }
+  //     }
+  //     else {
+  //       pos = pos + 1;
+  //     }
+  //   }
+  //   else {
+  //     if (itemsFromBackend[pos].Semester == "Spring" || itemsFromBackend[pos].Semester == "Both") {
+  //       if(checkPrereqs(itemsFromBackend[pos].Prereqs,itemPlace)) {
+  //         itemPlace[tempNum].push({
+  //           label: itemsFromBackend[pos].CourseName,
+  //           value: itemsFromBackend[pos].CoursePrefix + " " + itemsFromBackend[pos].CourseCode,
+  //           object: {CoursePrefix: itemsFromBackend[pos].CoursePrefix,
+  //                   CourseName: itemsFromBackend[pos].CourseName,
+  //                   CourseCode: itemsFromBackend[pos].CourseCode,
+  //                   Semester: itemsFromBackend[pos].Semester,
+  //                   CreditHours: itemsFromBackend[pos].CreditHours}
+  //         });
+  //         itemsFromBackend.splice(pos, 1);
+  //         pos = 0;
+  //       }
+  //       else {
+  //         pos = pos + 1;
+  //       }
+  //     }
+  //     else {
+  //       pos = pos + 1;
+  //     }
+  //   }
+  // }
+  
+  // for (let j = 0; j < itemsFromBackend.length; j++) {
+  //   listItems.push({
+  //       label: itemsFromBackend[j].CourseName,
+  //       value: itemsFromBackend[j].CoursePrefix + " " + itemsFromBackend[j].CourseCode,
+  //       object: {CoursePrefix: itemsFromBackend[j].CoursePrefix,
+  //                   CourseName: itemsFromBackend[j].CourseName,
+  //                   CourseCode: itemsFromBackend[j].CourseCode,
+  //                   Semester: itemsFromBackend[j].Semester,
+  //                   CreditHours: itemsFromBackend[j].CreditHours}
+  //   });
+  // }
+
+  // console.log(itemPlace);
+  // console.log(listItems);
+  
+  // for (let k = 0; k < itemPlace.length; k++) {
+  //   listItems.concat(itemPlace[k]);
+  // }
+  
+  // console.log(itemPlace);
+  // console.log(listItems);
 
   const [sem1Class, setSem1Class] = useState([]);
   const [sem2Class, setSem2Class] = useState([]);
