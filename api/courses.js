@@ -12,7 +12,7 @@ router.post('/courses', (req, res) => {
     function getPrereq(course) {
         let prereqList = [];
         if(course.HasPrereq == 'Yes') {
-            let qry2 = `SELECT CoursePrefix, CourseCode FROM Courses, Prerequisites 
+            let qry2 = `SELECT distinct CoursePrefix, CourseCode FROM Courses, Prerequisites 
                         WHERE UniqueCourseID IN (SELECT Prereq_ID FROM Courses, Prerequisites
                                                 WHERE Course_ID IN (SELECT UniqueCourseID FROM Courses
                                                                     WHERE CoursePrefix = "${course.CoursePrefix}" AND CourseCode = ${course.CourseCode}));`;
