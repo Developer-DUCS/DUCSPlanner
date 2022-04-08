@@ -7,6 +7,7 @@ import { Button, Surface, icon } from 'react-native-paper';
 import axios from 'axios';
 import SignUp from './SignUp';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import GLOBAL from './globals'; 
 
 const Home = (props) => {
   const api = axios.create({
@@ -98,6 +99,12 @@ const Home = (props) => {
                   //setIsError(true)
                 }
                 else {
+                  var firstName = JSON.stringify(response.data.fname);
+                  var lastName = JSON.stringify(response.data.lname);
+                  var id = JSON.stringify(response.data.userId);
+                  GLOBAL.FIRSTNAME = firstName;
+                  GLOBAL.LASTNAME = lastName;
+                  GLOBAL.ID = id;
                   props.navigation.navigate('Student');
                 }
 
