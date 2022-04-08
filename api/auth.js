@@ -25,6 +25,7 @@ router.post('/login', (req, res) => {
                         YearStarted: rows[l].Year_Started, Fname: rows[l].Fname, Lname: rows[l].Lname
                     }, secret, { expiresIn: '1h' });
                     console.log(rows[l].Fname, rows[l].Lname);
+                    //req.session.userInfo = rows[l];
                     return (res.status(200).json({
                         message: "User logged in", "token": token, "Role": rows[l].Role, "fname": rows[l].Fname,
                         "lname": rows[l].Lname

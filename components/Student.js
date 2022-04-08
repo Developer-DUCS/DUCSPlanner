@@ -3,9 +3,9 @@ import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView
 import { createAppContainer, SafeAreaView } from "react-navigation";
 import { CardStyleInterpolators, createStackNavigator } from "react-navigation-stack";
 import { Button, Surface, icon } from 'react-native-paper';
-
 import axios from 'axios'
 import { render } from 'react-dom';
+import GLOBAL from './globals';
 
 const api = axios.create({
   baseURL: `http://localhost:3210`
@@ -16,7 +16,8 @@ const Student = (props) => {
   let CredentialList = [];
   let courseCode = [];
   let newCourses = [];
-  let name = localStorage.getItem("fname") + " " + localStorage.getItem("lname");
+  //let name = localStorage.getItem("fname") + " " + localStorage.getItem("lname");
+  let name = GLOBAL.FIRSTNAME + " " + GLOBAL.LASTNAME;
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
@@ -142,7 +143,8 @@ const Student = (props) => {
               courseList = courseList + JSON.stringify(response.data.Courses[x]) + ";";
             }
             //console.log(courseList);
-            localStorage.setItem("fetchCourseList", courseList);
+            //localStorage.setItem("fetchCourseList", courseList);
+            GLOBAL.COURSELIST = courseList;
             props.navigation.navigate('PlanCreation');
           }
         }

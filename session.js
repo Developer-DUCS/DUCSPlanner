@@ -1,4 +1,4 @@
-const session = require('express-session');
+/*const session = require('express-session');
 var MySqlDBStore = require('express-mysql-session')(session);
 const conn = require("./mysqldb");
 
@@ -6,14 +6,13 @@ const conn = require("./mysqldb");
     uri: 'mongodb://localhost:27017/ducs_sessions',
     collection: 'mySessions'
   });*/
-  const options ={
+ /* const options ={
       //connectionLimit: 10,
       password:'theGreatestAndMostSecured1',
       user:'sessionConnector',
       host:conn.host,
       database:'PlanIt',
       expiration: 10800000,
-      createDatabaseTable: true,
       schema:{
         tableName: 'PlanIt_Session_Table',
         columnNames: {
@@ -44,4 +43,6 @@ const conn = require("./mysqldb");
     saveUninitialized: true
   });
 
-  module.exports = sess;
+  //used for MySql connection: PlanItAdmin, asecuredpassword1
+
+  module.exports = sess;*/
