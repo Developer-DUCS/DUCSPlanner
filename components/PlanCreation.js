@@ -6,6 +6,7 @@ import "react-navigation-stack";
 import { Avatar, Button, Card, Title, Paragraph, Surface, Text } from 'react-native-paper';
 import { FormBuilder } from 'react-native-paper-form-builder';
 import { useForm } from 'react-hook-form';
+import GLOBAL from './globals';
 
 let fetchTry = true;
 
@@ -32,7 +33,7 @@ const PlanCreation = (props) => {
 
     //let done = false;
 
-    let classes = localStorage.getItem("fetchCourseList");
+    let classes = GLOBAL.COURSELIST;
 
     let classList = classes.split(";");
     //console.log(classList);
