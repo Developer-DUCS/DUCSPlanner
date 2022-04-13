@@ -58,6 +58,7 @@ const AppNavigator = createStackNavigator({
     screen: PlanCreation
   }
 }, {
+
   initialRouteName: "stuCopy"
   /*This sets the Home page as the base page*/
 });
