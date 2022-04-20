@@ -1,9 +1,6 @@
 {
-  "webpackServerPort": 19006,
-  "expoServerPort": 19000,
   "devToolsPort": 19002,
+  "expoServerPort": null,
   "packagerPort": 19000,
-  "expoServerNgrokUrl": "https://xf-vpg.anonymous.ducsplanner.exp.direct",
-  "packagerNgrokUrl": "https://packager.xf-vpg.anonymous.ducsplanner.exp.direct",
-  "ngrokPid": 13244
+  "webpackServerPort": 19006
 }

@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView, ScrollViewComponent, FlatList } from 'react-native';
-import { createAppContainer, SafeAreaView } from "react-navigation";
-import { CardStyleInterpolators, createStackNavigator } from "react-navigation-stack";
-import { Button, Surface, icon } from 'react-native-paper';
+import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
+import { Button } from 'react-native-paper';
 import { FormBuilder } from 'react-native-paper-form-builder';
 import axios from 'axios'
-import { render } from 'react-dom';
 import GLOBAL from 'globals';
 import { useForm } from 'react-hook-form';
 
@@ -203,21 +200,6 @@ const Student = (props) => {
     newFormValuesCert.splice(i, 1);
     setFormValuesCert(newFormValuesCert)
   }
-  let handleMajorChange = (i, e) => {
-    let newFormValuesMajor = [...formValuesMajor];
-    newFormValuesMajor[i][e.target.name] = e.target.value;
-    setFormValuesMajor(newFormValuesMajor);
-  }
-  let handleMinorChange = (i, e) => {
-    let newFormValuesMinor = [...formValuesMinor];
-    newFormValuesMinor[i][e.target.name] = e.target.value;
-    setFormValuesMinor(newFormValuesMinor);
-  }
-  let handleCertChange = (i, e) => {
-    let newFormValuesCert = [...formValuesCert];
-    newFormValuesCert[i][e.target.name] = e.target.value;
-    setFormValuesCert(newFormValuesCert);
-  }
   //experimenting with creating dynamic dropdown componenet
   /*const CredentialArray = () => {
     let CredsToUse = localStorage.getItem("Credentials");
@@ -252,12 +234,12 @@ const Student = (props) => {
         <Text style={styles.txt2}>Please choose your desired major, minor, or certificate options from the list below:</Text>
         <Text style={styles.txt3}>NOTE: choose at least three credentials:  one major and two certificates.  One certificate can be replaced with a second major or a minor. You must also have one credential in the "Professional" category and one credential in the "Life" category.</Text>
       </View>
-      <View style={styles.form}>
+      <View style={styles.form2}>
         <form>
           {formValuesMajor.map((element, index) => (
             <div className="form-inline" key={index}>
               <FormBuilder
-                style={styles.form}
+
                 control={control}
                 setFocus={setFocus}
                 formConfigArray={[
@@ -270,39 +252,39 @@ const Student = (props) => {
                     options: [
                       {
                         label: "Art History",
-                        value: "10,L",
+                        value: "1,L",
                       },
                       {
                         label: "Biochemistry",
-                        value: "10,L",
+                        value: "2,L",
                       },
                       {
                         label: "Biology (BA)",
-                        value: "10,L",
+                        value: "3,L",
                       },
                       {
                         label: "Biology (BS)",
-                        value: "10,L",
+                        value: "4,L",
                       },
                       {
                         label: "Chemistry",
-                        value: "10,L",
+                        value: "5,L",
                       },
                       {
                         label: "Clinical and Behavioral Neuroscience",
-                        value: "10,L",
+                        value: "6,L",
                       },
                       {
                         label: "Criminology",
-                        value: "10,L",
+                        value: "7,L",
                       },
                       {
                         label: "Economics",
-                        value: "10,L",
+                        value: "8,L",
                       },
                       {
                         label: "English",
-                        value: "10,L",
+                        value: "9,L",
                       },
                       {
                         label: "Environmental Biology",
@@ -310,99 +292,99 @@ const Student = (props) => {
                       },
                       {
                         label: "Exercise Physiology",
-                        value: "10,L",
+                        value: "11,L",
                       },
                       {
                         label: "Fine Arts",
-                        value: "10,L",
+                        value: "12,L",
                       },
                       {
                         label: "French",
-                        value: "10,L",
+                        value: "13,L",
                       },
                       {
                         label: "History",
-                        value: "10,L",
+                        value: "14,L",
                       },
                       {
                         label: "Mathematics",
-                        value: "10,L",
+                        value: "15,L",
                       },
                       {
                         label: "Mathematics Education",
-                        value: "10,L",
+                        value: "16,L",
                       },
                       {
                         label: "Music and Music Education",
-                        value: "10,L",
+                        value: "17,L",
                       },
                       {
                         label: "Philosophy and Religion",
-                        value: "10,L",
+                        value: "18,L",
                       },
                       {
                         label: "Physics",
-                        value: "10,L",
+                        value: "18,L",
                       },
                       {
                         label: "Political Science",
-                        value: "10,L",
+                        value: "20,L",
                       },
                       {
                         label: "Psychology",
-                        value: "10,L",
+                        value: "21,L",
                       },
                       {
                         label: "Sociology",
-                        value: "10,L",
+                        value: "22,L",
                       },
                       {
                         label: "Spanish",
-                        value: "10,L",
+                        value: "23,L",
                       },
                       {
                         label: "Theatre",
-                        value: "10,L",
+                        value: "24,L",
                       },
                       {
                         label: "Writing",
-                        value: "10,L",
+                        value: "25,L",
                       },
                       {
                         label: "Accounting",
-                        value: "10,P",
+                        value: "1,P",
                       },
                       {
                         label: "Animation",
-                        value: "10,P",
+                        value: "2,P",
                       },
                       {
                         label: "Architectural Studies",
-                        value: "10,P",
+                        value: "3,P",
                       },
                       {
                         label: "Architecture",
-                        value: "10,P",
+                        value: "4,P",
                       },
                       {
                         label: "Arts Administration",
-                        value: "10,P",
+                        value: "5,P",
                       },
                       {
                         label: "Computer Science: Game Development",
-                        value: "10,P",
+                        value: "6,P",
                       },
                       {
                         label: "Computer Science: Software Engineering",
-                        value: "10,P",
+                        value: "7,P",
                       },
                       {
                         label: "Cyber-risk Management",
-                        value: "10,P",
+                        value: "8,P",
                       },
                       {
                         label: "Digital Media",
-                        value: "10,P",
+                        value: "9,P",
                       },
                       {
                         label: "Elementary Education",
@@ -410,67 +392,67 @@ const Student = (props) => {
                       },
                       {
                         label: "Finance",
-                        value: "10,P",
+                        value: "11,P",
                       },
                       {
                         label: "Graphic and Digital Design",
-                        value: "10,P",
+                        value: "12,P",
                       },
                       {
                         label: "Health Science",
-                        value: "10,P",
+                        value: "13,P",
                       },
                       {
                         label: "Management",
-                        value: "10,P",
+                        value: "14,P",
                       },
                       {
                         label: "Marketing",
-                        value: "10,P",
+                        value: "15,P",
                       },
                       {
                         label: "Medical Technology",
-                        value: "10,P",
+                        value: "16,P",
                       },
                       {
                         label: "Middle School Language Arts Education",
-                        value: "10,P",
+                        value: "17,P",
                       },
                       {
                         label: "Middle School Mathematics Education",
-                        value: "10,P",
+                        value: "18,P",
                       },
                       {
                         label: "Middle School Science Education",
-                        value: "10,P",
+                        value: "19,P",
                       },
                       {
                         label: "Middle School Social Science Education",
-                        value: "10,P",
+                        value: "20,P",
                       },
                       {
                         label: "Multimedia Production and Journalism",
-                        value: "10,P",
+                        value: "21,P",
                       },
                       {
                         label: "Music Therapy",
-                        value: "10,P",
+                        value: "22,P",
                       },
                       {
                         label: "Organizational and Leadership Communication",
-                        value: "10,P",
+                        value: "23,P",
                       },
                       {
                         label: "Pre-Ministry and Community Engagement",
-                        value: "10,P",
+                        value: "24,P",
                       },
                       {
                         label: "Secondary Education",
-                        value: "10,P",
+                        value: "25,P",
                       },
                       {
                         label: "Strategic Communication",
-                        value: "10,P",
+                        value: "26,P",
                       }
                     ],
                   }
@@ -483,7 +465,7 @@ const Student = (props) => {
           {formValuesMinor.map((element, index) => (
             <div className="form-inline" key={index}>
               <FormBuilder
-                style={styles.form}
+
                 control={control}
                 setFocus={setFocus}
                 formConfigArray={[
@@ -496,175 +478,175 @@ const Student = (props) => {
                     options: [
                       {
                         label: "Animal Studies",
-                        value: "10,L",
+                        value: "26,L",
                       },
                       {
                         label: "Art History",
-                        value: "10,L",
+                        value: "27,L",
                       },
                       {
                         label: "Asian Studies",
-                        value: "10,L",
+                        value: "28,L",
                       },
                       {
                         label: "Behavioral Neuroscience",
-                        value: "10,L",
+                        value: "29,L",
                       },
                       {
                         label: "Biology",
-                        value: "10,L",
+                        value: "30,L",
                       },
                       {
                         label: "Chemistry",
-                        value: "10,L",
+                        value: "31,L",
                       },
                       {
                         label: "Communication",
-                        value: "10,L",
+                        value: "32,L",
                       },
                       {
                         label: "Computer Science",
-                        value: "10,L",
+                        value: "33,L",
                       },
                       {
                         label: "Criminology",
-                        value: "10,L",
+                        value: "34,L",
                       },
                       {
                         label: "English",
-                        value: "10,L",
+                        value: "35,L",
                       },
                       {
                         label: "Environmental Sustainability",
-                        value: "10,L",
+                        value: "36,L",
                       },
                       {
                         label: "Exercise Physiology",
-                        value: "10,L",
+                        value: "37,L",
                       },
                       {
                         label: "Fine Arts",
-                        value: "10,L",
+                        value: "38,L",
                       },
                       {
                         label: "French",
-                        value: "10,L",
+                        value: "39,L",
                       },
                       {
                         label: "Global and Transnational Studies",
-                        value: "10,L",
+                        value: "40,L",
                       },
                       {
                         label: "History",
-                        value: "10,L",
+                        value: "41,L",
                       },
                       {
                         label: "Law and Society",
-                        value: "10,L",
+                        value: "42,L",
                       },
                       {
                         label: "Mathematics",
-                        value: "10,L",
+                        value: "43,L",
                       },
                       {
                         label: "Medieval and Renaissance Studies",
-                        value: "10,L",
+                        value: "44,L",
                       },
                       {
                         label: "Middle East Studies",
-                        value: "10,L",
+                        value: "45,L",
                       },
                       {
                         label: "Music",
-                        value: "10,L",
+                        value: "46,L",
                       },
                       {
                         label: "Physics",
-                        value: "10,L",
+                        value: "47,L",
                       },
                       {
                         label: "Philosophy and Religion",
-                        value: "10,L",
+                        value: "48,L",
                       },
                       {
                         label: "Political Science",
-                        value: "10,L",
+                        value: "49,L",
                       },
                       {
                         label: "Psychology",
-                        value: "10,L",
+                        value: "50,L",
                       },
                       {
                         label: "Sociology",
-                        value: "10,L",
+                        value: "51,L",
                       },
                       {
                         label: "Spanish",
-                        value: "10,L",
+                        value: "52,L",
                       },
                       {
                         label: "Theatre",
-                        value: "10,L",
+                        value: "53,L",
                       },
                       {
                         label: "Women and Gender Studies",
-                        value: "10,L",
+                        value: "54,L",
                       },
                       {
                         label: "Writing",
-                        value: "10,L",
+                        value: "55,L",
                       },
                       {
                         label: "Actuarial Science & Risk Management",
-                        value: "10,P",
+                        value: "27,P",
                       },
                       {
                         label: "Animation",
-                        value: "10,P",
+                        value: "28,P",
                       },
                       {
                         label: "Architecture and Design",
-                        value: "10,P",
+                        value: "29,P",
                       },
                       {
                         label: "Business Administration",
-                        value: "10,P",
+                        value: "30,P",
                       },
                       {
                         label: "Business and Entrepreneurship",
-                        value: "10,P",
+                        value: "31,P",
                       },
                       {
                         label: "Cyber-risk Management",
-                        value: "10,P",
+                        value: "32,P",
                       },
                       {
                         label: "Design in Society",
-                        value: "10,P",
+                        value: "33,P",
                       },
                       {
                         label: "Graphic & Digital Design",
-                        value: "10,P",
+                        value: "34,P",
                       },
                       {
                         label: "Health Science",
-                        value: "10,P",
+                        value: "35,P",
                       },
                       {
                         label: "Pre-Engineering",
-                        value: "10,P",
+                        value: "36,P",
                       },
                       {
                         label: "Pre-Ministry and Community Engagement",
-                        value: "10,P",
+                        value: "37,P",
                       },
                       {
                         label: "Special Education",
-                        value: "10,P",
+                        value: "38,P",
                       },
                       {
                         label: "Web Communication and Design",
-                        value: "10,P",
+                        value: "39,P",
                       },
                     ],
                   }
@@ -677,12 +659,12 @@ const Student = (props) => {
           {formValuesCert.map((element, index) => (
             <div className="form-inline" key={index}>
               <FormBuilder
-                style={styles.form}
+
                 control={control}
                 setFocus={setFocus}
                 formConfigArray={[
                   {
-                    name: 'minorForm',
+                    name: 'certForm',
                     type: 'select',
                     textInputProps: {
                       label: 'Minor',
@@ -690,67 +672,67 @@ const Student = (props) => {
                     options: [
                       {
                         label: "Ancients Alive: The Classics In Context",
-                        value: "10,L",
+                        value: "56,L",
                       },
                       {
                         label: "Ethical Leadership",
-                        value: "10,L",
+                        value: "57,L",
                       },
                       {
                         label: "Get Out, Plug In: Intercultural Connections",
-                        value: "10,L",
+                        value: "58,L",
                       },
                       {
                         label: "Graphic Storytelling",
-                        value: "10,L",
+                        value: "59,L",
                       },
                       {
                         label: "Holistic Health and Well-Being",
-                        value: "10,L",
+                        value: "60,L",
                       },
                       {
                         label: "International Immersion",
-                        value: "10,L",
+                        value: "61,L",
                       },
                       {
                         label: "Life in Close-up: Film, History, and Society",
-                        value: "10,L",
+                        value: "62,L",
                       },
                       {
                         label: "Different is the New Normal: Celebrating Neurodiversity",
-                        value: "10,L",
+                        value: "63,L",
                       },
                       {
                         label: "Data Analytics: Big Problems, Big Data Solutions",
-                        value: "10,P",
+                        value: "40,P",
                       },
                       {
                         label: "Designing Solutions for Environmental Problems",
-                        value: "10,P",
+                        value: "41,P",
                       },
                       {
                         label: "Interactive Design",
-                        value: "10,P",
+                        value: "42,P",
                       },
                       {
                         label: "Learning to Lead and Leading to Learn: Facilitating Learning in the Professional Setting",
-                        value: "10,P",
+                        value: "43,P",
                       },
                       {
                         label: "Professional and Visual Communication",
-                        value: "10,P",
+                        value: "44,P",
                       },
                       {
                         label: "Sports Leadership: Going Beyond the Game",
-                        value: "10,P",
+                        value: "45,P",
                       },
                       {
                         label: "Justice Denied: Wrongful Convictions",
-                        value: "10,P",
+                        value: "46,P",
                       },
                       {
                         label: "The Activist’s Toolkit: Transforming Society through Civic Engagement",
-                        value: "10,P",
+                        value: "47,P",
                       },
                     ],
                   }
@@ -839,7 +821,7 @@ const styles = StyleSheet.create({
   form2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 150,
+    paddingHorizontal: 50,
     paddingVertical: 5
   },
   load: {
