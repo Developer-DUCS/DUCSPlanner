@@ -4,18 +4,32 @@ import { createAppContainer, SafeAreaView } from "react-navigation";
 import { CardStyleInterpolators, createStackNavigator } from "react-navigation-stack";
 
 import axios from 'axios'
-import { render } from 'react-dom';
+import GLOBAL from 'globals';
+import { useForm } from 'react-hook-form';
 
 const api = axios.create({
   baseURL: `http://localhost:3210`
 })
 
 const Student = (props) => {
-  
+
+  const { control, setFocus, watch } = useForm({
+    defaultValues: {
+      majorForm: '',
+      minorForm: '',
+      certForm: ''
+    },
+    mode: 'onChange',
+  });
+
+  const thing = watch();
+  console.log(thing);
+
   let CredentialList = [];
   let courseCode = [];
   let newCourses = [];
-  let name = localStorage.getItem("fname") + " " + localStorage.getItem("lname");
+  //let name = localStorage.getItem("fname") + " " + localStorage.getItem("lname");
+  let name = GLOBAL.FIRSTNAME + " " + GLOBAL.LASTNAME;
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState('');
@@ -25,42 +39,42 @@ const Student = (props) => {
   //function to run once student page is opened to grab all drury credentials and put them in the drop down
   useEffect(() => {
     console.log('im in the effect')
-    let credentialListener = () => {   
+    let credentialListener = () => {
       console.log("I've hit the load event");
       setIsLoading(true);
       api.post('api/courses/providingCredentials', {
-        'CredentialList' : CredentialList,})
-      .then(function (response)
-      {
-        if (response.status != 200) {
-          setIsError(true);
-        }
-        else {
-          if (response.status == 200) {
-            setTimeout(() => { setIsLoading(false); }, 3000);
-            //console.log(response);
-            //console.log(response.data);
-            //console.log(response.data.Credentials[0]);
-            //console.log(JSON.stringify(response.data));
-            for (let x = 0; x < response.data.Credentials.length; x++) {
-              console.log(x)
-              console.log(response.data.Credentials[x]);
-              //CredentialList.push(response.data.Credentials[x]);
-              CredentialList = CredentialList + JSON.stringify(response.data.Credentials[x]) + ";";
-              //courseList = courseList + JSON.stringify(response.data.Courses[x]) + ";";
+        'CredentialList': CredentialList,
+      })
+        .then(function (response) {
+          if (response.status != 200) {
+            setIsError(true);
+          }
+          else {
+            if (response.status == 200) {
+              setTimeout(() => { setIsLoading(false); }, 3000);
+              //console.log(response);
+              //console.log(response.data);
+              //console.log(response.data.Credentials[0]);
+              //console.log(JSON.stringify(response.data));
+              for (let x = 0; x < response.data.Credentials.length; x++) {
+                console.log(x)
+                console.log(response.data.Credentials[x]);
+                //CredentialList.push(response.data.Credentials[x]);
+                CredentialList = CredentialList + JSON.stringify(response.data.Credentials[x]) + ";";
+                //courseList = courseList + JSON.stringify(response.data.Courses[x]) + ";";
+              }
+              console.log(CredentialList);
+              localStorage.setItem("Credentials", CredentialList);//placed it in local storage will need a session solution instead eventually
+              //return(CredentialList);
             }
-            console.log(CredentialList);
-            localStorage.setItem("Credentials", CredentialList);//placed it in local storage will need a session solution instead eventually
             //return(CredentialList);
           }
-          //return(CredentialList);
-        }
-      })
-  //.catch(error)
-  };
-  //credentialListener() //test statment to see if the api functions correctly
-  //console.log(CredentialList)
-  },[]); //the empty array is so that the useEffect runs only once, probably bad code :( but couldn't get event listeners to work.
+        })
+      //.catch(error)
+    };
+    //credentialListener() //test statment to see if the api functions correctly
+    //console.log(CredentialList)
+  }, []); //the empty array is so that the useEffect runs only once, probably bad code :( but couldn't get event listeners to work.
 
 
   //testing way to create new dropdown
@@ -141,7 +155,8 @@ const Student = (props) => {
               courseList = courseList + JSON.stringify(response.data.Courses[x]) + ";";
             }
             //console.log(courseList);
-            localStorage.setItem("fetchCourseList", courseList);
+            //localStorage.setItem("fetchCourseList", courseList);
+            GLOBAL.COURSELIST = courseList;
             props.navigation.navigate('PlanCreation');
           }
         }
@@ -186,21 +201,6 @@ const Student = (props) => {
     newFormValuesCert.splice(i, 1);
     setFormValuesCert(newFormValuesCert)
   }
-  let handleMajorChange = (i, e) => {
-    let newFormValuesMajor = [...formValuesMajor];
-    newFormValuesMajor[i][e.target.name] = e.target.value;
-    setFormValuesMajor(newFormValuesMajor);
-  }
-  let handleMinorChange = (i, e) => {
-    let newFormValuesMinor = [...formValuesMinor];
-    newFormValuesMinor[i][e.target.name] = e.target.value;
-    setFormValuesMinor(newFormValuesMinor);
-  }
-  let handleCertChange = (i, e) => {
-    let newFormValuesCert = [...formValuesCert];
-    newFormValuesCert[i][e.target.name] = e.target.value;
-    setFormValuesCert(newFormValuesCert);
-  }
   //experimenting with creating dynamic dropdown componenet
   /*const CredentialArray = () => {
     let CredsToUse = localStorage.getItem("Credentials");
@@ -225,7 +225,7 @@ const Student = (props) => {
     )
   
   }*/
-  
+
 
   return (
 
@@ -239,51 +239,506 @@ const Student = (props) => {
         <form>
           {formValuesMajor.map((element, index) => (
             <div className="form-inline" key={index}>
-              <select name="major" id="major" onChange={e => handleMajorChange(index, e)}>
-                <option value="">Please select a major</option>
-                <optgroup label="Professional">
-                  <option value="3,P">Computer Science: Game Development</option>
-                  <option value="1,P">Computer Science: Software Engineering</option>
-                </optgroup>
-                <optgroup label="Life">
-                  <option value="4,L">Mathematics</option>
-                  <option value="5,L">Criminology</option>
-                  <option value="6,L">English</option>
-                </optgroup>
-              </select>
+              <FormBuilder
+
+                control={control}
+                setFocus={setFocus}
+                formConfigArray={[
+                  {
+                    name: 'majorForm',
+                    type: 'select',
+                    textInputProps: {
+                      label: 'Major',
+                    },
+                    options: [
+                      {
+                        label: "Art History",
+                        value: "1,L",
+                      },
+                      {
+                        label: "Biochemistry",
+                        value: "2,L",
+                      },
+                      {
+                        label: "Biology (BA)",
+                        value: "3,L",
+                      },
+                      {
+                        label: "Biology (BS)",
+                        value: "4,L",
+                      },
+                      {
+                        label: "Chemistry",
+                        value: "5,L",
+                      },
+                      {
+                        label: "Clinical and Behavioral Neuroscience",
+                        value: "6,L",
+                      },
+                      {
+                        label: "Criminology",
+                        value: "7,L",
+                      },
+                      {
+                        label: "Economics",
+                        value: "8,L",
+                      },
+                      {
+                        label: "English",
+                        value: "9,L",
+                      },
+                      {
+                        label: "Environmental Biology",
+                        value: "10,L",
+                      },
+                      {
+                        label: "Exercise Physiology",
+                        value: "11,L",
+                      },
+                      {
+                        label: "Fine Arts",
+                        value: "12,L",
+                      },
+                      {
+                        label: "French",
+                        value: "13,L",
+                      },
+                      {
+                        label: "History",
+                        value: "14,L",
+                      },
+                      {
+                        label: "Mathematics",
+                        value: "15,L",
+                      },
+                      {
+                        label: "Mathematics Education",
+                        value: "16,L",
+                      },
+                      {
+                        label: "Music and Music Education",
+                        value: "17,L",
+                      },
+                      {
+                        label: "Philosophy and Religion",
+                        value: "18,L",
+                      },
+                      {
+                        label: "Physics",
+                        value: "18,L",
+                      },
+                      {
+                        label: "Political Science",
+                        value: "20,L",
+                      },
+                      {
+                        label: "Psychology",
+                        value: "21,L",
+                      },
+                      {
+                        label: "Sociology",
+                        value: "22,L",
+                      },
+                      {
+                        label: "Spanish",
+                        value: "23,L",
+                      },
+                      {
+                        label: "Theatre",
+                        value: "24,L",
+                      },
+                      {
+                        label: "Writing",
+                        value: "25,L",
+                      },
+                      {
+                        label: "Accounting",
+                        value: "1,P",
+                      },
+                      {
+                        label: "Animation",
+                        value: "2,P",
+                      },
+                      {
+                        label: "Architectural Studies",
+                        value: "3,P",
+                      },
+                      {
+                        label: "Architecture",
+                        value: "4,P",
+                      },
+                      {
+                        label: "Arts Administration",
+                        value: "5,P",
+                      },
+                      {
+                        label: "Computer Science: Game Development",
+                        value: "6,P",
+                      },
+                      {
+                        label: "Computer Science: Software Engineering",
+                        value: "7,P",
+                      },
+                      {
+                        label: "Cyber-risk Management",
+                        value: "8,P",
+                      },
+                      {
+                        label: "Digital Media",
+                        value: "9,P",
+                      },
+                      {
+                        label: "Elementary Education",
+                        value: "10,P",
+                      },
+                      {
+                        label: "Finance",
+                        value: "11,P",
+                      },
+                      {
+                        label: "Graphic and Digital Design",
+                        value: "12,P",
+                      },
+                      {
+                        label: "Health Science",
+                        value: "13,P",
+                      },
+                      {
+                        label: "Management",
+                        value: "14,P",
+                      },
+                      {
+                        label: "Marketing",
+                        value: "15,P",
+                      },
+                      {
+                        label: "Medical Technology",
+                        value: "16,P",
+                      },
+                      {
+                        label: "Middle School Language Arts Education",
+                        value: "17,P",
+                      },
+                      {
+                        label: "Middle School Mathematics Education",
+                        value: "18,P",
+                      },
+                      {
+                        label: "Middle School Science Education",
+                        value: "19,P",
+                      },
+                      {
+                        label: "Middle School Social Science Education",
+                        value: "20,P",
+                      },
+                      {
+                        label: "Multimedia Production and Journalism",
+                        value: "21,P",
+                      },
+                      {
+                        label: "Music Therapy",
+                        value: "22,P",
+                      },
+                      {
+                        label: "Organizational and Leadership Communication",
+                        value: "23,P",
+                      },
+                      {
+                        label: "Pre-Ministry and Community Engagement",
+                        value: "24,P",
+                      },
+                      {
+                        label: "Secondary Education",
+                        value: "25,P",
+                      },
+                      {
+                        label: "Strategic Communication",
+                        value: "26,P",
+                      }
+                    ],
+                  }
+                ]}
+              />
             </div>
           ))}
         </form>
         <form>
           {formValuesMinor.map((element, index) => (
             <div className="form-inline" key={index}>
-              <select name="minor" id="minor" onChange={e => handleMinorChange(index, e)}>
-                <option value="">Please select a minor</option>
-                <optgroup label="Professional">
-                  <option value="">Not Valid Animation</option>
-                </optgroup>
-                <optgroup label="Life">
-                  <option value="10,L">Computer Science</option>
-                  <option value="">Not Valid Criminology</option>
-                  <option value="">Not Valid English</option>
-                </optgroup>
-              </select>
+              <FormBuilder
+
+                control={control}
+                setFocus={setFocus}
+                formConfigArray={[
+                  {
+                    name: 'minorForm',
+                    type: 'select',
+                    textInputProps: {
+                      label: 'Minor',
+                    },
+                    options: [
+                      {
+                        label: "Animal Studies",
+                        value: "26,L",
+                      },
+                      {
+                        label: "Art History",
+                        value: "27,L",
+                      },
+                      {
+                        label: "Asian Studies",
+                        value: "28,L",
+                      },
+                      {
+                        label: "Behavioral Neuroscience",
+                        value: "29,L",
+                      },
+                      {
+                        label: "Biology",
+                        value: "30,L",
+                      },
+                      {
+                        label: "Chemistry",
+                        value: "31,L",
+                      },
+                      {
+                        label: "Communication",
+                        value: "32,L",
+                      },
+                      {
+                        label: "Computer Science",
+                        value: "33,L",
+                      },
+                      {
+                        label: "Criminology",
+                        value: "34,L",
+                      },
+                      {
+                        label: "English",
+                        value: "35,L",
+                      },
+                      {
+                        label: "Environmental Sustainability",
+                        value: "36,L",
+                      },
+                      {
+                        label: "Exercise Physiology",
+                        value: "37,L",
+                      },
+                      {
+                        label: "Fine Arts",
+                        value: "38,L",
+                      },
+                      {
+                        label: "French",
+                        value: "39,L",
+                      },
+                      {
+                        label: "Global and Transnational Studies",
+                        value: "40,L",
+                      },
+                      {
+                        label: "History",
+                        value: "41,L",
+                      },
+                      {
+                        label: "Law and Society",
+                        value: "42,L",
+                      },
+                      {
+                        label: "Mathematics",
+                        value: "43,L",
+                      },
+                      {
+                        label: "Medieval and Renaissance Studies",
+                        value: "44,L",
+                      },
+                      {
+                        label: "Middle East Studies",
+                        value: "45,L",
+                      },
+                      {
+                        label: "Music",
+                        value: "46,L",
+                      },
+                      {
+                        label: "Physics",
+                        value: "47,L",
+                      },
+                      {
+                        label: "Philosophy and Religion",
+                        value: "48,L",
+                      },
+                      {
+                        label: "Political Science",
+                        value: "49,L",
+                      },
+                      {
+                        label: "Psychology",
+                        value: "50,L",
+                      },
+                      {
+                        label: "Sociology",
+                        value: "51,L",
+                      },
+                      {
+                        label: "Spanish",
+                        value: "52,L",
+                      },
+                      {
+                        label: "Theatre",
+                        value: "53,L",
+                      },
+                      {
+                        label: "Women and Gender Studies",
+                        value: "54,L",
+                      },
+                      {
+                        label: "Writing",
+                        value: "55,L",
+                      },
+                      {
+                        label: "Actuarial Science & Risk Management",
+                        value: "27,P",
+                      },
+                      {
+                        label: "Animation",
+                        value: "28,P",
+                      },
+                      {
+                        label: "Architecture and Design",
+                        value: "29,P",
+                      },
+                      {
+                        label: "Business Administration",
+                        value: "30,P",
+                      },
+                      {
+                        label: "Business and Entrepreneurship",
+                        value: "31,P",
+                      },
+                      {
+                        label: "Cyber-risk Management",
+                        value: "32,P",
+                      },
+                      {
+                        label: "Design in Society",
+                        value: "33,P",
+                      },
+                      {
+                        label: "Graphic & Digital Design",
+                        value: "34,P",
+                      },
+                      {
+                        label: "Health Science",
+                        value: "35,P",
+                      },
+                      {
+                        label: "Pre-Engineering",
+                        value: "36,P",
+                      },
+                      {
+                        label: "Pre-Ministry and Community Engagement",
+                        value: "37,P",
+                      },
+                      {
+                        label: "Special Education",
+                        value: "38,P",
+                      },
+                      {
+                        label: "Web Communication and Design",
+                        value: "39,P",
+                      },
+                    ],
+                  }
+                ]}
+              />
             </div>
           ))}
         </form>
         <form>
           {formValuesCert.map((element, index) => (
             <div className="form-inline" key={index}>
-              <select name="cert" id="cert" onChange={e => handleCertChange(index, e)}>
-                <option value="">Please select a certificate</option>
-                <optgroup label="Professional">
-                  <option value="7,P">Interactive Design</option>
-                </optgroup>
-                <optgroup label="Life">
-                  <option value="8,L">International Immersion</option>
-                  <option value="9,L">Ancients Alive: The Classics in Context</option>
-                </optgroup>
-              </select>
+              <FormBuilder
+
+                control={control}
+                setFocus={setFocus}
+                formConfigArray={[
+                  {
+                    name: 'certForm',
+                    type: 'select',
+                    textInputProps: {
+                      label: 'Minor',
+                    },
+                    options: [
+                      {
+                        label: "Ancients Alive: The Classics In Context",
+                        value: "56,L",
+                      },
+                      {
+                        label: "Ethical Leadership",
+                        value: "57,L",
+                      },
+                      {
+                        label: "Get Out, Plug In: Intercultural Connections",
+                        value: "58,L",
+                      },
+                      {
+                        label: "Graphic Storytelling",
+                        value: "59,L",
+                      },
+                      {
+                        label: "Holistic Health and Well-Being",
+                        value: "60,L",
+                      },
+                      {
+                        label: "International Immersion",
+                        value: "61,L",
+                      },
+                      {
+                        label: "Life in Close-up: Film, History, and Society",
+                        value: "62,L",
+                      },
+                      {
+                        label: "Different is the New Normal: Celebrating Neurodiversity",
+                        value: "63,L",
+                      },
+                      {
+                        label: "Data Analytics: Big Problems, Big Data Solutions",
+                        value: "40,P",
+                      },
+                      {
+                        label: "Designing Solutions for Environmental Problems",
+                        value: "41,P",
+                      },
+                      {
+                        label: "Interactive Design",
+                        value: "42,P",
+                      },
+                      {
+                        label: "Learning to Lead and Leading to Learn: Facilitating Learning in the Professional Setting",
+                        value: "43,P",
+                      },
+                      {
+                        label: "Professional and Visual Communication",
+                        value: "44,P",
+                      },
+                      {
+                        label: "Sports Leadership: Going Beyond the Game",
+                        value: "45,P",
+                      },
+                      {
+                        label: "Justice Denied: Wrongful Convictions",
+                        value: "46,P",
+                      },
+                      {
+                        label: "The Activist’s Toolkit: Transforming Society through Civic Engagement",
+                        value: "47,P",
+                      },
+                    ],
+                  }
+                ]}
+              />
             </div>
           ))}
         </form>
@@ -367,7 +822,7 @@ const styles = StyleSheet.create({
   form2: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: 150,
+    paddingHorizontal: 50,
     paddingVertical: 5
   },
   load: {

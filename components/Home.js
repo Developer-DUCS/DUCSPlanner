@@ -31,7 +31,7 @@ const Home = (props) => {
                   console.log("error");
                 }
                 else {
-                  props.navigation.navigate('StudentCPY');
+                  props.navigation.navigate('stuCopy');
                 }
 
               })
