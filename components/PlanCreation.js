@@ -25,6 +25,9 @@ const api = axios.create({
 //console.log(navigation.screen);
 
 const PlanCreation = (props) => {
+  //const [message, setMessage] = useState('');
+ // const [isError, setIsError] = useState(false);
+
   const onSubmit = () => { 
     console.log(sem1Class.length);
     let sem1 = [];
@@ -35,6 +38,12 @@ const PlanCreation = (props) => {
     let sem6 = [];
     let sem7 = [];
     let sem8 = [];
+    if (sem1Class.length == 0 || sem2Class.length == 0 || sem3Class.length == 0 || sem4Class.length == 0 || sem5Class.length == 0 || sem6Class.length == 0 || sem7Class.length == 0 || sem8Class.length == 0){
+     // setIsError(true);
+     // setMessage('One or more semesters are empty of courses! Please provide at least one course per semester for your plan creation.');
+      alert('One or more semesters are empty of courses! Please provide at least one course per semester for your plan creation.');
+      return;
+    }
    if (sem1Class.length != 0){
     for (let i = 0; i < sem1Class.length; i++){
      
@@ -120,9 +129,11 @@ const PlanCreation = (props) => {
        console.log("sent save request");
        if (response.status != 200){
          console.log("the api is messed up");
+         alert('Oops! there was an issue with saving your 4-year plan');
        }
        else{
          console.log("plan saved successfully");
+         alert('Plan was saved successfully');
        }
      })
   
