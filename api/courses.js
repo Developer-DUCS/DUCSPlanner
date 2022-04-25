@@ -38,7 +38,7 @@ router.post('/courses', (req, res) => {
     
     function getCourses(courseCode){
         let prereqList = [];
-        let qry = `select distinct CoursePrefix,CourseName,CourseCode,Semester,CreditHours,HasPrereq from courses join Credentials_has_Courses on Credentials_has_Courses.Courses_UniqueCourseID=Courses.UniqueCourseID WHERE Credentials_CredentialID IN (${courseCode});`;
+        let qry = `select distinct CoursePrefix,CourseName,CourseCode,Semester,CreditHours,HasPrereq,Required from courses join Credentials_has_Courses on Credentials_has_Courses.Courses_UniqueCourseID=Courses.UniqueCourseID WHERE Credentials_CredentialID IN (${courseCode});`;
         return new Promise((resolve, reject) => {
             conn.query(qry, (err, rows) => {
                 if (err) {
@@ -55,7 +55,8 @@ router.post('/courses', (req, res) => {
                             Semester: rows.Semester,
                             CreditHours: rows.CreditHours,
                             HasPrereq: rows.HasPrereq,
-                            Prereqs: prereqList
+                            Prereqs: prereqList,
+                            Required: rows.Required
                         }
                         courseList.push(course);
                     })
