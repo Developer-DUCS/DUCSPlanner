@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, } from 'react-native';
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
@@ -36,9 +36,9 @@ const AppNavigator = createStackNavigator({
   Student: {
     screen: Student
   },
-  StudentCPY: {
-    screen: StudentCPY
-  },
+  // StudentCPY: {
+  //   screen: StudentCPY
+  // },
   Advisor: {
     screen: Advisor
   },
@@ -55,7 +55,7 @@ const AppNavigator = createStackNavigator({
     screen: PlanCreation
   }
 }, {
-  initialRouteName: "SignUp"
+  initialRouteName: "Home"
   /*This sets the Home page as the base page*/
 });
 

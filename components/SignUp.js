@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, ScrollView, Image, Text, Picker} from 'react-native';
 import axios from 'axios';
-import { Wrap, Box, TextInput, Button, Surface, VStack, Flex} from '@react-native-material/core';
+import {Box, TextInput, Button, Surface, VStack, Flex} from '@react-native-material/core';
 import { Controller, useForm} from 'react-hook-form';
 
 
@@ -16,6 +16,7 @@ const SignUp = (props) => {
       lastName: '',
       email: '',
       password: '',
+      confPassword: '',
       role: '',
     },
     mode: 'onChange',
@@ -155,9 +156,9 @@ const SignUp = (props) => {
                         value={value}
                       />
                     )}
-                    name="confirmPassword"
+                    name="confPassword"
                   />
-              {errors.confirmPassword && <Text>Confirm Password is required</Text>}
+              {errors.confPassword && <Text>Confirm Password is required</Text>}
               </Box>
               <Box>
             <Controller
@@ -179,163 +180,11 @@ const SignUp = (props) => {
             />
             {errors.role && <Text>Role is required</Text>}
             </Box>
-          <Button title='Submit' onPress={handleSubmit(onSubmit)}/>
+          <Button title='Submit' onPress={handleSubmit(onSubmit)} style={styles.btn}/>
         </VStack>
         </Surface>
     </ScrollView>
   )
-  // return (
-  //   <ScrollView contentContainerStyle={styles.scrollViewStyle}>
-  //     <Surface style={styles.formContainer}>
-  //       <View style={styles.formBuild}>
-  //         <Image
-  //           style={{ width: "50%", height: "10%", resizeMode: "contain", marginTop: '7%', marginBottom: '2%', alignSelf: 'center' }}
-  //           source={{ uri: 'https://drury.edu/wp-content/uploads/files/brand_lounge/PrimaryFullColor.png' }}
-  //         />
-  //         <FormBuilder
-  //           control={control}
-  //           setFocus={setFocus}
-  //           formConfigArray={[
-  //             {
-  //               type: 'text',
-  //               name: 'firstName',
-  //               rules: {
-  //                 required: {
-  //                   value: true,
-  //                   message: 'First Name is required',
-  //                 },
-  //               },
-  //               textInputProps: {
-  //                 label: 'First Name',
-  //               },
-  //             },
-  //             {
-  //               type: 'text',
-  //               name: 'lastName',
-  //               rules: {
-  //                 required: {
-  //                   value: true,
-  //                   message: 'Last Name is required',
-  //                 },
-  //               },
-  //               textInputProps: {
-  //                 label: 'Last Name',
-  //               },
-  //             },
-  //             {
-  //               type: 'email',
-  //               name: 'email',
-
-  //               rules: {
-  //                 required: {
-  //                   value: true,
-  //                   message: 'Email is required',
-  //                 },
-  //                 pattern: {
-  //                   value:
-  //                     /[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})/,
-  //                   message: 'Email is invalid',
-  //                 },
-  //               },
-  //               textInputProps: {
-  //                 label: 'Email',
-  //               },
-  //             },
-  //             {
-  //               type: 'password',
-  //               name: 'password',
-  //               rules: {
-  //                 required: {
-  //                   value: true,
-  //                   message: 'Password is required',
-  //                 },
-  //                 minLength: {
-  //                   value: 8,
-  //                   message: 'Password should be atleast 8 characters',
-  //                 },
-  //                 pattern: {
-  //                   value:
-  //                     /(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?!.*\s)/,
-  //                   message: 'Password must contain a uppercase letter, a lowercase letter, a number, a special character, and no whitespace'
-  //                 }
-  //               },
-  //               textInputProps: {
-  //                 label: 'Password',
-  //               },
-  //             },
-  //             {
-  //               type: 'password',
-  //               name: 'confPassword',
-  //               rules: {
-  //                 required: {
-  //                   value: true,
-  //                   message: 'Confirm Password is required',
-  //                 },
-  //                 validate: (value) => value == watch('password') || 'Passwords do not match',
-  //               },
-  //               textInputProps: {
-  //                 label: 'Confirm Password',
-  //               },
-  //             },
-  //             {
-  //               name: 'role',
-  //               type: 'select',
-  //               textInputProps: {
-  //                 label: 'Role',
-  //               },
-  //               rules: {
-  //                 required: {
-  //                   value: true,
-  //                   message: 'Role is required',
-  //                 },
-  //               },
-  //               options: [
-  //                 {
-  //                   value: 'Student',
-  //                   label: 'Student',
-  //                 },
-  //                 {
-  //                   value: 'Admin',
-  //                   label: 'Admin',
-  //                 },
-  //                 {
-  //                   value: 'Advisor',
-  //                   label: 'Advisor',
-  //                 },
-  //               ],
-  //             }
-  //           ]}
-  //         />
-  //         <Button
-  //           style={styles.btn}
-  //           mode={'contained'}
-  //           onPress={handleSubmit((values) => api.post('/api/auth/signup', {
-  //             'Email': values.email,
-  //             'Password': values.password,
-  //             'ConfPassword': values.confPassword,
-  //             'Fname': values.firstName,
-  //             'Lname': values.lastName,
-  //             'Role': values.role
-  //           })
-  //             .then(function (response) {
-  //               console.log("sent");
-  //               if (response.status != 201) {
-  //                 setIsError(true)
-  //               }
-  //               else {
-  //                 props.navigation.navigate('Home');
-  //               }
-  //             })
-  //             .catch(function (error) {
-  //               console.log(error);
-  //             })
-  //           )}>
-  //           <Text style={styles.btnText}>Submit</Text>
-  //         </Button>
-  //       </View>
-  //     </Surface>
-  //   </ScrollView>
-  // );
 }
 
 const styles = StyleSheet.create({
