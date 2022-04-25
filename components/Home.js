@@ -99,12 +99,15 @@ const Home = (props) => {
                   //setIsError(true)
                 }
                 else {
+                  //console.log(JSON.stringify(response.data.userID));
                   var firstName = JSON.stringify(response.data.fname);
                   var lastName = JSON.stringify(response.data.lname);
-                  var id = JSON.stringify(response.data.userId);
+                  var id = JSON.stringify(response.data.userID);
+                 // console.log(JSON.stringify(response.data.userId));
                   GLOBAL.FIRSTNAME = firstName;
                   GLOBAL.LASTNAME = lastName;
                   GLOBAL.ID = id;
+                  console.log(GLOBAL.ID);
                   props.navigation.navigate('Student');
                 }
 
