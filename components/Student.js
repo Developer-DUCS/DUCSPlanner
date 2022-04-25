@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ActivityIndicator } from 'react-native';
-import { Button } from 'react-native-paper';
-import { FormBuilder } from 'react-native-paper-form-builder';
+import React, { useState,useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView, ScrollViewComponent, FlatList } from 'react-native';
+import { createAppContainer, SafeAreaView } from "react-navigation";
+import { CardStyleInterpolators, createStackNavigator } from "react-navigation-stack";
+
 import axios from 'axios'
 import GLOBAL from 'globals';
 import { useForm } from 'react-hook-form';

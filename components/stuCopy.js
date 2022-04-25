@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Picker, ScrollView, ActivityIndicator } from 'react-native'
-import { FormBuilder } from 'react-native-paper-form-builder';
+// import { FormBuilder } from 'react-native-paper-form-builder';
 import { Text, Stack, Wrap, Button, Paper, Surface } from "@react-native-material/core";
 import axios from 'axios'
 import GLOBAL from 'globals';
@@ -69,7 +69,7 @@ const stuCopy = (props) => {
                     <form>
                         {formValuesMajor.map((element, index) => (
                             <div className="form-inline" key={index}>
-                                <FormBuilder
+                                {/* <FormBuilder
 
                                     control={control}
                                     setFocus={setFocus}
@@ -288,7 +288,7 @@ const stuCopy = (props) => {
                                             ],
                                         }
                                     ]}
-                                />
+                                /> */}
                             </div>
                         ))}
                     </form>
@@ -305,7 +305,7 @@ const stuCopy = (props) => {
                     <form>
                         {formValuesMinor.map((element, index) => (
                             <div className="form-inline" key={index}>
-                                <FormBuilder
+                                {/* <FormBuilder
 
                                     control={control}
                                     setFocus={setFocus}
@@ -492,7 +492,7 @@ const stuCopy = (props) => {
                                             ],
                                         }
                                     ]}
-                                />
+                                /> */}
                             </div>
                         ))}
                     </form>
@@ -510,7 +510,7 @@ const stuCopy = (props) => {
                     <form>
                         {formValuesCert.map((element, index) => (
                             <div className="form-inline" key={index}>
-                                <FormBuilder
+                                {/* <FormBuilder
 
                                     control={control}
                                     setFocus={setFocus}
@@ -589,7 +589,7 @@ const stuCopy = (props) => {
                                             ],
                                         }
                                     ]}
-                                />
+                                /> */}
                             </div>
                         ))}
                     </form>

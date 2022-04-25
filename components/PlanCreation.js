@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { View, StyleSheet, Picker, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
 import axios from 'axios'
-import { Avatar, Button, Card, Title, Paragraph, Surface, Text } from 'react-native-paper';
-import { FormBuilder } from 'react-native-paper-form-builder';
-import { useForm } from 'react-hook-form';
 
 
 const PlanCreation = (props) => {

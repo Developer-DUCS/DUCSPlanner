@@ -1,7 +1,7 @@
 {
     "secret": "5JgKvsOxd278oarolsZ45Me9LkjEifmH",
     "serverPort": 3306,
-    "user": "root",
-    "password": "password",
+    "user": "PlanItAdmin",
+    "password": "asecuredpassword!",
     "database": "PlanIt"
 }
