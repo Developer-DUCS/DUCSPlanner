@@ -29,7 +29,7 @@ const PlanCreation = (props) => {
  // const [isError, setIsError] = useState(false);
 
   const onSubmit = () => { 
-    console.log(sem1Class.length);
+    //console.log(sem1Class.length);
     let sem1 = [];
     let sem2 = [];
     let sem3 = [];
@@ -117,8 +117,7 @@ const PlanCreation = (props) => {
     }
     //console.log(JSON.stringify(sem1));
     let studentPlan = [JSON.stringify({'sem1':sem1}),JSON.stringify({'sem2':sem2}),JSON.stringify({'sem3':sem3}),JSON.stringify({'sem4':sem4}),JSON.stringify({'sem5':sem5}),JSON.stringify({'sem6':sem6}), JSON.stringify({'sem7':sem7}),JSON.stringify({'sem8':sem8})]
-    let studentPlan2 = []
-    console.log(studentPlan2);
+
     console.log(studentPlan);
     //let id = GLOBAL.ID;
     //console.log(id);

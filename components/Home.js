@@ -96,7 +96,7 @@ const Home = (props) => {
               .then(function (response) {
                 console.log("sent");
                 if (response.status != 200) {
-                  //setIsError(true)
+                  setIsError(true)
                 }
                 else {
                   //console.log(JSON.stringify(response.data.userID));
@@ -108,7 +108,8 @@ const Home = (props) => {
                   GLOBAL.LASTNAME = lastName;
                   GLOBAL.ID = id;
                   console.log(GLOBAL.ID);
-                  props.navigation.navigate('Student');
+                  //props.navigation.navigate('Student');
+                  props.navigation.navigate('PlanViewing');
                 }
 
               })

@@ -146,6 +146,7 @@ const Student = (props) => {
             //localStorage.setItem("fetchCourseList", courseList);
             GLOBAL.COURSELIST = courseList;
             props.navigation.navigate('PlanCreation');
+            //props.navigation.navigate('PlanViewing');
           }
         }
       })
