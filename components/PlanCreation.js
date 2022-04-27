@@ -25,32 +25,27 @@ let done = false;
 const PlanCreation = (props) => {
 
   while (fetchTry) {
-    //const itemsFromBackend = [];
-    //let listItems = [];
-    //let itemPlace = [[],[],[],[],[],[],[],[]];
 
-    //let tempNum = 0;
-    //let pos = 0;
-
-    //let done = false;
-
+    //Grabing courses from global state
     let classes = GLOBAL.COURSELIST;
-
     let classList = classes.split(";");
-    //console.log(classList);
     classList.pop();
 
+    //Parse all the items in the course list
     for (let j = 0; j < classList.length; j++) {
       itemsFromBackend.push(JSON.parse(classList[j]));
     }
 
+    //Sort the list
     itemsFromBackend.sort(function(a,b) {return a.CourseCode - b.CourseCode});
-
+    
+    //Determine the maximum course amount for each semester
     let listSize = Math.ceil(itemsFromBackend.length/8);
 
-    function checkPrereqs(backList,itemList) {
+    //Check to see if any of a courses prereqs are in any previous semesters
+    function checkPrereqs(backList,itemList,num) {
       let courseList = [];
-      for (let j = 0; j < itemList.length; j++) {
+      for (let j = 0; j < num; j++) {
         for (let i = 0; i < itemList[j].length; i++) {
           courseList.push([itemList[j][i].object.CoursePrefix,itemList[j][i].object.CourseCode]);
         }
@@ -71,6 +66,7 @@ const PlanCreation = (props) => {
       }
     }
 
+    //Pushes each course into the correct spot in the 2-d list
     function pushItem(item,num) {
       itemPlace[num].push({
         label: item.CourseName,
@@ -79,15 +75,23 @@ const PlanCreation = (props) => {
       });
     }
 
+    //Go through each course to see if it can be put into a semester
     while (itemsFromBackend.length > 0 && !done) {
-      let temp = pos;
+      //let temp = pos;
+      //checks to see if the loop has gone through each list in the 2-d list 
       if (tempNum > 7) {
         done = true;
       }
+      //moves to the next list in the 2-d list
       else if (itemPlace[tempNum].length == listSize || pos == itemsFromBackend.length) {
         tempNum = tempNum + 1;
         pos = 0;
       }
+      //Checks to see if a course is required
+      else if (itemsFromBackend[pos].Required == 'No') {
+        pos = pos + 1
+      }
+      //Fill out fall semesters
       else if (tempNum % 2 == 0) {
         if (itemsFromBackend[pos].Semester == "Fall" || itemsFromBackend[pos].Semester == "Both") {
           if (tempNum == 0 && itemsFromBackend[pos].HasPrereq == "No") {
@@ -96,7 +100,7 @@ const PlanCreation = (props) => {
             pos = 0;
           }
           else {
-            if(checkPrereqs(itemsFromBackend[pos].Prereqs,itemPlace)) {
+            if(checkPrereqs(itemsFromBackend[pos].Prereqs,itemPlace,tempNum)) {
               pushItem(itemsFromBackend[pos],tempNum);
               itemsFromBackend.splice(pos, 1);
               pos = 0;
@@ -110,9 +114,10 @@ const PlanCreation = (props) => {
           pos = pos + 1;
         }
       }
+      //Fill out spring semesters
       else {
         if (itemsFromBackend[pos].Semester == "Spring" || itemsFromBackend[pos].Semester == "Both") {
-          if(checkPrereqs(itemsFromBackend[pos].Prereqs,itemPlace)) {
+          if(checkPrereqs(itemsFromBackend[pos].Prereqs,itemPlace,tempNum)) {
             pushItem(itemsFromBackend[pos],tempNum);
             itemsFromBackend.splice(pos, 1);
             pos = 0;
