@@ -8,18 +8,19 @@ import { FormBuilder } from 'react-native-paper-form-builder';
 import { useForm } from 'react-hook-form';
 import GLOBAL from './globals';
 
-let fetchTry = true;
-
+//Lists that are used while parsing course lists
 const itemsFromBackend = [];
 let listItems = [];
 let itemPlace = [[],[],[],[],[],[],[],[]];
+let tempList = [];
 
+//List pointers
 let tempNum = 0;
 let pos = 0;
 
+//Booleans used
+let fetchTry = true;
 let done = false;
-
-//console.log(navigation.screen);
 
 const PlanCreation = (props) => {
 
