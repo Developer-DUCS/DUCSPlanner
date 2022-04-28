@@ -148,6 +148,12 @@ const PlanCreation = (props) => {
       listItems.concat(itemPlace[k]);
     }
 
+    tempList = JSON.parse(JSON.stringify(itemPlace));
+
+    console.log(listItems);
+    console.log(itemPlace);
+    console.log(tempList);
+
     console.log("Made it through");
     fetchTry = false;
   }
