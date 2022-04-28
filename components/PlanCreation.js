@@ -28,6 +28,7 @@ const PlanCreation = (props) => {
 
     //Grab courses and put them in a list
     let classes = localStorage.getItem("fetchCourseList");
+    //let classes = GLOBAL.COURSELIST;
     let classList = classes.split(";");
     classList.pop();
 
