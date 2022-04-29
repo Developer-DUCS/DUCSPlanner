@@ -108,8 +108,9 @@ const Home = (props) => {
                   GLOBAL.LASTNAME = lastName;
                   GLOBAL.ID = id;
                   console.log(GLOBAL.ID);
-                  //props.navigation.navigate('Student');
-                  props.navigation.navigate('PlanViewing');
+                  props.navigation.navigate('Student');
+                  //props.navigation.navigate('PlanViewing');
+                  //props.navigation.navigate('PlanCreation');
                 }
 
               })

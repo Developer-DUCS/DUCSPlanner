@@ -3,5 +3,5 @@ module.exports = {
     LASTNAME:'',
     ID:'',
     COURSELIST:'',
-    PLANCOURSESLIST: ''
+    PLANCOURSESLIST: []
   };

@@ -129,7 +129,7 @@ router.post('/providingCredentials', (req,res) => {
      let saveQry = `REPLACE INTO StudentPlans (PlanItUsers_usersId, StudentPlan) VALUES (${studCode}, '[${studPlan}]');`;//wrap studplan ins '[]';
      conn.query(saveQry, (err) => {
         console.log("I'm in the plan saving function");
-        //console.log(saveQry);
+        console.log(saveQry);
         if(err){
             console.log(res.statusCode);
             //console.log(saveQry.sql);

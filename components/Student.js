@@ -16,6 +16,15 @@ const Student = (props) => {
   let CredentialList = [];
   let courseCode = [];
   let newCourses = [];
+  let Seme1 = [];
+  let Seme2 = [];
+  let Seme3 = [];
+  let Seme4 = [];
+  let Seme5 = [];
+  let Seme6 = [];
+  let Seme7 = [];
+  let Seme8 = [];
+ let listOfSemes = [];
   //let name = localStorage.getItem("fname") + " " + localStorage.getItem("lname");
   let name = GLOBAL.FIRSTNAME + " " + GLOBAL.LASTNAME;
   const [isLoading, setIsLoading] = useState(false);
@@ -157,6 +166,52 @@ const Student = (props) => {
         setMessage('API Error');
       });
   };
+
+  const onSubmitHandler2 = () => {
+    console.log("grabbing student's plan")
+            console.log('this is users id',GLOBAL.ID);
+            console.log('loading...')
+            //setIsLoading(true);
+            api.post('api/courses/fetch',
+            {'uID': GLOBAL.ID
+            })
+            .then(function(response){
+                if (response.status != 200){
+                    console.log(response.data);
+                    alert('Opps! there was an issue with returning your student plan');
+                }
+                else {
+                    if(response == 200);
+                console.log('holy damn it worked');
+                console.log(response.data);
+                //console.log(response.data.studentPlan.length);
+                Seme1.push(response.data.studentPlan[0]);
+                Seme2.push(response.data.studentPlan[1]);
+                Seme3.push(response.data.studentPlan[2]);
+                Seme4.push(response.data.studentPlan[3]);
+                Seme5.push(response.data.studentPlan[4]);
+                Seme6.push(response.data.studentPlan[5]);
+                Seme7.push(response.data.studentPlan[6]);
+                Seme8.push(response.data.studentPlan[7]);
+                //console.log(Seme1);
+                //console.log(Seme1[0].sem1[0]);
+                //console.log(studentPlanTBU[0].sem3[0]); push creates 2d array need to use index zero before accessing class elements
+                listOfSemes = [Seme1[0].sem1,Seme2[0].sem2,Seme3[0].sem3,Seme4[0].sem4,Seme5[0].sem5,Seme6[0].sem6,Seme7[0].sem7,Seme8[0].sem8]
+                //listOfSemes= [Seme1,Seme2,Seme3,Seme4,Seme5,Seme6,Seme7,Seme8]
+                GLOBAL.PLANCOURSESLIST = listOfSemes;
+                console.log(GLOBAL.PLANCOURSESLIST);
+                //console.log(listOfSemes);
+                
+                  
+                
+                props.navigation.navigate('PlanViewing');
+                
+                }
+
+            })
+        
+  }
+
 
   if (isLoading) {
     return (
@@ -313,6 +368,12 @@ const Student = (props) => {
         </Button>
         <Button style={styles.btn} onPress={(index) => removeFormFieldsCert(index)} uppercase={false}>
           <Text style={styles.btntext}>Remove Certificate</Text>
+        </Button>
+      </View>
+      <View style={styles.centered}>
+      <Text style={[styles.message, { color: isError ? 'red' : '#F5F5F5' }]}>{message}</Text>
+      <Button onPress={() => onSubmitHandler2()} style={styles.btn} uppercase={false}>
+          <Text style={styles.btntext}>View Plan</Text>
         </Button>
       </View>
       <View style={styles.centered}>

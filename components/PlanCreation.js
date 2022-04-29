@@ -44,76 +44,89 @@ const PlanCreation = (props) => {
       alert('One or more semesters are empty of courses! Please provide at least one course per semester for your plan creation.');
       return;
     }
-   if (sem1Class.length != 0){
+   if (thing.sem1 == ""){
     for (let i = 0; i < sem1Class.length; i++){
      
       //sem1.push(JSON.stringify(sem1Class[i].props.class));
-      sem1.push(sem1Class[i].props.class)
+      sem1.push(sem1Class[i].props.class.CoursePrefix +" "+ sem1Class[i].props.class.CourseCode)
+    // sem1.push(thing.sem1);
     }
    }
     else{
-      sem1.push([0]);
+      sem1.push(thing.sem1);
     }
-  if (sem2Class.length != 0){
+  //if (sem2Class.length != 0){
+    if(thing.sem2 == ""){
     for (let i = 0; i < sem2Class.length; i++){
      // sem2.push(JSON.stringify(sem2Class[i].props.class));
-     sem2.push(sem2Class[i].props.class);
+     sem2.push(sem2Class[i].props.class.CoursePrefix+ " "+ sem2Class[i].class.CourseCode);
+     //sem2.push(thing.sem2);
+     
+     console.log(sem2);
+     console.log(thing.sem2);
+
     } 
    }
    else{
-     sem2.push([0]);
+     sem2.push(thing.sem2);
    }
-   if (sem3Class.length != 0){
+   if (thing.sem3 == ""){
     for (let i = 0; i < sem3Class.length; i++){
       
       //sem3.push(JSON.stringify(sem3Class[i].props.class))
-      sem3.push(sem3Class[i].props.class);
+      sem3.push(sem3Class[i].props.class.CoursePrefix+ " "+ sem3Class[i].props.class.CourseCode);
+      //sem3.push(thing.sem3);
     }}
     else{
-      sem3.push([0]);
+      sem3.push(thing.sem3);
     }
-    if (sem4Class.length != 0){
+    if (thing.sem4 == ""){
     for (let i = 0; i < sem4Class.length; i++){
      
       //sem4.push(JSON.stringify(sem4Class[i].props.class))
-      sem4.push(sem4Class[i].props.class);
+      sem4.push(sem4Class[i].props.class.CoursePrefix+" "+sem4Class[i].props.class.CourseCode);
+      //sem4.push(thing.sem4);
     }}
     else{
-      sem4.push([0]);
+      sem4.push(thing.sem4);
     }
-    if (sem5Class.length != 0){
+    if (thing.sem5 == ""){
     for (let i = 0; i < sem5Class.length; i++){
       
       //sem5.push(JSON.stringify(sem5Class[i].props.class))
-      sem5.push(sem5Class[i].props.class);
+      sem5.push(sem5Class[i].props.class.CoursePrefix+ " "+sem5Class[i].props.class.CourseCode);
+      //sem5.push(thing.sem5);
     }}
     else{
-      sem5.push([0]);
+      sem5.push(thing.sem5);
     }
-    if (sem6Class.length != 0){
+    if (thing.sem6 == ""){
     for (let i = 0; i < sem6Class.length; i++){
       //sem6.push(JSON.stringify(sem6Class[i].props.class))
-      sem6.push(sem6Class[i].props.class);
+      sem6.push(sem6Class[i].props.class.CoursePrefix+" "+sem6Class[i].props.class.CourseCode);
+      //sem6.push(thing.sem6);
     }}
     else{
-      sem6.push([0]);
+      sem6.push(thing.sem6);
     }
-    if (sem7Class.length != 0){
+    if (thing.sem7 == ""){
     for (let i = 0; i < sem7Class.length; i++){
       //sem7.push(JSON.stringify(sem7Class[i].props.class))
-      sem7.push(sem7Class[i].props.class);
+      sem7.push(sem7Class[i].props.class.CoursePrefix+" "+sem7Class[i].props.class.CourseCode);
+      //sem7.push(thing.sem7);
     }}
     else{
-      sem7.push([0]);
+      sem7.push(thing.sem7);
     }
-    if (sem8Class.length != 0){
+    if (thing.sem8 == ""){
     for (let i = 0; i < sem8Class.length; i++){
       //sem8.push(JSON.stringify(sem8Class[i].props.class)) //important
-      sem8.push(sem8Class[i].props.class);
+      sem8.push(sem8Class[i].props.class.CoursePrefix+" "+sem8Class[i].props.class.CourseCode);
+      //sem8.push(thing.sem8);
     }
   }
     else{
-      sem8.push([0]);
+      sem8.push(thing.sem8);
     }
     //console.log(JSON.stringify(sem1));
     let studentPlan = [JSON.stringify({'sem1':sem1}),JSON.stringify({'sem2':sem2}),JSON.stringify({'sem3':sem3}),JSON.stringify({'sem4':sem4}),JSON.stringify({'sem5':sem5}),JSON.stringify({'sem6':sem6}), JSON.stringify({'sem7':sem7}),JSON.stringify({'sem8':sem8})]
