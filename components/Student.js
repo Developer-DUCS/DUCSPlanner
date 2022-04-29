@@ -264,8 +264,8 @@ const Student = (props) => {
                   <option value="">Not Valid Animation</option>
                 </optgroup>
                 <optgroup label="Life">
-                  <option value="10,L">Computer Science</option>
-                  <option value="">Not Valid Criminology</option>
+                  <option value="9,L">Computer Science</option>
+                  <option value="10,L">Mathematics</option>
                   <option value="">Not Valid English</option>
                 </optgroup>
               </select>
