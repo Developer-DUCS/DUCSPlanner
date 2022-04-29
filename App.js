@@ -14,6 +14,7 @@ import Footer from './components/Footer';
 import SignUp from './components/SignUp';
 import ForgotPass from './components/ForgotPass';
 import PlanCreation from './components/PlanCreation';
+import PlanViewing from './components/PlanViewing';
 
 const App = () => {
   return (
@@ -56,6 +57,9 @@ const AppNavigator = createStackNavigator({
   },
   PlanCreation: {
     screen: PlanCreation
+  },
+  PlanViewing:{
+    screen: PlanViewing
   }
 }, {
   initialRouteName: "Home"

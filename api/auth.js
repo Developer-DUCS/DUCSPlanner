@@ -21,12 +21,14 @@ router.post('/login', (req, res) => {
             for (let l = 0; l < rows.length; l++) {
                 if (req.body.Email == rows[l].Email && bcrypt.compareSync(req.body.Password, rows[l].Password)) {
                     const token = jwt.sign({
-                        UserId: rows[l].UserId, Email: req.body.Email, Role: rows[l].Role, Department: rows[l].Department,
+                        UserId: rows[l].usersId, Email: req.body.Email, Role: rows[l].Role, Department: rows[l].Department,
                         YearStarted: rows[l].Year_Started, Fname: rows[l].Fname, Lname: rows[l].Lname
                     }, secret, { expiresIn: '1h' });
                     console.log(rows[l].Fname, rows[l].Lname);
+                    //req.session.userInfo = rows[l];
+                    //console.log(rows[l].usersId);
                     return (res.status(200).json({
-                        message: "User logged in", "token": token, "Role": rows[l].Role, "fname": rows[l].Fname,
+                        message: "User logged in", "token": token, "userID": rows[l].usersId, "Role": rows[l].Role, "fname": rows[l].Fname,
                         "lname": rows[l].Lname
                     }));
                 }

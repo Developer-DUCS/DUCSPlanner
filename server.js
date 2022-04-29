@@ -3,7 +3,7 @@ const conn = require("./mysqldb");
 const app = express()
 const port = 3210; //originally 3210
 const bodyParser = require("body-parser");
-
+//const session = require("./session"); //used for persistent storage
 app.use(express.static('App.js'))
 
 app.use((req, res, next) => {
@@ -17,7 +17,9 @@ const router = express.Router();
 
 router.use("/api/auth", require("./api/auth"));
 router.use("/api/courses", require("./api/courses"));
-
+//router.use("/api/sessionRoutes/get-session",require("./api/sessionRoutes/get-session"));
+//router.use("/api/sessionRoutes/store-data", require("./api/sessionRoutes/store-data"));
+//router.use("/api/sessionRoutes", require("./api/sessionRoutes"));
 
 app.use(router);
 
@@ -35,6 +37,8 @@ app.get('/login', function (req, res) {
         }
         else {
             console.log(rows);
+            //req.session.rows;
+            //console.log(req.session.rows)
             res.send(rows);
         }
     });

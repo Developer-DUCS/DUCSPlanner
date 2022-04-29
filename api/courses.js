@@ -97,6 +97,7 @@ router.post('/providingCredentials', (req,res) => {
     let query = `Select * from Credentials;`;
     conn.query(query,(err, rows) =>{
         if (err){
+            
             return res.status(500).json({ error: err});
         }
         else {
@@ -121,33 +122,51 @@ router.post('/providingCredentials', (req,res) => {
 
 
 //skeleton code for creating a plan
-router.post('/create', (req,res) => {
-    console.log(`Courses to be pushed : ${req.body}`);
-    var query = conn.query(`Insert into StudentCourseTable (UserId, CoursePrefix, CourseCode, PlanYear, PlanSemester ) values (?,?,?,?,?)`,[req.body.uID, req.body.CP,req.body.CC,req.body.PY, req.body.PS],(err,result)=>{
+ router.post('/create', (req,res) => {
+    let studCode = req.body.ID;
+    console.log(studCode);
+    let studPlan = req.body.Plan;
+    console.log(studPlan);
+     let saveQry = `REPLACE INTO StudentPlans (PlanItUsers_usersId, StudentPlan) VALUES (${studCode}, '[${studPlan}]');`;//wrap studplan ins '[]';
+     conn.query(saveQry, (err) => {
+        console.log("I'm in the plan saving function");
+        console.log(saveQry);
         if(err){
-            // console.log("something is wrong");
-             console.log(query.sql);
-             return res.status(500).json({error: err});
-          }
-          else{
-          console.log(result);
-          res.status(201).json({msg: "Session saved"});
-          //res.sendStatus(201);
-          }
-
-    })
-})
-// skeleton code for grabbing a student plan
-router.get('/fetch', (req,res)=>{
-    console.log(`Grabbing courses for user: ${req.body.uID}`);
-    let fetchqry = `select * from StudentCourseTable where UserID = ${req.body.uID}`;
-    conn.query(fetchqry,(err,result)=>{
-        if(err){
-            return res.status(500).json({ error: err });
+            console.log(res.statusCode);
+            //console.log(saveQry.sql);
+            console.log("savePlan function has the error");
+            //reject(('error didn"t save plane'),500);
+            //return res.status(500).json({error:err});
         }
         else{
+            console.log("plan saved successfully");
+            return (res.status(200).json({message: "Plan created successfully"}));
+        }
+    });
+   
+})
+// skeleton code for grabbing a student plan
+router.post('/fetch', (req,res)=>{
+    console.log(`Grabbing courses for user: ${req.body.uID}`);
+    let code = req.body.uID;
+    console.log(code);
+    let fetchqry = `select * from StudentPlans where PlanItUsers_usersId = ${code};`;
+    conn.query(fetchqry,(err,rows)=>{
+        if(err){
+            console.log(fetchqry.sql);
+            return res.status(500).json({ error: err });
+        }
+        else if(rows.length == 0){
+            return (res.status(404).json({ message: 'Plan not found' }));
+        }
+        else{
+            for (let l = 0; l < rows.length; l++){
+                console.log(rows[l].StudentPlan);
+                return (res.status(200).json({studentPlan: rows[l].StudentPlan}));
+
+            }
             
         }
-    })
-})
+    });
+});
 module.exports = router;
