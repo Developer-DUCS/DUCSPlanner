@@ -99,7 +99,7 @@ const PlanCreation = (props) => {
     for (let i = 0; i < sem5Class.length; i++){
       
       //sem5.push(JSON.stringify(sem5Class[i].props.class))
-      sem5.push(sem5Class[i].props.class.CoursePrefix+ " "+sem5Class[i].props.class.CourseCode);
+      sem5.push(sem5Class[i].props.class.CoursePrefix+" "+sem5Class[i].props.class.CourseCode);
       //sem5.push(thing.sem5);
     }}
     else{
@@ -473,7 +473,7 @@ const PlanCreation = (props) => {
   if(itemPlace[4].length > 0) {
     setSem5Class([...sem5Class,
 
-      <Surface style={styles.surface}>
+      <Surface style={styles.surface} class={itemPlace[4][0].object}>
 
         <Text style={styles.surfacetext}>{itemPlace[4][0].value}</Text>
       </Surface>
@@ -484,7 +484,7 @@ const PlanCreation = (props) => {
   if(itemPlace[5].length > 0) {
     setSem6Class([...sem6Class,
 
-      <Surface style={styles.surface}>
+      <Surface style={styles.surface} class={itemPlace[5][0].object}>
 
         <Text style={styles.surfacetext}>{itemPlace[5][0].value}</Text>
       </Surface>
@@ -495,7 +495,7 @@ const PlanCreation = (props) => {
   if(itemPlace[6].length > 0) {
     setSem7Class([...sem7Class,
 
-      <Surface style={styles.surface}>
+      <Surface style={styles.surface}class={itemPlace[6][0].object}>
 
         <Text style={styles.surfacetext}>{itemPlace[6][0].value}</Text>
       </Surface>
@@ -506,7 +506,7 @@ const PlanCreation = (props) => {
   if(itemPlace[7].length > 0) {
     setSem8Class([...sem8Class,
 
-      <Surface style={styles.surface}>
+      <Surface style={styles.surface}class={itemPlace[7][0].object}>
 
         <Text style={styles.surfacetext}>{itemPlace[7][0].value}</Text>
       </Surface>
@@ -530,8 +530,10 @@ const PlanCreation = (props) => {
   const thing = watch();
   console.log(thing);
 
-  if (sem1Class.length > 0){
-    console.log(sem1Class[0].props.class);
+  if (sem5Class.length > 0){
+    console.log(sem5Class[0].props.object);
+    console.log(sem5Class[0].props[0]);
+    console.log(sem5Class[0].props.class);
   }
 
 
