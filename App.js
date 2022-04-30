@@ -2,6 +2,7 @@ import React from 'react';
 import { View, StyleSheet, } from 'react-native';
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
+import { Provider as PaperProvider } from 'react-native-paper';
 
 import Home from './components/Home';
 import Student from './components/Student';
@@ -13,14 +14,17 @@ import Footer from './components/Footer';
 import SignUp from './components/SignUp';
 import ForgotPass from './components/ForgotPass';
 import PlanCreation from './components/PlanCreation';
+import PlanViewing from './components/PlanViewing';
 
 const App = () => {
   return (
     <>
       <View style={styles.container}>
+      <PaperProvider>
           <Header />
           <AppContainer />
           <Footer />
+        </PaperProvider>
       </View>
     </>
     /*This styling applies to all pages*/
@@ -53,6 +57,9 @@ const AppNavigator = createStackNavigator({
   },
   PlanCreation: {
     screen: PlanCreation
+  },
+  PlanViewing:{
+    screen: PlanViewing
   }
 }, {
 

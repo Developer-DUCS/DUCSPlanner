@@ -3,6 +3,7 @@ import { StyleSheet, ScrollView, Text, Image } from 'react-native';
 import axios from 'axios';
 import { Box, TextInput, Button, Surface, VStack, Flex} from '@react-native-material/core';
 import { Controller, useForm} from 'react-hook-form';
+import GLOBAL from './globals'; 
 
 const Home = (props) => {
   const api = axios.create({
@@ -28,10 +29,21 @@ const Home = (props) => {
               .then(function (response) {
                 console.log("sent");
                 if (response.status != 200) {
-                  console.log("error");
+                  setIsError(true)
                 }
                 else {
-                  props.navigation.navigate('stuCopy');
+                  //console.log(JSON.stringify(response.data.userID));
+                  var firstName = JSON.stringify(response.data.fname);
+                  var lastName = JSON.stringify(response.data.lname);
+                  var id = JSON.stringify(response.data.userID);
+                 // console.log(JSON.stringify(response.data.userId));
+                  GLOBAL.FIRSTNAME = firstName;
+                  GLOBAL.LASTNAME = lastName;
+                  GLOBAL.ID = id;
+                  console.log(GLOBAL.ID);
+                  props.navigation.navigate('Student');
+                  //props.navigation.navigate('PlanViewing');
+                  //props.navigation.navigate('PlanCreation');
                 }
 
               })
