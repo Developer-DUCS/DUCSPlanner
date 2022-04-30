@@ -64,7 +64,7 @@ const PlanCreation = (props) => {
     if(thing.sem2 == ""){
     for (let i = 0; i < sem2Class.length; i++){
      // sem2.push(JSON.stringify(sem2Class[i].props.class));
-     sem2.push(sem2Class[i].props.class.CoursePrefix+ " "+ sem2Class[i].class.CourseCode);
+     sem2.push(sem2Class[i].props.class.CoursePrefix+ " "+ sem2Class[i].props.class.CourseCode);
      //sem2.push(thing.sem2);
      
      console.log(sem2);
@@ -156,135 +156,11 @@ const PlanCreation = (props) => {
   
   }
 
-  while (fetchTry) {
-    //const itemsFromBackend = [];
-    //let listItems = [];
-    //let itemPlace = [[],[],[],[],[],[],[],[]];
-
-    //let tempNum = 0;
-    //let pos = 0;
-
-    //let done = false;
-
-    let classes = GLOBAL.COURSELIST;
-
-    let classList = classes.split(";");
-    //console.log(classList);
-    classList.pop();
-
-    for (let j = 0; j < classList.length; j++) {
-      itemsFromBackend.push(JSON.parse(classList[j]));
-    }
-
-    itemsFromBackend.sort(function(a,b) {return a.CourseCode - b.CourseCode});
-
-    let listSize = Math.ceil(itemsFromBackend.length/8);
-
-    function checkPrereqs(backList,itemList) {
-      let courseList = [];
-      for (let j = 0; j < itemList.length; j++) {
-        for (let i = 0; i < itemList[j].length; i++) {
-          courseList.push([itemList[j][i].object.CoursePrefix,itemList[j][i].object.CourseCode]);
-        }
-      }
-      let item = 0;
-      for (let k = 0; k < courseList.length; k++) {
-        for (let l = 0; l < backList.length; l++) {
-          if (backList[l][0] == courseList[k][0] && backList[l][1] == courseList[k][1]) {
-            item = item + 1;
-          }
-        }
-      }
-      if (item == backList.length) {
-        return true;
-      }
-      else {
-        return false;
-      }
-    }
-
-    function pushItem(item,num) {
-      itemPlace[num].push({
-        label: item.CourseName,
-        value: item.CoursePrefix + " " + item.CourseCode,
-        object: item
-      });
-    }
-
-    while (itemsFromBackend.length > 0 && !done) {
-      let temp = pos;
-      if (tempNum > 7) {
-        done = true;
-      }
-      else if (itemPlace[tempNum].length == listSize || pos == itemsFromBackend.length) {
-        tempNum = tempNum + 1;
-        pos = 0;
-      }
-      else if (tempNum % 2 == 0) {
-        if (itemsFromBackend[pos].Semester == "Fall" || itemsFromBackend[pos].Semester == "Both") {
-          if (tempNum == 0 && itemsFromBackend[pos].HasPrereq == "No") {
-            pushItem(itemsFromBackend[pos],tempNum);
-            itemsFromBackend.splice(pos, 1);
-            pos = 0;
-          }
-          else {
-            if(checkPrereqs(itemsFromBackend[pos].Prereqs,itemPlace)) {
-              pushItem(itemsFromBackend[pos],tempNum);
-              itemsFromBackend.splice(pos, 1);
-              pos = 0;
-            }
-            else {
-              pos = pos + 1;
-            }
-          }
-        }
-        else {
-          pos = pos + 1;
-        }
-      }
-      else {
-        if (itemsFromBackend[pos].Semester == "Spring" || itemsFromBackend[pos].Semester == "Both") {
-          if(checkPrereqs(itemsFromBackend[pos].Prereqs,itemPlace)) {
-            pushItem(itemsFromBackend[pos],tempNum);
-            itemsFromBackend.splice(pos, 1);
-            pos = 0;
-          }
-          else {
-            pos = pos + 1;
-          }
-        }
-        else {
-          pos = pos + 1;
-        }
-      }
-    }
-
-    for (let j = 0; j < itemsFromBackend.length; j++) {
-      listItems.push({
-        label: itemsFromBackend[j].CourseName,
-        value: itemsFromBackend[j].CoursePrefix + " " + itemsFromBackend[j].CourseCode,
-        object: {CoursePrefix: itemsFromBackend[j].CoursePrefix,
-                  CourseName: itemsFromBackend[j].CourseName,
-                  CourseCode: itemsFromBackend[j].CourseCode,
-                  Semester: itemsFromBackend[j].Semester,
-                  CreditHours: itemsFromBackend[j].CreditHours}
-      });
-    }
-
-    for (let k = 0; k < itemPlace.length; k++) {
-      listItems.concat(itemPlace[k]);
-    }
-
-    console.log("Made it through");
-    fetchTry = false;
-  }
-
   //Adds courses to a 2-d list
   while (fetchTry) {
 
     //Grab courses and put them in a list
-    let classes = localStorage.getItem("fetchCourseList");
-    //let classes = GLOBAL.COURSELIST;
+    let classes = GLOBAL.COURSELIST;
     let classList = classes.split(";");
     classList.pop();
 

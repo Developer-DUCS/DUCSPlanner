@@ -151,9 +151,10 @@ const Student = (props) => {
             for (let x = 0; x < response.data.Courses.length; x++) {
               courseList = courseList + JSON.stringify(response.data.Courses[x]) + ";";
             }
-            //console.log(courseList);
+            console.log(courseList);
             //localStorage.setItem("fetchCourseList", courseList);
             GLOBAL.COURSELIST = courseList;
+            console.log(GLOBAL.COURSELIST)
             props.navigation.navigate('PlanCreation');
             //props.navigation.navigate('PlanViewing');
           }
@@ -301,13 +302,13 @@ const Student = (props) => {
               <select name="major" id="major" onChange={e => handleMajorChange(index, e)}>
                 <option value="">Please select a major</option>
                 <optgroup label="Professional">
-                  <option value="3,P">Computer Science: Game Development</option>
+                  <option value="2,P">Computer Science: Game Development</option>
                   <option value="1,P">Computer Science: Software Engineering</option>
                 </optgroup>
                 <optgroup label="Life">
-                  <option value="4,L">Mathematics</option>
-                  <option value="5,L">Criminology</option>
-                  <option value="6,L">English</option>
+                  <option value="3,L">Mathematics</option>
+                  <option value="4,L">Criminology</option>
+                  <option value="5,L">English</option>
                 </optgroup>
               </select>
             </div>
@@ -336,11 +337,11 @@ const Student = (props) => {
               <select name="cert" id="cert" onChange={e => handleCertChange(index, e)}>
                 <option value="">Please select a certificate</option>
                 <optgroup label="Professional">
-                  <option value="7,P">Interactive Design</option>
+                  <option value="6,P">Interactive Design</option>
                 </optgroup>
                 <optgroup label="Life">
-                  <option value="8,L">International Immersion</option>
-                  <option value="9,L">Ancients Alive: The Classics in Context</option>
+                  <option value="7,L">International Immersion</option>
+                  <option value="8,L">Ancients Alive: The Classics in Context</option>
                 </optgroup>
               </select>
             </div>
