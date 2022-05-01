@@ -67,8 +67,8 @@ const PlanCreation = (props) => {
      sem2.push(sem2Class[i].props.class.CoursePrefix+ " "+ sem2Class[i].props.class.CourseCode);
      //sem2.push(thing.sem2);
      
-     console.log(sem2);
-     console.log(thing.sem2);
+     //console.log(sem2);
+     //console.log(thing.sem2);
 
     } 
    }
@@ -136,20 +136,20 @@ const PlanCreation = (props) => {
     //console.log(JSON.stringify(sem1));
     let studentPlan = [JSON.stringify({'sem1':sem1}),JSON.stringify({'sem2':sem2}),JSON.stringify({'sem3':sem3}),JSON.stringify({'sem4':sem4}),JSON.stringify({'sem5':sem5}),JSON.stringify({'sem6':sem6}), JSON.stringify({'sem7':sem7}),JSON.stringify({'sem8':sem8})]
 
-    console.log(studentPlan);
+    //console.log(studentPlan);
     //let id = GLOBAL.ID;
     //console.log(id);
     api.post('api/courses/create',
     { 'ID' : GLOBAL.ID ,
      'Plan': studentPlan})
      .then(function(response){
-       console.log("sent save request");
+       //console.log("sent save request");
        if (response.status != 200){
-         console.log("the api is messed up");
+         //console.log("the api is messed up");
          alert('Oops! there was an issue with saving your 4-year plan');
        }
        else{
-         console.log("plan saved successfully");
+         //console.log("plan saved successfully");
          alert('Plan was saved successfully');
        }
      })
@@ -283,11 +283,11 @@ const PlanCreation = (props) => {
 
     tempList = JSON.parse(JSON.stringify(itemPlace));
 
-    console.log(listItems);
-    console.log(itemPlace);
-    console.log(tempList);
+    //console.log(listItems);
+    //console.log(itemPlace);
+    //console.log(tempList);
 
-    console.log("Made it through");
+    //console.log("Made it through");
     fetchTry = false;
   }
 
@@ -309,7 +309,7 @@ const PlanCreation = (props) => {
 
       </Surface>
     ]);
-    console.log(itemPlace[0]);
+    //console.log(itemPlace[0]);
     itemPlace[0].splice(0, 1);
   }
 
@@ -404,13 +404,13 @@ const PlanCreation = (props) => {
     mode: 'onChange',
   });
   const thing = watch();
-  console.log(thing);
+  //console.log(thing);
 
-  if (sem5Class.length > 0){
+  /*if (sem5Class.length > 0){
     console.log(sem5Class[0].props.object);
     console.log(sem5Class[0].props[0]);
     console.log(sem5Class[0].props.class);
-  }
+  }*/
 
 
   let addClassesSem1 = () => {

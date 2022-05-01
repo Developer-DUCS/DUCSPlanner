@@ -35,9 +35,9 @@ const Student = (props) => {
   const [formValuesCert, setFormValuesCert] = useState([{}])
   //function to run once student page is opened to grab all drury credentials and put them in the drop down
   useEffect(() => {
-    console.log('im in the effect')
+    //console.log('im in the effect')
     let credentialListener = () => {   
-      console.log("I've hit the load event");
+      //console.log("I've hit the load event");
       setIsLoading(true);
       api.post('api/courses/providingCredentials', {
         'CredentialList' : CredentialList,})
@@ -54,8 +54,8 @@ const Student = (props) => {
             //console.log(response.data.Credentials[0]);
             //console.log(JSON.stringify(response.data));
             for (let x = 0; x < response.data.Credentials.length; x++) {
-              console.log(x)
-              console.log(response.data.Credentials[x]);
+              //console.log(x)
+              //console.log(response.data.Credentials[x]);
               //CredentialList.push(response.data.Credentials[x]);
               CredentialList = CredentialList + JSON.stringify(response.data.Credentials[x]) + ";";
               //courseList = courseList + JSON.stringify(response.data.Courses[x]) + ";";
@@ -151,10 +151,10 @@ const Student = (props) => {
             for (let x = 0; x < response.data.Courses.length; x++) {
               courseList = courseList + JSON.stringify(response.data.Courses[x]) + ";";
             }
-            console.log(courseList);
+            //console.log(courseList);
             //localStorage.setItem("fetchCourseList", courseList);
             GLOBAL.COURSELIST = courseList;
-            console.log(GLOBAL.COURSELIST)
+            //console.log(GLOBAL.COURSELIST)
             props.navigation.navigate('PlanCreation');
             //props.navigation.navigate('PlanViewing');
           }
@@ -169,22 +169,22 @@ const Student = (props) => {
   };
 
   const onSubmitHandler2 = () => {
-    console.log("grabbing student's plan")
-            console.log('this is users id',GLOBAL.ID);
-            console.log('loading...')
+    //console.log("grabbing student's plan")
+            //console.log('this is users id',GLOBAL.ID);
+            //console.log('loading...')
             //setIsLoading(true);
             api.post('api/courses/fetch',
             {'uID': GLOBAL.ID
             })
             .then(function(response){
                 if (response.status != 200){
-                    console.log(response.data);
+                    //console.log(response.data);
                     alert('Opps! there was an issue with returning your student plan');
                 }
                 else {
                     if(response == 200);
-                console.log('holy damn it worked');
-                console.log(response.data);
+                //console.log('holy damn it worked');
+                //console.log(response.data);
                 //console.log(response.data.studentPlan.length);
                 Seme1.push(response.data.studentPlan[0]);
                 Seme2.push(response.data.studentPlan[1]);
@@ -200,11 +200,8 @@ const Student = (props) => {
                 listOfSemes = [Seme1[0].sem1,Seme2[0].sem2,Seme3[0].sem3,Seme4[0].sem4,Seme5[0].sem5,Seme6[0].sem6,Seme7[0].sem7,Seme8[0].sem8]
                 //listOfSemes= [Seme1,Seme2,Seme3,Seme4,Seme5,Seme6,Seme7,Seme8]
                 GLOBAL.PLANCOURSESLIST = listOfSemes;
-                console.log(GLOBAL.PLANCOURSESLIST);
+                //console.log(GLOBAL.PLANCOURSESLIST);
                 //console.log(listOfSemes);
-                
-                  
-                
                 props.navigation.navigate('PlanViewing');
                 
                 }

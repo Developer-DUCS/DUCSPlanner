@@ -27,7 +27,7 @@ const Home = (props) => {
 
             })
               .then(function (response) {
-                console.log("sent");
+                //console.log("sent");
                 if (response.status != 200) {
                   setIsError(true)
                 }
@@ -38,7 +38,7 @@ const Home = (props) => {
                   GLOBAL.FIRSTNAME = response.data.fname;
                   GLOBAL.LASTNAME = response.data.lname;
                   GLOBAL.ID = id;
-                  console.log(GLOBAL.ID);
+                  //console.log(GLOBAL.ID);
                   props.navigation.navigate('Student');
                   //props.navigation.navigate('PlanViewing');
                   //props.navigation.navigate('PlanCreation');

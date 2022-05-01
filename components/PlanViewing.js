@@ -12,7 +12,7 @@ const PlanViewing = (props) => {
     
 
     let SemesterList = GLOBAL.PLANCOURSESLIST;
-    console.log(SemesterList);
+    //console.log(SemesterList);
       const [sem1Class, setSem1Class] = useState([]);
       const [sem2Class, setSem2Class] = useState([]);
       const [sem3Class, setSem3Class] = useState([]);
@@ -29,7 +29,7 @@ const PlanViewing = (props) => {
           </Surface>
         ]);
 
-        console.log(SemesterList[0]);
+        //console.log(SemesterList[0]);
         SemesterList[0].splice(0, 1);
       }
     
@@ -113,8 +113,8 @@ const PlanViewing = (props) => {
         mode: 'onChange',
       });
       const thing = watch();
-      console.log(thing);
-      console.log(sem1Class);
+      //console.log(thing);
+      //console.log(sem1Class);
     
       let addClassesSem1 = () => {
         setSem1Class([...sem1Class,
