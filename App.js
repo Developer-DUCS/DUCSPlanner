@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, } from 'react-native';
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
@@ -6,7 +6,7 @@ import { Provider as PaperProvider } from 'react-native-paper';
 
 import Home from './components/Home';
 import Student from './components/Student';
-import StudentCPY from './components/StudentsCPY';
+import stuCopy from './components/stuCopy';
 import Advisor from './components/Advisor';
 import Admin from './components/Admin';
 import Header from './components/Header';
@@ -14,12 +14,13 @@ import Footer from './components/Footer';
 import SignUp from './components/SignUp';
 import ForgotPass from './components/ForgotPass';
 import PlanCreation from './components/PlanCreation';
+import PlanViewing from './components/PlanViewing';
 
 const App = () => {
   return (
     <>
       <View style={styles.container}>
-        <PaperProvider>
+      <PaperProvider>
           <Header />
           <AppContainer />
           <Footer />
@@ -39,8 +40,8 @@ const AppNavigator = createStackNavigator({
   Student: {
     screen: Student
   },
-  StudentCPY: {
-    screen: StudentCPY
+  stuCopy: {
+    screen: stuCopy
   },
   Advisor: {
     screen: Advisor
@@ -56,8 +57,12 @@ const AppNavigator = createStackNavigator({
   },
   PlanCreation: {
     screen: PlanCreation
+  },
+  PlanViewing:{
+    screen: PlanViewing
   }
 }, {
+
   initialRouteName: "Home"
   /*This sets the Home page as the base page*/
 });

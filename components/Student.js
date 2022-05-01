@@ -16,6 +16,15 @@ const Student = (props) => {
   let CredentialList = [];
   let courseCode = [];
   let newCourses = [];
+  let Seme1 = [];
+  let Seme2 = [];
+  let Seme3 = [];
+  let Seme4 = [];
+  let Seme5 = [];
+  let Seme6 = [];
+  let Seme7 = [];
+  let Seme8 = [];
+ let listOfSemes = [];
   //let name = localStorage.getItem("fname") + " " + localStorage.getItem("lname");
   let name = GLOBAL.FIRSTNAME + " " + GLOBAL.LASTNAME;
   const [isLoading, setIsLoading] = useState(false);
@@ -26,9 +35,9 @@ const Student = (props) => {
   const [formValuesCert, setFormValuesCert] = useState([{}])
   //function to run once student page is opened to grab all drury credentials and put them in the drop down
   useEffect(() => {
-    console.log('im in the effect')
+    //console.log('im in the effect')
     let credentialListener = () => {   
-      console.log("I've hit the load event");
+      //console.log("I've hit the load event");
       setIsLoading(true);
       api.post('api/courses/providingCredentials', {
         'CredentialList' : CredentialList,})
@@ -45,8 +54,8 @@ const Student = (props) => {
             //console.log(response.data.Credentials[0]);
             //console.log(JSON.stringify(response.data));
             for (let x = 0; x < response.data.Credentials.length; x++) {
-              console.log(x)
-              console.log(response.data.Credentials[x]);
+              //console.log(x)
+              //console.log(response.data.Credentials[x]);
               //CredentialList.push(response.data.Credentials[x]);
               CredentialList = CredentialList + JSON.stringify(response.data.Credentials[x]) + ";";
               //courseList = courseList + JSON.stringify(response.data.Courses[x]) + ";";
@@ -145,7 +154,9 @@ const Student = (props) => {
             //console.log(courseList);
             //localStorage.setItem("fetchCourseList", courseList);
             GLOBAL.COURSELIST = courseList;
+            //console.log(GLOBAL.COURSELIST)
             props.navigation.navigate('PlanCreation');
+            //props.navigation.navigate('PlanViewing');
           }
         }
       })
@@ -156,6 +167,49 @@ const Student = (props) => {
         setMessage('API Error');
       });
   };
+
+  const onSubmitHandler2 = () => {
+    //console.log("grabbing student's plan")
+            //console.log('this is users id',GLOBAL.ID);
+            //console.log('loading...')
+            //setIsLoading(true);
+            api.post('api/courses/fetch',
+            {'uID': GLOBAL.ID
+            })
+            .then(function(response){
+                if (response.status != 200){
+                    //console.log(response.data);
+                    alert('Opps! there was an issue with returning your student plan');
+                }
+                else {
+                    if(response == 200);
+                //console.log('holy damn it worked');
+                //console.log(response.data);
+                //console.log(response.data.studentPlan.length);
+                Seme1.push(response.data.studentPlan[0]);
+                Seme2.push(response.data.studentPlan[1]);
+                Seme3.push(response.data.studentPlan[2]);
+                Seme4.push(response.data.studentPlan[3]);
+                Seme5.push(response.data.studentPlan[4]);
+                Seme6.push(response.data.studentPlan[5]);
+                Seme7.push(response.data.studentPlan[6]);
+                Seme8.push(response.data.studentPlan[7]);
+                //console.log(Seme1);
+                //console.log(Seme1[0].sem1[0]);
+                //console.log(studentPlanTBU[0].sem3[0]); push creates 2d array need to use index zero before accessing class elements
+                listOfSemes = [Seme1[0].sem1,Seme2[0].sem2,Seme3[0].sem3,Seme4[0].sem4,Seme5[0].sem5,Seme6[0].sem6,Seme7[0].sem7,Seme8[0].sem8]
+                //listOfSemes= [Seme1,Seme2,Seme3,Seme4,Seme5,Seme6,Seme7,Seme8]
+                GLOBAL.PLANCOURSESLIST = listOfSemes;
+                //console.log(GLOBAL.PLANCOURSESLIST);
+                //console.log(listOfSemes);
+                props.navigation.navigate('PlanViewing');
+                
+                }
+
+            })
+        
+  }
+
 
   if (isLoading) {
     return (
@@ -245,13 +299,13 @@ const Student = (props) => {
               <select name="major" id="major" onChange={e => handleMajorChange(index, e)}>
                 <option value="">Please select a major</option>
                 <optgroup label="Professional">
-                  <option value="3,P">Computer Science: Game Development</option>
+                  <option value="2,P">Computer Science: Game Development</option>
                   <option value="1,P">Computer Science: Software Engineering</option>
                 </optgroup>
                 <optgroup label="Life">
-                  <option value="4,L">Mathematics</option>
-                  <option value="5,L">Criminology</option>
-                  <option value="6,L">English</option>
+                  <option value="3,L">Mathematics</option>
+                  <option value="4,L">Criminology</option>
+                  <option value="5,L">English</option>
                 </optgroup>
               </select>
             </div>
@@ -266,8 +320,8 @@ const Student = (props) => {
                   <option value="">Not Valid Animation</option>
                 </optgroup>
                 <optgroup label="Life">
-                  <option value="10,L">Computer Science</option>
-                  <option value="">Not Valid Criminology</option>
+                  <option value="9,L">Computer Science</option>
+                  <option value="10,L">Mathematics</option>
                   <option value="">Not Valid English</option>
                 </optgroup>
               </select>
@@ -280,11 +334,11 @@ const Student = (props) => {
               <select name="cert" id="cert" onChange={e => handleCertChange(index, e)}>
                 <option value="">Please select a certificate</option>
                 <optgroup label="Professional">
-                  <option value="7,P">Interactive Design</option>
+                  <option value="6,P">Interactive Design</option>
                 </optgroup>
                 <optgroup label="Life">
-                  <option value="8,L">International Immersion</option>
-                  <option value="9,L">Ancients Alive: The Classics in Context</option>
+                  <option value="7,L">International Immersion</option>
+                  <option value="8,L">Ancients Alive: The Classics in Context</option>
                 </optgroup>
               </select>
             </div>
@@ -312,6 +366,12 @@ const Student = (props) => {
         </Button>
         <Button style={styles.btn} onPress={(index) => removeFormFieldsCert(index)} uppercase={false}>
           <Text style={styles.btntext}>Remove Certificate</Text>
+        </Button>
+      </View>
+      <View style={styles.centered}>
+      <Text style={[styles.message, { color: isError ? 'red' : '#F5F5F5' }]}>{message}</Text>
+      <Button onPress={() => onSubmitHandler2()} style={styles.btn} uppercase={false}>
+          <Text style={styles.btntext}>View Plan</Text>
         </Button>
       </View>
       <View style={styles.centered}>

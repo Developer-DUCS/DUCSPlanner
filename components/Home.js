@@ -1,12 +1,8 @@
 import React from 'react';
-import { useState } from 'react';
-import { View, StyleSheet, ScrollView, Text, Image } from 'react-native';
-import { FormBuilder } from 'react-native-paper-form-builder';
-import { useForm } from 'react-hook-form';
-import { Button, Surface, icon } from 'react-native-paper';
+import { StyleSheet, ScrollView, Text, Image } from 'react-native';
 import axios from 'axios';
-import SignUp from './SignUp';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import { Box, TextInput, Button, Surface, VStack, Flex} from '@react-native-material/core';
+import { Controller, useForm} from 'react-hook-form';
 import GLOBAL from './globals'; 
 
 const Home = (props) => {
@@ -17,13 +13,42 @@ const Home = (props) => {
   /* const [email, setEmail] = useState('');
   const [password, setPassword] = useState(''); */
 
-  const { control, setFocus, handleSubmit } = useForm({
+  const { control, watch, handleSubmit, setValue, formState: { errors }} = useForm({
     defaultValues: {
-      Email: '',
-      Password: '',
+      email: '',
+      password: '',
     },
     mode: 'onChange',
   });
+
+  const onSubmit = (data) => api.post('/api/auth/login', {
+              'Email': data.email,
+              'Password': data.password,
+
+            })
+              .then(function (response) {
+                //console.log("sent");
+                if (response.status != 200) {
+                  setIsError(true)
+                }
+                else {
+                  //console.log(JSON.stringify(response.data.userID));
+                  var id = JSON.stringify(response.data.userID);
+                 // console.log(JSON.stringify(response.data.userId));
+                  GLOBAL.FIRSTNAME = response.data.fname;
+                  GLOBAL.LASTNAME = response.data.lname;
+                  GLOBAL.ID = id;
+                  //console.log(GLOBAL.ID);
+                  props.navigation.navigate('Student');
+                  //props.navigation.navigate('PlanViewing');
+                  //props.navigation.navigate('PlanCreation');
+                }
+
+              })
+              .catch(function (error) {
+                console.log(error);
+
+              })
 
   const onForgotPass = () => {
     props.navigation.navigate('ForgotPass')
@@ -34,103 +59,62 @@ const Home = (props) => {
 
 
   return (
-    <ScrollView contentContainerStyle={styles.scrollViewStyle}>
-      <Surface style={styles.formContainer}>
-        <View style={styles.formBuild}>
-          <Image
-            style={{ width: "90%", height: "30%", resizeMode: "contain", marginTop: '3%', marginBottom: '2%', alignSelf: 'center' }}
+    <ScrollView>
+      <Surface elevation={3}>
+          <VStack spacing={10} mh={'15%'} p={10} h={'100%'} fill >
+          <Flex h={100} m={10} center>
+          <Image resizeMode="contain"
+            style={{ width: "75%", height: "100%"}}
             source={{ uri: 'https://drury.edu/wp-content/uploads/files/brand_lounge/PrimaryFullColor.png' }}
           />
-
-
-          <FormBuilder
-            control={control}
-            setFocus={setFocus}
-            formConfigArray={[
-              {
-                type: 'email',
-                name: 'Email',
-
-
-                rules: {
-                  required: {
-                    value: true,
-                    message: 'Email is required',
-                  },
-                  pattern: {
-                    value:
-                      /[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})/,
-                    message: 'Email is invalid',
-                  },
-                },
-                textInputProps: {
-                  label: 'Email',
-                },
-
-              },
-              {
-                type: 'password',
-                name: 'Password',
-                rules: {
-                  required: {
-                    value: true,
-                    message: 'Password is required',
-                  },
-                },
-                textInputProps: {
-                  label: 'Password',
-                },
-              },
-            ]}
-          />
-
-
-          <Button
-            style={styles.btn}
-            mode={'contained'}
-            onPress={handleSubmit((values) => api.post('/api/auth/login', {
-              'Email': values.Email,
-              'Password': values.Password,
-
-            })
-              .then(function (response) {
-                console.log("sent");
-                if (response.status != 200) {
-                  //setIsError(true)
-                }
-                else {
-                  var firstName = JSON.stringify(response.data.fname);
-                  var lastName = JSON.stringify(response.data.lname);
-                  var id = JSON.stringify(response.data.userId);
-                  GLOBAL.FIRSTNAME = firstName;
-                  GLOBAL.LASTNAME = lastName;
-                  GLOBAL.ID = id;
-                  props.navigation.navigate('Student');
-                }
-
-              })
-              .catch(function (error) {
-                console.log(error);
-
-              })
-
-            )}>
-
-            <Text style={styles.btnText}> Log In </Text>
-
-          </Button>
-
-          <Button
-            onPress={() => onSignUp()}
-            style={styles.btn}
-          >
-            <Text style={styles.btnText}>Sign Up</Text>
-
-          </Button>
-
-          <Button onPress={() => onForgotPass()} > <Text style={styles.forgotpass}> Forgot password? </Text> </Button>
-        </View>
-      </Surface>
+          </Flex>
+          <Box>
+            <Controller
+                  control={control}
+                  rules={{
+                  required: true,
+                  pattern: /[A-Za-z0-9._%+-]{3,}@[a-zA-Z]{3,}([.]{1}[a-zA-Z]{2,}|[.]{1}[a-zA-Z]{2,}[.]{1}[a-zA-Z]{2,})/,
+                  }}
+                  render={({ field: { onChange, onBlur, value } }) => (
+                    <TextInput
+                      variant='outlined'
+                      label='Email'
+                      style={styles.input}
+                      onBlur={onBlur}
+                      onChangeText={onChange}
+                      value={value}
+                    />
+                  )}
+                  name="email"
+                />
+            {errors.email && <Text>A valid email is required</Text>}
+            </Box>
+            <Box>
+            <Controller
+                    control={control}
+                    rules={{
+                    required: true,
+                    }}
+                    render={({ field: { onChange, onBlur, value } }) => (
+                      <TextInput
+                        secureTextEntry={true}
+                        variant='outlined'
+                        label='Password'
+                        style={styles.input}
+                        onBlur={onBlur}
+                        onChangeText={onChange}
+                        value={value}
+                      />
+                    )}
+                    name="password"
+                  />
+              {errors.password && <Text>Enter a good password</Text>}
+              </Box>
+          <Button title='Login' onPress={handleSubmit(onSubmit)} style={styles.btn}/>
+          <Button title='Sign Up' onPress={() => onSignUp()} style={styles.btn}/>
+          <Button title='Forgot password?' onPress={() => onForgotPass()} style={styles.btn}/>
+        </VStack>
+        </Surface>
     </ScrollView>
   );
 }
