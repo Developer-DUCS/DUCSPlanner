@@ -3,11 +3,12 @@ import {StyleSheet, ScrollView, Image, Text, Picker} from 'react-native';
 import axios from 'axios';
 import {Box, TextInput, Button, Surface, VStack, Flex} from '@react-native-material/core';
 import { Controller, useForm} from 'react-hook-form';
+const conf = require("../configuration/config.json")
 
 
 const SignUp = (props) => {
   const api = axios.create({
-    baseURL: `http://localhost:3210`
+    baseURL: conf.baseURL
   });
 
   const { control, watch, handleSubmit, setValue, formState: { errors }} = useForm({

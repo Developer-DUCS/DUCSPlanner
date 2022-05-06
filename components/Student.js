@@ -6,9 +6,10 @@ import { Button, Surface, icon } from 'react-native-paper';
 import axios from 'axios'
 import { render } from 'react-dom';
 import GLOBAL from './globals';
+const conf = require("../configuration/config.json")
 
 const api = axios.create({
-  baseURL: `http://localhost:3210`
+  baseURL: conf.baseURL
 })
 
 const Student = (props) => {

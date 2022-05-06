@@ -3,5 +3,6 @@
     "serverPort": 3306,
     "user": "PlanItAdmin", 
     "password": "asecuredpassword1",
-    "database": "PlanIt"
+    "database": "PlanIt",
+    "baseURL" : "http://localhost:3210"
 }

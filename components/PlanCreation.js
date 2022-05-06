@@ -7,10 +7,10 @@ import { Avatar, Button, Card, Title, Paragraph, Surface, Text } from 'react-nat
 import { FormBuilder } from 'react-native-paper-form-builder';
 import { useForm } from 'react-hook-form';
 import GLOBAL from './globals';
-
+const conf = require("../configuration/config.json")
 
 const api = axios.create({
-  baseURL: `http://localhost:3210`
+  baseURL: conf.baseURL
 })
 
 

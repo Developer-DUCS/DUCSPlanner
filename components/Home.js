@@ -4,10 +4,11 @@ import axios from 'axios';
 import { Box, TextInput, Button, Surface, VStack, Flex} from '@react-native-material/core';
 import { Controller, useForm} from 'react-hook-form';
 import GLOBAL from './globals'; 
+const conf = require("../configuration/config.json")
 
 const Home = (props) => {
   const api = axios.create({
-    baseURL: `http://localhost:3210`
+    baseURL: conf.baseURL
   });
 
   /* const [email, setEmail] = useState('');
