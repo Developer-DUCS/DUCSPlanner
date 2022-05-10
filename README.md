@@ -23,3 +23,5 @@ Colby Bogle,
 Drew Johnson,
 Vuyi Mjimba,
 Parkes Rowe
+
+NOTE: Final Presentation is in /assets folder
